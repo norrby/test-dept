@@ -21,9 +21,10 @@
 # the awk line makes proxy c-code for changing functions
 # sed line #2 removes and adds argument names from argument lists when necessary
 echo "#include <stdlib.h>"
-sed 's/^[ 	\n]*\([A-Za-z_0-9]*[ 	\n*]*\)\([A-Za-z_0-9]*\)[ 	\n]*([ 	\n]*\([^)]*\))[ 	\n]*;.*$/\1:\2:\3:/g' $* |\
+sed '/^.[*]/d; /^$/d; s/^[ 	\n]*\([A-Za-z_0-9]*[ 	\n*]*\)\([A-Za-z_0-9]*\)[ 	\n]*([ 	\n]*\([^)]*\))[ 	\n]*;.*$/\1:\2:\3:/g' $* |\
 awk -F: '
 /#include/ {print ; next }
+$2 == "" { next }
 {
   function_name = $2
   return_value = $1
@@ -43,6 +44,6 @@ awk -F: '
   print "}"
 }
 ' | sed '
- /^[	\n ]*typedef/s/\([^ *(,][^ *(,]*\)\([ 	\n*][ 	\n*]*\)[A-Za-z_0-9][A-Za-z_0-9]*\([),]\)/\1\2\3/g
+ /^[	\n ]*typedef/s/\([^ *(,][^ *(,]*\)\([ 	\n*][ 	\n*]*\)[A-Za-z_0-9]*\([),]\)/\1\2\3/g
  /^[	\n ]*return/s/[A-Za-z_0-9][A-Za-z_0-9 ]*[ *][ *]*\([A-Za-z_0-9][A-Za-z_0-9]*\)\([),]\)/\1\2/g
 '
