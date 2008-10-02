@@ -35,8 +35,8 @@ TEST_MAKEFILE=test/test.mk
 SELF_TEST_CMD=/usr/bin/env PATH=../src:$(PATH) $(MAKE) -I ../src
 
 build_example_projects:	self_test
-	make -C examples/simple_project test_dept
-	make -C examples/example_project test_dept
+	$(MAKE) -C examples/simple_project test_dept
+	$(MAKE) -C examples/example_project test_dept
 
 check:	build_example_projects
 	find . -name '*_test' | xargs sh -eu src/test_dept
