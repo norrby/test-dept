@@ -17,7 +17,7 @@
 
 PREFIX=@prefix@
 INSTALL=@INSTALL@
-INCLUDE_DIR=$(PREFIX)/includes
+INCLUDE_DIR=$(PREFIX)/include
 BIN_DIR=$(PREFIX)/bin
 MAN_DIR=$(PREFIX)/man
 SHARE_DIR=$(PREFIX)/share/test_dept
@@ -32,7 +32,6 @@ SCRIPTS_INSTALLED=$(addprefix $(BIN_DIR)/,$(SCRIPTS))
 INCLUDES_INSTALLED=$(addprefix $(INCLUDE_DIR)/,$(INCLUDES))
 DOC_FILES_INSTALLED=$(addprefix $(SHARE_DIR)/,$(DOCS))
 
-TEST_MAKEFILE=test/test.mk
 SELF_TEST_CMD=/usr/bin/env PATH=../src:$(PATH) $(MAKE) -I ../src
 
 build_example_projects:	self_test
@@ -66,9 +65,7 @@ $(BIN_DIR)/%: $(SRCS)/% $(BIN_DIR)
 $(SHARE_DIR)/%: % $(SHARE_DIR)
 	$(INSTALL) -m 644 $< $(SHARE_DIR) 
 
-install-man:	$(MAN_PAGES_INSTALLED)
-install-doc:	$(DOC_FILES_INSTALLED)
-install-script:	$(SCRIPTS_INSTALLED)
-install-includes:	$(INCLUDES_INSTALLED)
+install: $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED)
 
-install: install-man install-doc install-script install-includes
+uninstall:
+	rm -f $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED)
