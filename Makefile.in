@@ -17,6 +17,7 @@
 
 PREFIX=@prefix@
 INSTALL=@INSTALL@
+INSTALL_DATA=@INSTALL_DATA@
 INCLUDE_DIR=$(PREFIX)/include
 BIN_DIR=$(PREFIX)/bin
 MAN_DIR=$(PREFIX)/man
@@ -47,6 +48,9 @@ self_test:
 test_clean:
 	$(SELF_TEST_CMD) -C test clean
 
+distclean: clean
+	rm -rf *m4 *cache *status configure Makefile *~ */*~ */*/*~
+
 clean:	test_clean
 	rm -f */*/*.o */*.o *.o examples/*/*_test
 
@@ -54,10 +58,10 @@ $(MAN_DIR) $(INCLUDE_DIR) $(SHARE_DIR) $(BIN_DIR):
 	$(INSTALL) -d $@
 
 $(MAN_DIR)/%: $(SRCS)/% $(MAN_DIR)
-	$(INSTALL) -m 644 $< $(MAN_DIR)
+	$(INSTALL_DATA) $< $(MAN_DIR)
 
 $(INCLUDE_DIR)/%: $(SRCS)/% $(INCLUDE_DIR)
-	$(INSTALL) -m 644 $< $(INCLUDE_DIR) 
+	$(INSTALL_DATA) $< $(INCLUDE_DIR) 
 
 $(BIN_DIR)/%: $(SRCS)/% $(BIN_DIR)
 	$(INSTALL) $< $(BIN_DIR)
