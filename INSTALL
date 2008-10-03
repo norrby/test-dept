@@ -1,0 +1,26 @@
+Installation information for the Test Dept. Framework
+=====================================================
+To install Test Dept., untar the distribution and change working
+directory to that of "test-dept".  Then make sure you are running GNU
+make.
+
+To create the Makefile, issue:
+
+> ./configure
+
+To build the framework and all self-tests:
+
+> make
+
+Then to run the self-test suite issue:
+
+> make check
+
+All tests should pass.  You should see a line forming with only dots
+".", and no "F" characters.  When the tests have passed, issue the
+following command to install the framework:
+
+> sudo make install
+
+This should be enough.  It installs a bunch of scripts and makefile
+snippets into bin and include directories, respectively.
