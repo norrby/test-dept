@@ -338,20 +338,22 @@ And that concludes a quick walkthrough of the Test Dept. framework.
 
 Directory Structure
 -------------------
-This software is structured like this:
+The software is structured like this when packaged as a source
+tar-file:
 
  test_dept
   |
-  +- COPYING          Overall licensing information
-  +- COPYING.docs     Licensing information for the documentation
+  +- COPYING          Licensing information for Test Dept.
   +- INSTALL          Installation information
+  +- Makefile.in      Template Makefile
   +- README           This file
+  +- configure        Configuration script that creates a Makefile
   +- example_project  An example project that uses Test Dept.
+  +- install-sh       Fallback installation program
   +- simple_project   A simpler example project that uses Test Dept.
-  `- test_dept        The engine that makes everything work
+  `- src              Scripts and makefile snippets that comprise the framework
 
 
 Contact Information
 -------------------
 M Norrby <norrby+testdept@lysator.liu.se>.
-
