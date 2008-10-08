@@ -13,7 +13,7 @@ $(TAR):	$(DIST_TMP_DIR)
 
 $(DIST_TMP_DIR):	$(DIST_FILES)
 	mkdir -p $@ && cp -rp $^ $@ &&\
-	find $< -type d -name '.svn' | echo xargs rm -rf
+	find $@ -type d -name '.svn' | xargs rm -rf
 
 dist:	$(TAR)
 
