@@ -49,7 +49,7 @@ test_clean:
 	$(SELF_TEST_CMD) -C test clean
 
 distclean: clean
-	rm -rf *m4 *cache *status config.log configure Makefile *~ */*~ */*/*~
+	rm -rf *m4 *cache *status config.log configure makefile *~ */*~ */*/*~
 
 clean:	test_clean
 	rm -f */*/*.o */*.o *.o examples/*/*_test
