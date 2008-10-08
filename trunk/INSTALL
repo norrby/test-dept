@@ -36,16 +36,15 @@ to bootstrap the building process:
 
 Installing Test Dept. from a checked out directory
 --------------------------------------------------
-Installing Test Dept. from a Subversion checkout requires
-automake.
+Installing Test Dept. from a Subversion checkout requires automake.
 
 First issue:
 
 > make dist
 
-in order to create the configure script. Then you can continue
+in order to create the configure script.  Then you can continue
 creating the makefile as described above.
 
-Please note that the make dist step also creates a tar-file
-containing the distribution. You could also unpack this file
-somewhere and install from it. That should be equivalent.
+Please note that the make dist step also creates a tar-file containing
+the distribution.  You could also unpack this file somewhere and
+install from it.  That should be equivalent.
