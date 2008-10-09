@@ -15,21 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include <test_dept.h>
 #include <values.h>
 
-static void test_function_without_assertions() {
+void test_function_without_assertions() {
 }
 
-static void test_function_with_assertions() {
+void test_function_with_assertions() {
   assert_true(1);
 }
 
-void test_function_without_static_that_should_not_be_run() {
-  assert_true(0);
-}
-
-static void test_assert_equals_with_integers() {
+void test_assert_equals_with_integers() {
   assert_equals(0, 0);
   assert_equals(1, 1);
   assert_equals(-1, -1);
@@ -37,30 +33,30 @@ static void test_assert_equals_with_integers() {
   assert_equals(-MAXINT, -MAXINT);
 }
 
-static void test_assert_equals_with_floats() {
+void test_assert_equals_with_floats() {
   assert_equals(0.0, 0.0);
   assert_equals(1.0, 1.0);
   assert_equals(-1.1, -1.1);
   assert_equals(-1.191919191, -1.191919191);
 }
 
-static void test_for_loop_around_assertion() {
+void test_for_loop_around_assertion() {
   int i, j;
   for (i =j = 0; i < 1000; i++, j++)
     assert_equals(i, j);
 }
 
-static void test_assert_not_equals_with_integers() {
+void test_assert_not_equals_with_integers() {
   assert_not_equals(1, 0);
   assert_not_equals(1, -1);
   assert_not_equals(MAXINT, -MAXINT);
 }
 
-static void test_assert_false() {
+void test_assert_false() {
   assert_false(0);
 }
 
-static void test_assert_equals_int() {
+void test_assert_equals_int() {
   int three = 3;
   assert_equals_int(3, three);
   char* pointer = (char *) &three;
@@ -69,22 +65,22 @@ static void test_assert_equals_int() {
   assert_equals_hex(pointer, foo);
 }
 
-static void test_assert_equals_char() {
+void test_assert_equals_char() {
   char three = '3';
   assert_equals_char('3', three);
 }
 
-static void test_assert_equals_float() {
+void test_assert_equals_float() {
   float pi = 3.1f;
   assert_equals_float(3.1f, pi);
 }
 
-static void test_assert_equals_double() {
+void test_assert_equals_double() {
   double pi = 3.1;
   assert_equals_float(3.1, pi);
 }
 
-static void test_assert_equals_string() {
+void test_assert_equals_string() {
   char* front = "242";
   assert_equals_string("242", front);
   unsigned char* Front = "242";

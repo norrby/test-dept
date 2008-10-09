@@ -20,6 +20,8 @@
 
 #include <test_dept.h>
 
+#include "function_switch.h"
+
 int failing_create_file(const char* filename) {
   return 0;
 }
@@ -28,29 +30,29 @@ int returning_two_instead_of_three() {
   return 2;
 }
 
-static void test_calc() {
+void test_calc() {
   assert_equals(3, calculate_sum(3, 0));
   assert_equals(4, calculate_sum(3, 1));
 }
 
-static void test_calc2() {
+void test_calc2() {
   assert_equals(3, calculate_sum(3, 0));
 }
 
-static void test_ok_dependency_function() {
+void test_ok_dependency_function() {
   assert_not_equals(NULL, go_fish(2));
 }
 
-static void test_failing_dependency_function() {
+void test_failing_dependency_function() {
   test_dept_create_file_set(failing_create_file);
   assert_equals_hex(NULL, go_fish(2));
 }
 
-static void test_successful_skiing() {
+void test_successful_skiing() {
   assert_not_equals(0, go_skiing());
 }
 
-static void test_failing_three_function() {
+void test_failing_three_function() {
   test_dept_return_three_set(returning_two_instead_of_three);
   assert_equals_int(0, go_skiing());
 }

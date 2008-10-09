@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
-%_test:	main_%_test.o %_using_stubs.o %_stubs.o
+%_test:	%_test.o main_%_test.o %_using_stubs.o %_stubs.o
 	$(LD) $^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))

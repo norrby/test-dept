@@ -18,15 +18,20 @@
 TEST_MAIN_SRCS=$(addprefix main_,$(TEST_SRCS))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
 TEST_MAINS=$(patsubst main_%.o,%,$(TEST_MAIN_OBJS))
+STUB_HEADER=function_switch.h
+
 ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
-%_using_stubs.o: main_%_test.o %.o
+%_using_stubs.o: %_test.o %.o
 	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ $@
 
-%_stubs.c: main_%_test.o $(TEST_DEPT_POSSIBLE_STUBS)
+%_stubs.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stubs $^ >$@
+
+$(STUB_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
+	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
 
 main_%.c:	%.c
 	$(TEST_DEPT_RUNTIME_PREFIX)build_main $< $@

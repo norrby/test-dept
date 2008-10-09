@@ -16,18 +16,20 @@
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <test_dept.h>
+
 #define A_VALUE 3
 
 int a;
 
-static void setup() {
+void setup() {
   a = A_VALUE;
 }
 
-static void test_that_setup_works() {
+void test_that_setup_works() {
   assert_equals(A_VALUE, a);
 }
 
-static void teardown() {
+void teardown() {
   /* How do we test this? */
 }

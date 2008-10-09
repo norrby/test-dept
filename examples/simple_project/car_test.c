@@ -20,16 +20,16 @@
 
 #include <test_dept.h>
 
-static void test_number_of_wheels() {
+void test_number_of_wheels() {
   assert_equals_int(4, number_of_wheels());
 }
 
-static void test_drive_short() {
+void test_drive_short() {
   const int can_drive_this_many_miles = miles_per_tank();
   assert_true(can_drive(can_drive_this_many_miles));
 }
 
-static void test_drive_long() {
+void test_drive_long() {
   const int can_drive_this_many_miles = miles_per_tank();
   const int too_long_drive = can_drive_this_many_miles + 1;
   assert_false(can_drive(too_long_drive));
