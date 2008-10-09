@@ -20,7 +20,7 @@
 
 #include <test_dept.h>
 
-#include "function_switch.h"
+#include "stub_headers.h"
 
 int failing_create_file(const char* filename) {
   return 0;
