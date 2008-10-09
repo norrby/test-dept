@@ -26,11 +26,11 @@ FILE* unsuccessful_fopen(const char *path, const char *mode) {
   return NULL;
 }
 
-static void test_more_than_zero_users() {
+void test_more_than_zero_users() {
   assert_not_equals(0, count_users());
 }
 
-static void test_cannot_open_file_results_in_zero_users() {
+void test_cannot_open_file_results_in_zero_users() {
   test_dept_fopen_set(&unsuccessful_fopen);
   assert_equals_int(0, count_users());
 }

@@ -18,8 +18,10 @@
 
 /* test without any stubbing */
 
+#include <test_dept.h>
+
 #include "sum.h"
 
-static void test_addition() {
+void test_addition() {
   assert_equals_int(3, calculate_sum(1, 2));
 }

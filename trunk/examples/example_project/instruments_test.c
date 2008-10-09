@@ -16,22 +16,24 @@
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <test_dept.h>
+
 #include "instruments.h"
 
-static void test_foo() {
+void test_foo() {
   assert_equals_string("instrument: basoon", bar());
 }
 
-static void test_fie() {
+void test_fie() {
   assert_equals_string("instrument: trumpet", fie());
 }
 
-static void test_change_prefix() {
+void test_change_prefix() {
   assert_equals_string("instrument: basoon", bar());
   set_printing_prefix("paint");
   assert_equals_string("paint: basoon", bar());
 }
 
-static void setup() {
+void setup() {
   set_printing_prefix("instrument");
 }

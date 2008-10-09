@@ -19,10 +19,9 @@
 
 create_main() {
   FILE="$1"
+  HEADER_FILE="`basename $FILE .c`.h"
   cat <<FILE_HEAD
 #include <test_dept.h>
-
-#include "$FILE"
 
 typedef void (*test_dept_test_function)();
 typedef void (*test_dept_prepost_function)();
@@ -36,9 +35,9 @@ FILE_HEAD
   sed -n -e '
   H; g; /}/{/^[^}]*}/s///;
       x;
-      /^[^}]*static[^A-Za-z0-9_*]*void[^A-Za-z0-9_*]*\([Tt]est[_]*[A-Za-z_0-9*][A-Za-z_0-9*]*\).*([^a-zA-Z_0-9*]*).*$/s//\1/p;
-      /^[^}]*static[^A-Za-z0-9_*]*void[^A-Za-z0-9_*]*\([Ss]et[Uu]p\)[^A-Za-z0-9_*]*([^A-Za-z0-9_*]*).*$/s//\1/p;
-      /^[^}]*static[^A-Za-z0-9_*]*void[^A-Za-z0-9_*]*\([Tt]ear[_]*[Dd]own\)[^A-Za-z0-9_*]*([^A-Za-z0-9_*]*).*$/s//\1/p;
+      /^[^}]*[^A-Za-z0-9_*]*void[^A-Za-z0-9_*]*\([Tt]est[_]*[A-Za-z_0-9*][A-Za-z_0-9*]*\).*([^a-zA-Z_0-9*]*).*$/s//\1/p;
+      /^[^}]*[^A-Za-z0-9_*]*void[^A-Za-z0-9_*]*\([Ss]et[Uu]p\)[^A-Za-z0-9_*]*([^A-Za-z0-9_*]*).*$/s//\1/p;
+      /^[^}]*[^A-Za-z0-9_*]*void[^A-Za-z0-9_*]*\([Tt]ear[_]*[Dd]own\)[^A-Za-z0-9_*]*([^A-Za-z0-9_*]*).*$/s//\1/p;
       d;
       x; }
   ' $FILE | awk '
@@ -46,11 +45,22 @@ FILE_HEAD
           no_test_functions = 0;
           setup_function = "NULL";
           teardown_function = "NULL"; }
-  /^[Ss]et[_]*[Uu]p$/ { setup_function = "&" $1; next }
-  /^[Tt]ear[_]*[Dd]own$/ { teardown_function = "&" $1; next }
+  /^[Ss]et[_]*[Uu]p$/ { setup_function = $1; next }
+  /^[Tt]ear[_]*[Dd]own$/ { teardown_function = $1; next }
   { test_functions[no_test_functions] = $1;
     no_test_functions = no_test_functions + 1}
-  END {  print "test_dept_prepost_function setup_function = " setup_function ";" ;
+  END {
+         if (setup_function != "NULL") {
+           print "void " setup_function "();";
+           setup_function = "&" setup_function;
+         }
+         if (teardown_function != "NULL") {
+           print "void " teardown_function "();";
+           teardown_function = "&" teardown_function;
+         }
+         for (x in test_functions)
+           print "void " test_functions[x] "();";
+         print "test_dept_prepost_function setup_function =  " setup_function ";" ;
          print "test_dept_prepost_function teardown_function = " teardown_function ";" ;
          print ""
          print "test_dept_test_function_data test_functions[] = {"
