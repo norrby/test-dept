@@ -31,7 +31,7 @@ TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c another_sum_test.c
 
 # A file which declares all possible stub functions
 TEST_DEPT_POSSIBLE_STUBS=stubs.h
-TEST_DEPT_GENERATED_STUB_HEADER=stub_headers.h
+TEST_DEPT_FUNCTION_SWITCH_HEADER=stub_headers.h
 
 # Dependencies for each test binary. Should be self explanatory
 # (If you do not want to specify the stubs dependencies, go for

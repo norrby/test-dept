@@ -258,7 +258,7 @@ like this:
  /* test_sut.c */
  #include <test_dept.h>
  #include <stdlib.h>
- 
+ #include "function_switch.h" 
  #include "foo.o"
  
  static int failing_do_foo_function(int number_of_fish) {
@@ -296,19 +296,25 @@ testing:
  void *malloc(size_t size);
  int do_foo(int number_of_fish);
 
-Then add a line in the makefile for the stubs file:
+Then two lines in the makefile for the stubs file:
 
  TEST_DEPT_POSSIBLE_STUBS=stubs.h
+ TEST_DEPT_FUNCTION_SWITCH_HEADER=function_switch.h
 
 and the test-case should compile if sut_test.c is added to the
-makefile as described earlier in the simple example.  This is a
-complete makefile example which will work if you have installed
-Test Dept. in your environment:
+makefile as described earlier in the simple example. The latter of the
+two lines above indicate a file that will be _generated_.  I. e. you
+do not have to create such a file.  That file is included in the
+testcase code above.
+
+This is a complete makefile example which will work if you have
+installed Test Dept. in your environment:
 
  CC=gcc
  LD=$(CC)
 
  TEST_DEPT_POSSIBLE_STUBS=stubs.h
+ TEST_DEPT_FUNCTION_SWITCH_HEADER=function_switch.h
 
  TEST_SRCS=sut_test.c
 
@@ -326,6 +332,7 @@ roughly equivalent to this one:
  LD=$(CC)
 
  TEST_DEPT_POSSIBLE_STUBS=stubs.h
+ TEST_DEPT_FUNCTION_SWITCH_HEADER=function_switch.h
 
  TEST_SRCS=sut_test.c
 
