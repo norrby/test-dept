@@ -355,7 +355,7 @@ tar-file:
   +- Makefile.in      Template Makefile
   +- README           This file
   +- configure        Configuration script that creates a Makefile
-  +- example_project  An example project that uses Test Dept.
+  +- examples         Example projects that use Test Dept.
   +- install-sh       Fallback installation program
   +- simple_project   A simpler example project that uses Test Dept.
   `- src              Scripts and makefile snippets that comprise the framework
