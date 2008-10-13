@@ -15,24 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
-PREFIX=@prefix@
 INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
-INCLUDE_DIR=$(PREFIX)/include
-BIN_DIR=$(PREFIX)/bin
-MAN_DIR=$(PREFIX)/man
-SHARE_DIR=$(PREFIX)/share/test_dept
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+libdir=@libdir@
+datadir=@datadir@/test-dept
+sysconfdir=@sysconfdir@
+includedir=@includedir@
+mandir=@mandir@/man1
 
 MAN_PAGES=test_dept.1
-MANS=$(addprefix src,$(MAN_PAGES))
 SRCS=src
 SCRIPTS=build_stub build_stubs test_dept refer_to_stubs
 INCLUDES=test_dept.mk test_dept_simple.mk test_dept_normal.mk test_dept.h
 DOCS=README COPYING
-SCRIPTS_INSTALLED=$(addprefix $(BIN_DIR)/,$(SCRIPTS))
-INCLUDES_INSTALLED=$(addprefix $(INCLUDE_DIR)/,$(INCLUDES))
-DOC_FILES_INSTALLED=$(addprefix $(SHARE_DIR)/,$(DOCS))
-
+SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
+INCLUDES_INSTALLED=$(addprefix $(includedir)/,$(INCLUDES))
+DOC_FILES_INSTALLED=$(addprefix $(datadir)/,$(DOCS))
+MAN_PAGES_INSTALLED=$(addprefix $(mandir)/,$(MAN_PAGES))
 SELF_TEST_CMD=/usr/bin/env PATH=../src:$(PATH) $(MAKE) -I ../src
 
 build_example_projects:	self_test
@@ -54,22 +56,26 @@ distclean: clean
 clean:	test_clean
 	rm -f */*/*.o */*.o *.o examples/*/*_test
 
-$(MAN_DIR) $(INCLUDE_DIR) $(SHARE_DIR) $(BIN_DIR):
+$(mandir) $(includedir) $(datadir) $(bindir):
 	$(INSTALL) -d $@
 
-$(MAN_DIR)/%: $(SRCS)/% $(MAN_DIR)
-	$(INSTALL_DATA) $< $(MAN_DIR)
+$(mandir)/%: $(SRCS)/% $(mandir)
+	$(INSTALL_DATA) $< $(mandir)
 
-$(INCLUDE_DIR)/%: $(SRCS)/% $(INCLUDE_DIR)
-	$(INSTALL_DATA) $< $(INCLUDE_DIR) 
+$(includedir)/%: $(SRCS)/% $(includedir)
+	$(INSTALL_DATA) $< $(includedir) 
 
-$(BIN_DIR)/%: $(SRCS)/% $(BIN_DIR)
-	$(INSTALL) $< $(BIN_DIR)
+$(bindir)/%: $(SRCS)/% $(bindir)
+	$(INSTALL) $< $(bindir)
 
-$(SHARE_DIR)/%: % $(SHARE_DIR)
-	$(INSTALL) -m 644 $< $(SHARE_DIR) 
+$(datadir)/%: % $(datadir)
+	$(INSTALL) -m 644 $< $(datadir)
 
-install: $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED)
+install-examples: examples
+	cp -rp $< $(datadir)
+
+install: $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED) install-examples
 
 uninstall:
-	rm -f $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED)
+	rm -f $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED) &&\
+        rm -rf $(datadir)/examples
