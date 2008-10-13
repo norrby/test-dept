@@ -14,6 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
+#
+# As a special exception, you may use this file as part of a free
+# testing framework without restriction.  Specifically, if other files
+# include this makefile for contructing test-cases this file does not
+# by itself cause the resulting executable to be covered by the GNU
+# General Public License.  This exception does not however invalidate
+# any other reasons why the executable file might be covered by the
+# GNU General Public License.
 
 %_test:	%_test.o main_%_test.o %_using_stubs.o %_stubs.o
 	$(LD) $^ -o $@
