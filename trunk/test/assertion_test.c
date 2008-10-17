@@ -16,7 +16,6 @@
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <test_dept.h>
-#include <values.h>
 
 void test_function_without_assertions() {
 }
@@ -29,8 +28,8 @@ void test_assert_equals_with_integers() {
   assert_equals(0, 0);
   assert_equals(1, 1);
   assert_equals(-1, -1);
-  assert_equals(MAXINT, MAXINT);
-  assert_equals(-MAXINT, -MAXINT);
+  assert_equals(65536, 65536);
+  assert_equals(-65536, -65536); 
 }
 
 void test_assert_equals_with_floats() {
@@ -49,7 +48,7 @@ void test_for_loop_around_assertion() {
 void test_assert_not_equals_with_integers() {
   assert_not_equals(1, 0);
   assert_not_equals(1, -1);
-  assert_not_equals(MAXINT, -MAXINT);
+  assert_not_equals(65536, -65536);
 }
 
 void test_assert_false() {
