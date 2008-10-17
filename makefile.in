@@ -42,7 +42,7 @@ build_example_projects:	self_test
 	$(MAKE) -C examples/example_project test_dept
 
 check:	build_example_projects
-	find . -name '*_test' | xargs sh -eu src/test_dept
+	find . -name '*_test' -o -name '*_test.exe' | xargs sh -eu src/test_dept
 
 self_test:
 	$(SELF_TEST_CMD) -C test build_self_test
