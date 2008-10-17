@@ -1,0 +1,72 @@
+#!/bin/sh -eu
+#
+# Copyright 2008 Mattias Norrby
+#
+# This file is part of Test Dept..
+#
+# Test Dept. is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Test Dept. is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
+
+SRC="/tmp/test_dept_self_test$$"
+SUT="`dirname $0`/../src/build_main"
+TEST="${1:-}"
+
+generating_test_functions() {
+  echo "${TEST}:"
+  NO=6
+  if $SUT $SRC | grep "int number_of_test_functions = ${NO}" >/dev/null ; then
+    echo "Alles gut" >/dev/null
+  else
+    ERRORS="`expr ${ERRORS} + 1`"
+    echo "Failure. Expected ${NO} test functions. Got this:" >&2
+    $SUT $SRC >&2
+  fi
+}
+
+ERRORS="0"
+
+if [ "$#" -eq "0" ]; then
+  echo "test_generating_test_functions"
+  exit 0
+fi
+
+if rm -f $SRC; then
+  touch $SRC
+else
+  echo "Could not write test file (${SRC}). Exiting."
+  exit 2;
+fi
+
+cat >${SRC} <<EOF
+static void test_standard_function() {
+} static void test_between() {} static void test_endline() {}
+
+static void test_case_that_contains_keyword_setup() {}
+
+static
+
+void
+test_multiline
+(
+
+) {
+}
+
+static void test_end() {}
+EOF
+
+generating_test_functions
+
+rm $SRC
+
+exit $ERRORS

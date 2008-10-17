@@ -1,0 +1,46 @@
+Installation information for the Test Dept. Framework
+=====================================================
+Either this software is checked out from Subversion or
+it is downloaded as a source distribution. In the latter
+case, which is the normal case, it is installed as follows:
+
+Installing Test Dept. from a Source Distribution tar-file
+--------------------------------------------------------- 
+To install Test Dept., untar the distribution and change working
+directory to that of "test-dept".  Then make sure you are running GNU
+make.
+
+To create the Makefile, issue:
+
+> ./configure
+
+To build the framework and all self-tests:
+
+> make
+
+Then to run the self-test suite issue:
+
+> make check
+
+All tests should pass.  You should see a line forming with only dots
+".", and no "F" characters.  When the tests have passed, issue the
+following command to install the framework:
+
+> sudo make install
+
+This should be enough.  It installs a bunch of scripts and makefile
+snippets into bin and include directories, respectively.
+
+If you have checked out the srouce from Subversion, you will have
+to bootstrap the building process:
+
+Installing Test Dept. from a checked out directory
+--------------------------------------------------
+Installing Test Dept. from a Subversion checkout requires automake.
+
+First issue:
+
+> make configure
+
+in order to create the configure script.  Then you can continue
+creating the makefile as described above.
