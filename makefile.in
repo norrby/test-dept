@@ -28,7 +28,7 @@ mandir=@mandir@/man1
 
 MAN_PAGES=test_dept.1
 SRCS=src
-SCRIPTS=build_stub build_stubs test_dept refer_to_stubs
+SCRIPTS=build_main build_stub build_stubs refer_to_stubs test_dept
 INCLUDES=test_dept.mk test_dept_simple.mk test_dept_normal.mk test_dept.h
 DOCS=README COPYING
 SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
