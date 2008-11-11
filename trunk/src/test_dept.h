@@ -57,8 +57,8 @@
   do {\
   type actual = ( type ) (act);\
   char msg[64];\
-  sprintf(msg, # act " == " # format " (was " # format ")", exp, act);\
-  assert_condition((act) == (exp), msg);			      \
+  sprintf(msg, # act " == " # format " (was " # format ")", exp, actual);\
+  assert_condition((actual) == (exp), msg);			      \
   } while (0)
 
 #define assert_equals_int(exp, act)\
