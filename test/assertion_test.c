@@ -76,7 +76,7 @@ void test_assert_equals_float() {
 
 void test_assert_equals_double() {
   double pi = 3.1;
-  assert_equals_float(3.1, pi);
+  assert_equals_double(3.1, pi);
 }
 
 void test_assert_equals_string() {
