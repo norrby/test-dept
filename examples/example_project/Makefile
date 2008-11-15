@@ -33,6 +33,9 @@ TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c another_sum_test.c
 TEST_DEPT_POSSIBLE_STUBS=stubs.h
 TEST_DEPT_FUNCTION_SWITCH_HEADER=stub_headers.h
 
+# Out tests rely on the stubbing
+$(TEST_SRCS): $(TEST_DEPT_FUNCTION_SWITCH_HEADER)
+
 # Dependencies for each test binary. Should be self explanatory
 # (If you do not want to specify the stubs dependencies, go for
 # the simpler test_dept_simple.mk as the bottom include file.)
