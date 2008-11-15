@@ -6,7 +6,7 @@ it tends to cause a less flexible environment. As a programmer you are
 more tied to the framework used. The reality looks somewhat like
 the graph below:
 
-http://chart.apis.google.com/chart?chxt=x,y,x,y&chxl=0:|strict|full%20control|1:|manual|automatic|2:|Flexibility|3:|Automation&chxp=0,20,100|1,20,100|2,50|3,60&chxs=3,339933,14|2,3333dd,14&cht=lc&chs=400x225&chd=t:-1,100,50,30,27,25,23,22,21,20,20
+http://chart.apis.google.com/chart?chxt=x,y,x,y&chxl=0:|strict|full%20control|1:|manual|automatic|2:|Flexibility|3:|Automation&chxp=0,20,100|1,20,100|2,50|3,60&chxs=3,339933,14|2,3333dd,14&cht=lc&chs=400x225&chd=t:-1,100,50,30,27,25,23,22,21,20,20&nonsense=something_that_ends_with.png
 
 This is not necessarily a good thing. When programmers are forces
 in line simply by not being able to stray out of them, projects
