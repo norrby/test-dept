@@ -12,4 +12,5 @@ This is not necessarily a good thing. When programmers are forces
 in line simply by not being able to stray out of them, projects
 tend to focus. At least that is the TestDept. philosophy.
 
-=
+=Different ways of using Test Dept.=
+[Test Dept|TestDept]. 
