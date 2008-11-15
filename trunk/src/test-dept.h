@@ -65,8 +65,11 @@
 #define assert_equals_int(exp, act)\
   assert_equals_type(int, %d, exp, act)
 
+#define assert_equals_long(exp, act)\
+  assert_equals_type(long, %d, exp, act)
+
 #define assert_equals_hex(exp, act)\
-  assert_equals_type(int, 0x%x, exp, act);
+  assert_equals_type(long, 0x%x, exp, act);
 
 #define assert_equals_char(exp, act)\
   assert_equals_type(char, %c, exp, act);
