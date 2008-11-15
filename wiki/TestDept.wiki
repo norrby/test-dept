@@ -1,5 +1,7 @@
 #summary An introduction to the Test Dept. unit testing framework
 
+http://test-dept.googlecode.com/svn/trunk/doc/art/logo.png
+
 =Introduction=
 The goals of the Test Dept. framework for unit-testing are to:
 
