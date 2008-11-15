@@ -43,7 +43,9 @@ http://test-dept.googlecode.com/svn/trunk/doc/art/stub_functions.png
 
 The switching functionality illustrated above could be made controllable
 from a unit test case.  That way it is possible to make runtime
-switching, which allows for powerful unit testing:
+switching, which allows for powerful unit testing.  If the function
+symbol was forced to reference a switch function instead, the scenario
+would look like this:
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/stub_switch.png
 
