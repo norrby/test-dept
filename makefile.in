@@ -28,8 +28,11 @@ mandir=@mandir@/man1
 
 MAN_PAGES=test_dept.1
 SRCS=src
-SCRIPTS=build_main build_stub build_stubs refer_to_stubs test_dept
-INCLUDES=test_dept.mk test_dept_simple.mk test_dept_normal.mk test_dept.h
+SCRIPTS=build_main build_main_from_symbols build_stub build_stubs\
+ build_asm_proxies refer_to_stubs repoint_sut test_dept\
+ sym2asm_i686.awk sym2asm_sun4u.awk
+INCLUDES=test_dept.mk test_dept_simple.mk test_dept_normal.mk test_dept.h\
+ test_dept_automatic.mk
 DOCS=README COPYING
 SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
 INCLUDES_INSTALLED=$(addprefix $(includedir)/,$(INCLUDES))
@@ -40,6 +43,7 @@ SELF_TEST_CMD=/usr/bin/env PATH="../src:$(PATH)"  $(MAKE) -I ../src
 build_example_projects:	self_test
 	$(MAKE) -C examples/simple_project test_dept
 	$(MAKE) -C examples/example_project test_dept
+	$(MAKE) -C examples/automatic_project test_dept
 
 check:	build_example_projects
 	find . -name '*_test' -o -name '*_test.exe' | xargs sh -eu src/test_dept

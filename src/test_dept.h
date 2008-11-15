@@ -30,6 +30,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #define assert_condition(condition, textual_condition) do {\
   test_dept_tests_run += 1;\
@@ -79,12 +80,42 @@
 #define TEST_DEPT_MAX_COMPARISON 128
 #define assert_equals_string(exp, act)\
   do {\
-    if (strlen(exp) > TEST_DEPT_MAX_COMPARISON || strlen(act) > TEST_DEPT_MAX_COMPARISON)\
+    char* actual = (act);\
+    if (strlen(exp) > TEST_DEPT_MAX_COMPARISON\
+        || strlen(actual) > TEST_DEPT_MAX_COMPARISON)\
       assert_false("strings too long to compare with this assertion");\
     char msg[1024];\
-    sprintf(msg, "%s equals \"%s\" (was \"%s\")", # act, exp, act);\
-    assert_condition(strcmp(exp, act) == 0, msg);			       \
+    sprintf(msg, "%s equals \"%s\" (was \"%s\")", # act, exp, actual);\
+    assert_condition(strcmp(exp, actual) == 0, msg);\
   } while (0)
+
+void **test_dept_proxy_ptrs[2];
+
+static void
+test_dept_set_proxy(void *original_function, void *wrapper_function)
+{
+  int i;
+  for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++)
+    {
+      if (*(test_dept_proxy_ptrs[i] + 1) == original_function)
+	{
+	  if (wrapper_function)
+	    *test_dept_proxy_ptrs[i] = wrapper_function;
+	  else
+	    *test_dept_proxy_ptrs[i] = *(test_dept_proxy_ptrs[i] + 1);
+	  return;
+	}
+    }
+  printf("Warning, unable to set proxy for function %p, not found\n",
+	 original_function);
+}
+
+#define replace_function(original_function, wrapper_function) \
+  { assert (wrapper_function == NULL || __builtin_types_compatible_p (typeof(original_function), typeof(wrapper_function)));  test_dept_set_proxy (original_function, wrapper_function); }
+
+static void restore_function(void *original_function) {
+  test_dept_set_proxy(original_function, NULL);
+}
 
 int test_dept_tests_run;
 int test_dept_test_failures;

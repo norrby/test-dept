@@ -1,0 +1,31 @@
+#!/bin/sh -eu
+
+SUT="$1"
+DEST="$2"
+
+SYMBOLS="/tmp/test_dept_proxies$$"
+
+create_file() {
+  FILE="$1"
+  if echo "# symbols to replace to make stubbable code" >${FILE}; then
+    echo "Alles gut" >/dev/null
+  else
+    echo "$0: Could not create ${FILE}" >&2
+    exit 2
+  fi
+}
+
+construct_symbol_replacement_table() {
+  nm -p $SUT | grep " U " | awk '{print $NF " " $NF "_test_dept_proxy" }'
+}
+
+remove_file() {
+  FILE="$1"
+  rm -f $FILE
+}
+
+create_file $SYMBOLS
+construct_symbol_replacement_table >$SYMBOLS
+objcopy --redefine-syms ${SYMBOLS} ${SUT} ${DEST}
+rm -f $SYMBOLS
+

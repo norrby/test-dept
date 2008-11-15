@@ -1,0 +1,6 @@
+#!/bin/sh -eu
+
+COMPILER="$1"
+SUT="$2"
+
+nm -p "$SUT" | awk -f "$COMPILER"
