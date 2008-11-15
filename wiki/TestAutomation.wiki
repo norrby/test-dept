@@ -10,7 +10,15 @@ http://chart.apis.google.com/chart?chxt=x,y,x,y&chxl=0:|strict|full%20control|1:
 
 This is not necessarily a good thing. When programmers are forces
 in line simply by not being able to stray out of them, projects
-tend to focus. At least that is the TestDept. philosophy.
+tend to focus. At least that is the [TestDept Test Dept.] philosophy.
 
-=Different ways of using Test Dept.=
-[TestDept Test Dept.]. 
+==Different ways of automating tests with Test Dept.==
+[TestDept Test Dept.] is usable in a couple of ways:
+
+  * Without fuzz; i e the usage described on the [TestDept frontpage]
+  * With some manual intervention, but still automated
+  * Manual use of all, or some, of [TestDept Test Dept.]'s convenience functionality
+
+These different ways of usage are described below.
+
+=How it works=
