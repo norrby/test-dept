@@ -2,6 +2,7 @@
 
 #include <foo.h>
 #include <bar.h>
+#include <stdlib.h>
 
 int fooify(int value) {
   int result = foo(value);
@@ -19,8 +20,10 @@ float barify(float value) {
   return result;
 }
 
-char *fieify(char value) {
-  static char fie[2];
+char *stringify(char value) {
+  char *fie = malloc(2 * sizeof(char));
+  if (fie == NULL)
+    return "cannot_stringify";
   fie[0] = value;
   fie[1] = '\0';
   return fie;

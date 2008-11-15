@@ -2,7 +2,7 @@
 
 TEST="$1"
 
-HEADER='#include <test_dept.h>
+HEADER='#include <test-dept.h>
 
 typedef void (*test_dept_test_function)();
 typedef void (*test_dept_prepost_function)();

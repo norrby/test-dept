@@ -3,6 +3,6 @@
 
 int fooify(int value);
 float barify(float value);
-char *fieify(char value);
+char *stringify(char value);
 
 #endif

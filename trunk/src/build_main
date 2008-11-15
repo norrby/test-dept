@@ -21,7 +21,7 @@ create_main() {
   FILE="$1"
   HEADER_FILE="`basename $FILE .c`.h"
   cat <<FILE_HEAD
-#include <test_dept.h>
+#include <test-dept.h>
 
 typedef void (*test_dept_test_function)();
 typedef void (*test_dept_prepost_function)();

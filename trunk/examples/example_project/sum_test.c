@@ -18,7 +18,7 @@
 
 #include "sum.h"
 
-#include <test_dept.h>
+#include <test-dept.h>
 
 #include "stub_headers.h"
 

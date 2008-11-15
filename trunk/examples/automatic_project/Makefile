@@ -18,6 +18,8 @@
 CC=gcc
 LD=$(CC)
 
+# The three rows below are only needed if test-dept is not installed
+# in your environment. They refer relatively to the dist in ../..
 TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
 CPPFLAGS=-I$(TEST_DEPT_BIN_PATH) -I.

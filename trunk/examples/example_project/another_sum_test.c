@@ -18,7 +18,7 @@
 
 /* test without any stubbing */
 
-#include <test_dept.h>
+#include <test-dept.h>
 
 #include "sum.h"
 

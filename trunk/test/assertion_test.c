@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <test_dept.h>
+#include <test-dept.h>
 
 void test_function_without_assertions() {
 }

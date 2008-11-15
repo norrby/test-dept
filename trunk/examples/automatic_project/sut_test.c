@@ -1,20 +1,33 @@
-#include <test_dept.h>
+/* sut_test.c */
 
-#include <foo.h>
+#include <test-dept.h>
 #include <sut.h>
-#include <bar.h>
+#include <foo.h>
 #include <stdio.h>
-
-int negative_foo(int value) {
-  return -99 * value;
-}
-
-float static_bar(float value) {
-  return 334 * value;
-}
+#include <stdlib.h>
 
 void test_normal_fooify() {
   assert_not_equals(0, fooify(3));
+}
+
+void test_stringify() {
+  char *h = stringify('h');
+  assert_equals_string("h", h);
+  free(h);
+}
+
+void *always_failing_malloc() {
+  return NULL;
+}
+
+void test_stringify_cannot_malloc_returns_sane_result() {
+  replace_function(&malloc, &always_failing_malloc);
+  char *h = stringify('h');
+  assert_equals_string("cannot_stringify", h);
+}
+
+int negative_foo(int value) {
+  return -99 * value;
 }
 
 void test_broken_foo_makes_fooify_return_subzero() {
@@ -22,16 +35,7 @@ void test_broken_foo_makes_fooify_return_subzero() {
   assert_equals_int(-1, fooify(3));
 }
 
-void test_normal_barify() {
-  assert_not_equals(0.3f, barify(3));
-}
-
-void test_broken_bar_makes_fooify_return_0_3() {
-  replace_function(&bar, &static_bar);
-  assert_equals_float(0.3f, barify(3));
-}
-
 void teardown() {
+  restore_function(&malloc);
   restore_function(&foo);
-  restore_function(&bar);
 }
