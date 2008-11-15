@@ -88,7 +88,7 @@ binary, the normal result is 1 or 0.
 
 A potential runner execution could look like this:
 
- > test_dept.sh my_first_test my_other_test some_more_tests
+ > test_dept.sh my_first_test_suite my_other_test_suite more_tests...
 
 and the printout is test runner specific, even how it handles standard
 output and standard error output.
@@ -130,9 +130,9 @@ SUT.o which has dependencies to foo.o and bar.o:
 
 A test program which tests the SUT is hardly interesting in
 side-effects from bar.o or foo.o.  At least it is worth striving for
-not to be dependent of them when performing unit-tests.
+not to be dependent of them when constructing unit-tests.
 
-What is often desirable is to shor circuit different parts of the
+What is often desirable is to short circuit different parts of the
 dependency chain when testing parts of the SUT that accesses its
 surroundings.  This is sometimes necessary.  For example, when testing
 functionality in SUT that depends on foo, parts of the dependencies
@@ -146,13 +146,13 @@ can be directed back to the test program:
       |
     foo.o
 
-Doing this, a tester can simulate for example an unsuccessful malloc
-or a broken file-open-function somewhere.  Sometimes this is called
-using a stub, a test-dummy, a mock-object or something even more
-creative.  What it really is depends on the scenario.  In this text it
-is henceforth called "stubbing".  Please refer to later paragraphs in
-this file for a more comprehensive guide on how this could be achieved
-for C-code.
+Doing this, a test case developer can simulate for example an
+unsuccessful malloc or a broken file-open-function somewhere.
+Sometimes this is called using a stub, a test-dummy, a mock-object or
+something even more creative.  What it really is depends on the
+scenario.  In this text it is henceforth called "stubbing".  Please
+refer to later paragraphs in this file for a more comprehensive guide
+on how this could be achieved for C-code.
 
 
 A C-implementation
@@ -232,7 +232,7 @@ makefile (after installing Test Dept. in your environment, of course):
  
  TEST_SRCS=foo_test.c
  
- include test_dept_simple.mk
+ include test_dept_automatic.mk
 
 which will produce a binary called "foo_test".  Then issue:
 
@@ -252,60 +252,52 @@ This is often the case when unit-testing.  The Test Dept. framework
 offers a simple stubbing mechanism relying on symbol replacements in
 object files.
 
-For example: construct a test case for a SUT called sut, with stubs,
-like this:
+Remembering the test dependencies discussion above; for example:
+construct a test case for a SUT called sut, with stubs, like this:
 
- /* test_sut.c */
+ /* sut_test.c */
  #include <test_dept.h>
+ #include <sut.h>
+ #include <foo.h>
+ #include <stdio.h>
  #include <stdlib.h>
- #include "function_switch.h" 
- #include "foo.o"
  
- static int failing_do_foo_function(int number_of_fish) {
-   return 0; //failure code for foo_function;
+ void test_normal_fooify() {
+   assert_not_equals(0, fooify(3));
  }
  
- static void *failing_malloc(size_t size) {
-   return NULL; //always fail
+ void test_stringify() {
+   char *h = stringify('h');
+   assert_equals_string("h", h);
+   free(h);
  }
  
- static void test_normal_fie() {
-   int result = fie(8); /* calls do_foo() from foo.h */
-   assert_equals(3, result);
+ void *always_failing_malloc() {
+   return NULL;
  }
  
- static void test_fie_with_failing_foo_operation() {
-   test_dept_do_foo_set(&failing_do_foo_function);
-   int result = fie(8);
-   assert_equals(0, result);
+ void test_stringify_cannot_malloc_returns_sane_result() {
+   replace_function(&malloc, &always_failing_malloc);
+   char *h = stringify('h');
+   assert_equals_string("cannot_stringify", h);
  }
  
- static void test_fie_with_failing_malloc() {
-   test_dept_malloc_set(&failing_malloc);
-   int result = fie(8);
-   assert_equals(-1, result);
+ int negative_foo(int value) {
+   return -99 * value;
  }
-
-Also construct a file called "stubs.h" for example where all possible
-stub function prototypes are put.  In this particular case "do_foo" is
-normally provided by foo.o and malloc is a part of a standard libc.
-They are both added to the same stubs-file for convenience when
-testing:
-
- /* stubs.h */
- void *malloc(size_t size);
- int do_foo(int number_of_fish);
-
-Then two lines in the makefile for the stubs file:
-
- TEST_DEPT_POSSIBLE_STUBS=stubs.h
- TEST_DEPT_FUNCTION_SWITCH_HEADER=function_switch.h
+ 
+ void test_broken_foo_makes_fooify_return_subzero() {
+   replace_function(&foo, &negative_foo);
+   assert_equals_int(-1, fooify(3));
+ }
+ 
+ void teardown() {
+   restore_function(&malloc);
+   restore_function(&foo);
+ }
 
 and the test-case should compile if sut_test.c is added to the
-makefile as described earlier in the simple example. The latter of the
-two lines above indicate a file that will be _generated_.  I. e. you
-do not have to create such a file.  That file is included in the
-testcase code above.
+makefile as described earlier in the simple example.
 
 This is a complete makefile example which will work if you have
 installed Test Dept. in your environment:
@@ -313,32 +305,17 @@ installed Test Dept. in your environment:
  CC=gcc
  LD=$(CC)
 
- TEST_DEPT_POSSIBLE_STUBS=stubs.h
- TEST_DEPT_FUNCTION_SWITCH_HEADER=function_switch.h
-
  TEST_SRCS=sut_test.c
 
  sut_test: foo.o
- 
- include test_dept_simple.mk
+
+ include test_dept_automatic.mk
 
 Please note that this simple way of expressing the makefiles expect a
 file called sut.c to exist.  If not, the test will not compile.  If
 you need to deviate from that simple rule you will have to specify
-some dependencies by yourself.  In short, the simple makefile above is
-roughly equivalent to this one:
-
- CC=gcc
- LD=$(CC)
-
- TEST_DEPT_POSSIBLE_STUBS=stubs.h
- TEST_DEPT_FUNCTION_SWITCH_HEADER=function_switch.h
-
- TEST_SRCS=sut_test.c
-
- sut_test: sut_using_stubs.o sut_stubs.o foo.o
-
- include test_dept_normal.mk
+some dependencies by yourself.  Please refer to the included makefile
+snippet for information on which dependencies are needed.
 
 And that concludes a quick walkthrough of the Test Dept. framework.
 
@@ -357,7 +334,6 @@ tar-file:
   +- configure        Configuration script that creates a Makefile
   +- examples         Example projects that use Test Dept.
   +- install-sh       Fallback installation program
-  +- simple_project   A simpler example project that uses Test Dept.
   `- src              Scripts and makefile snippets that comprise the framework
 
 
