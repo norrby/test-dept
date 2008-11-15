@@ -40,3 +40,14 @@ If the symbol were to be replaced with something else in the sut,
 the reality would look somewhat like the figure below instead:
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/stub_functions.png
+
+The switching functionality illustrated above could be made controllable
+from a unit test case.  That way it is possible to make runtime
+switching, which allows for powerful unit testing:
+
+http://test-dept.googlecode.com/svn/trunk/doc/art/stub_switch.png
+
+The [TestDept Test Dept.] framework allows for such switching. It
+autmatically creates switches for all foreign symbols that are used
+from the sut `o-file`.
+
