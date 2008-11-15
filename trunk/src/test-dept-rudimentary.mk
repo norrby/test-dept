@@ -32,4 +32,4 @@ main_%.c:	%.c
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
 endif
-include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test_dept.mk
+include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test-dept-definitions.mk
