@@ -18,7 +18,7 @@
 
 #include "car.h"
 
-#include <test_dept.h>
+#include <test-dept.h>
 
 void test_number_of_wheels() {
   assert_equals_int(4, number_of_wheels());
