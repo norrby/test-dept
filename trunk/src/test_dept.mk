@@ -23,9 +23,9 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-TEST_MAIN_SRCS=$(addprefix main_,$(TEST_SRCS))
+TEST_MAIN_SRCS=$(patsubst %.c,%_main.c,$(TEST_SRCS))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
-TEST_MAINS=$(patsubst main_%.o,%,$(TEST_MAIN_OBJS))
+TEST_MAINS=$(patsubst %_main.o,%,$(TEST_MAIN_OBJS))
 
 ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
@@ -41,9 +41,6 @@ $(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
 
 $(TEST_MAIN_OBJS): $(TEST_DEPT_FUNCTION_SWITCH_HEADER)
-
-main_%.c:	%.c
-	$(TEST_DEPT_RUNTIME_PREFIX)build_main $< $@
 
 test_dept:	$(TEST_MAINS)
 
