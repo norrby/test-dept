@@ -48,6 +48,5 @@ switching, which allows for powerful unit testing:
 http://test-dept.googlecode.com/svn/trunk/doc/art/stub_switch.png
 
 The [TestDept Test Dept.] framework allows for such switching. It
-autmatically creates switches for all foreign symbols that are used
+automatically creates switches for all foreign symbols that are used
 from the sut `o-file`.
-
