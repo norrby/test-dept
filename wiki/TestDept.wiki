@@ -1,13 +1,13 @@
 #summary An introduction to the Test Dept. unit testing framework
 
-= Introduction =
-
+=Introduction=
 The goals of the Test Dept. framework for unit-testing are to:
 
   * Be usable for pure C-projects
   * Support stubs for C (or at least replaceable functions)
   * Be compatible with different test runners
   * Encourage independent test cases
+  * Strive for TestAutomation
 
 In practice, these goals are (somewhat) reached by:
 
@@ -26,7 +26,7 @@ to work properly there are some prerequisites:
 
 Both nm(1) and objcopy(1) are often parts of a "binutils" package.
 
-= The Suite Concept =
+=The Suite Concept=
 A test suite contains one or more test cases.  A test runner can run
 several test suites in succession.
 
@@ -87,7 +87,6 @@ Dept. framework shall:
   * run all test cases whose names are supplied on the command line
   * return the cumulative failure count of all run cases as exit status
   * return -1 on strange arguments
-
 
 =Test Dependencies=
 Testing something, hereby called System Under Test (SUT), almost
