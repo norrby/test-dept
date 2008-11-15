@@ -60,7 +60,7 @@ void test_assert_equals_int() {
   assert_equals_int(3, three);
   char* pointer = (char *) &three;
   char* foo = pointer;
-  assert_equals_int(pointer, foo);
+  assert_equals_long(pointer, foo);
   assert_equals_hex(pointer, foo);
 }
 
