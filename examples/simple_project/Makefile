@@ -37,4 +37,4 @@ clean:
 	rm -f main_* *_test *.o *~ *_stubs.c
 
 # Rules for making test binaries reside here
-include $(TEST_DEPT_INCLUDE_PATH)/test_dept_simple.mk
+include $(TEST_DEPT_INCLUDE_PATH)/test-dept-cstubs.mk

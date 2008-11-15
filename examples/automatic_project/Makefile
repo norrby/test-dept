@@ -33,4 +33,4 @@ check:	test_dept_run
 clean: 
 	rm -f *_main.c *_test *.o *~ *_stubs.c
 
-include $(TEST_DEPT_INCLUDE_PATH)/test_dept_automatic.mk
+include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk

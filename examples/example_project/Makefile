@@ -54,4 +54,4 @@ clean:
 	rm -f *.o *_test main_*.c *_stubs.* *~
 
 # Rules for making test binaries reside here
-include $(TEST_DEPT_INCLUDE_PATH)/test_dept_normal.mk
+include $(TEST_DEPT_INCLUDE_PATH)/test-dept-rudimentary.mk
