@@ -13,4 +13,4 @@ self_test:	test_dept_run
 clean:
 	rm -f $(TEST_MAINS) *.o
 
-include test_dept_normal.mk
+include test-dept-rudimentary.mk
