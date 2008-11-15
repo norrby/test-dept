@@ -31,8 +31,8 @@ SRCS=src
 SCRIPTS=build_main build_main_from_symbols build_stub build_stubs\
  build_asm_proxies refer_to_stubs repoint_sut test_dept\
  sym2asm_i686.awk sym2asm_sun4u.awk
-INCLUDES=test_dept.mk test_dept_simple.mk test_dept_normal.mk test-dept.h\
- test_dept_automatic.mk
+INCLUDES=test-dept.mk test-dept-cstubs.mk test-dept-rudimentary.mk test-dept.h\
+ test-dept-definitions.mk
 DOCS=README COPYING
 SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
 INCLUDES_INSTALLED=$(addprefix $(includedir)/,$(INCLUDES))
