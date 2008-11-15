@@ -1,0 +1,34 @@
+#summary An introduction to the Test Dept. unit testing framework
+
+= Introduction =
+
+The goals of the Test Dept. framework for unit-testing are to:
+
+* Be usable for pure C-projects
+* Support stubs for C (or at least replaceable functions)
+* Be compatible with different test runners
+* Encourage independent test cases
+
+In practice, these goals are (somewhat) reached by:
+
+* A macro-based assertion suite for C
+* Makefile snippets for replacing symbols in SUT for stubbing
+* Standardizing the observable test suite behavior
+* Using runnable binaries as suites - one binary per suite
+
+These concepts are all described later in this README. For everything
+to work properly there are some prerequisites:
+
+* It needs GNU make(1) for building suites.
+* It uses objcopy(1) and nm(1) for stubbing.
+* It depends on the __LINE__ and __FILE__ macros of gcc(1) for assertions.
+* It uses awk(1) and sed(1) for some textfile processing.
+
+Both nm(1) and objcopy(1) are often parts of a "binutils" package.
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
