@@ -51,4 +51,13 @@ http://test-dept.googlecode.com/svn/trunk/doc/art/stub_switch.png
 
 The [TestDept Test Dept.] framework allows for such switching. It
 automatically creates switches for all foreign symbols that are used
-from the sut `o-file`.
+from the sut `o-file`. In practice this is accomplished by calling
+`replace_function(...)` in the framework:
+{{{
+ void *my_own_malloc(size_t size) { /* ... */ }
+ void test_something() {
+   replace_function(&malloc, &my_own_malloc);
+   call_something_that_uses_malloc();
+   restore_function(&malloc);
+ }
+}}}
