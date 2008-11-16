@@ -12,7 +12,7 @@ This is not necessarily a good thing.  When programmers are forces
 in line simply by not being able to stray out of them, projects
 tend to focus.  At least that is the [TestDept Test Dept.] philosophy.
 
-==Different ways of automating tests with Test Dept.==
+==Different Ways of Automating Tests With Test Dept.==
 [TestDept Test Dept.] is usable in a couple of ways:
 
   * Without fuzz; i e the usage described on the [TestDept frontpage]
@@ -21,7 +21,7 @@ tend to focus.  At least that is the [TestDept Test Dept.] philosophy.
 
 These different ways of usage are described below.
 
-=How it works=
+=How it Works=
 When testing C code the systems under test are often object-files
 or `o-files` for short. As described in the [TestDept introduction]
 systems under test are rarely standalone.  The `o-files` depend
@@ -85,11 +85,35 @@ Those pointers are accessible from the test-program. And the
 `replace_function()` mentioned earlier just manipulates them to
 redirect calls.
 
-===Code generation===
+===Code Generation===
 Everything needed for stubbing functions is generated automatically
 when a test-case is added to the `TEST_SRCS` makefile variable.
 [TestDept Test Dept.] will generate all proxy functions needed.
 
-Grey boxes in the image below depict generated object code:
+Grey boxes in the image below depict generated files:
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/generating_code.png
+
+===Simple But not Flexible===
+The example above based on automatically generated assembly code
+is a fairly easy way of managing and creating unit test cases. But,
+as mentioned earlier, it does not leave much room for changes. It
+is simple, but the programmer will have to stick to these rules:
+
+  * Use only on supported platforms (not as portable as other solutions)
+  * Name test cases like the SUT but with a `_test` suffix
+
+The assembly approach can be accomodated by including the `test-dept.mk`
+Makefile snippet.
+
+==C-version of Stubs==
+Instead of using the simple assembly language generating approach
+[TestDept Test Dept.] can generate prototypes for function replacement
+named `test_dept_<stubbed_function>_set(...)`. For example, for malloc:
+{{{
+test_dept_malloc_set(...);
+}}}
+Using this prototype generation is more portable. Include `test-dept-cstubs.mk`.
+
+==Full Flexibility==
+The do-it-yourself version can be achieved by including `test-dept-rudimentary.mk`.
