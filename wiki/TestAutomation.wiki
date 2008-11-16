@@ -84,3 +84,8 @@ pointing either to the original function or a stub function.
 Those pointers are accessible from the test-program. And the
 `replace_function()` mentioned earlier just manipulates them to
 redirect calls.
+
+===Code generation===
+Everything needed for stubbing functions is generated automatically
+when a test-case is added to the `TEST_SRCS` makefile variable.
+[TestDept Test Dept.] will generate all proxy functions needed.
