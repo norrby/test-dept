@@ -89,3 +89,7 @@ redirect calls.
 Everything needed for stubbing functions is generated automatically
 when a test-case is added to the `TEST_SRCS` makefile variable.
 [TestDept Test Dept.] will generate all proxy functions needed.
+
+Grey boxes in the image below depict generated object code:
+
+http://test-dept.googlecode.com/svn/trunk/doc/art/generating_code.png
