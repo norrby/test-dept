@@ -52,12 +52,35 @@ http://test-dept.googlecode.com/svn/trunk/doc/art/stub_switch.png
 The [TestDept Test Dept.] framework allows for such switching. It
 automatically creates switches for all foreign symbols that are used
 from the sut `o-file`. In practice this is accomplished by calling
-`replace_function(...)` in the framework:
+`replace_function()` in the framework:
 {{{
  void *my_own_malloc(size_t size) { /* ... */ }
+
  void test_something() {
    replace_function(&malloc, &my_own_malloc);
    call_something_that_uses_malloc();
    restore_function(&malloc);
  }
 }}}
+The key is the `replace_function()` function.
+
+==Assembly language==
+Using solely C-code for creating a `replace_function(...)` function like
+the one described above together with function switch proxies is impossible.
+There is no way for a proxy to know which arguments to pass to a
+wrapped function without having access to its prototype.
+
+However, if we allow for an assembly language switching function, the proxy
+function could just make a `jmp` to the chosen function, without disrupting
+the stack or registers. Doing so surpasses the need for an explicit prototype
+for the wrapped function.
+
+This is how [TestDept Test Dept.] works. It replaces the foreign symbols
+in the `sut.o` creating a `sut_using_proxies.o` file. The latter object
+file contains references to switching functions that are implemented in
+assembly language. Each switching function has access to a function pointer
+pointing either to the original function or a stub function.
+
+Those pointers are accessible from the test-program. And the
+`replace_function()` mentioned earlier just manipulates them to
+redirect calls.
