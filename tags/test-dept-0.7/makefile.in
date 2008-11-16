@@ -1,0 +1,85 @@
+# Copyright 2008 Mattias Norrby
+#
+# This file is part of Test Dept..
+#
+# Test Dept. is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Test Dept. is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
+
+INSTALL=@INSTALL@
+INSTALL_DATA=@INSTALL_DATA@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+libdir=@libdir@
+datadir=@datadir@/test-dept
+sysconfdir=@sysconfdir@
+includedir=@includedir@
+mandir=@mandir@/man1
+
+MAN_PAGES=test_dept.1
+SRCS=src
+SCRIPTS=build_main build_main_from_symbols build_stub build_stubs\
+ build_asm_proxies refer_to_stubs repoint_sut test_dept\
+ sym2asm_i686.awk sym2asm_sun4u.awk sym2asm_x86_64.awk
+INCLUDES=test-dept.mk test-dept-cstubs.mk test-dept-rudimentary.mk test-dept.h\
+ test-dept-definitions.mk
+DOCS=README COPYING
+SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
+INCLUDES_INSTALLED=$(addprefix $(includedir)/,$(INCLUDES))
+DOC_FILES_INSTALLED=$(addprefix $(datadir)/,$(DOCS))
+MAN_PAGES_INSTALLED=$(addprefix $(mandir)/,$(MAN_PAGES))
+SELF_TEST_CMD=/usr/bin/env PATH="../src:$(PATH)"  $(MAKE) -I ../src
+
+build_example_projects:	self_test
+	$(MAKE) -C examples/simple_project test_dept
+	$(MAKE) -C examples/example_project test_dept
+	$(MAKE) -C examples/automatic_project test_dept
+
+check:	build_example_projects
+	find . -name '*_test' -o -name '*_test.exe' | xargs sh -eu src/test_dept
+
+self_test:
+	$(SELF_TEST_CMD) -C test build_self_test
+
+test_clean:
+	$(SELF_TEST_CMD) -C test clean
+
+distclean: clean
+	rm -rf *m4 *cache *status config.log configure makefile *~ */*~ */*/*~
+
+clean:	test_clean
+	rm -f */*/*.o */*.o *.o examples/*/*_test
+
+$(mandir) $(includedir) $(datadir) $(bindir):
+	$(INSTALL) -d $@
+
+$(mandir)/%: $(SRCS)/% $(mandir)
+	$(INSTALL_DATA) $< $(mandir)
+
+$(includedir)/%: $(SRCS)/% $(includedir)
+	$(INSTALL_DATA) $< $(includedir) 
+
+$(bindir)/%: $(SRCS)/% $(bindir)
+	$(INSTALL) $< $(bindir)
+
+$(datadir)/%: % $(datadir)
+	$(INSTALL) -m 644 $< $(datadir)
+
+install-examples: examples
+	cp -rp $< $(datadir)
+
+install: $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED) install-examples
+
+uninstall:
+	rm -f $(MAN_PAGES_INSTALLED) $(DOC_FILES_INSTALLED) $(SCRIPTS_INSTALLED) $(INCLUDES_INSTALLED) &&\
+        rm -rf $(datadir)/examples
