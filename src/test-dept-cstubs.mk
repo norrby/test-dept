@@ -23,11 +23,11 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-main_%.c:	%.c
-	$(TEST_DEPT_RUNTIME_PREFIX)build_main $< $@
+%_main.c:	%.o
+	$(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $< >$@
 
 
-%_test:	%_test.o main_%_test.o %_using_stubs.o %_stubs.o
+%_test:	%_test.o %_test_main.o %_using_stubs.o %_stubs.o
 	$(LD) $^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))

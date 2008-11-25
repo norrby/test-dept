@@ -21,15 +21,16 @@
 # functions.
 
 CC=gcc
-LD=$(CC)
+
 #You can remove these when an installation of Test Dept. is made on your system
 TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS=-I$(TEST_DEPT_BIN_PATH)
+CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH)
 
 # In this simple project all TEST_SRCS need to have a corresponding
 # C-file. For example, car_test.c _needs_ a car.c for it to work.
-# (If you do not desire this, include test_dept_normal.mk instead.)
+# (If you do not desire this, include test_dept_rudimentary.mk instead
+# and specify the rules by yourself. All programs are still available)
 TEST_SRCS=car_test.c
 
 check:	test_dept_run

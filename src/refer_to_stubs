@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
-TEST_MAIN="$1"
+TEST_CODE="$1"
 SUT="$2"
 DEST="$3"
 
@@ -30,7 +30,7 @@ else
   exit 2
 fi
 
-for symbol in `nm $TEST_MAIN | sed -n '/test_dept.*set/s/.*test_dept_\(.*\)_set$/\1/p'`; do
+for symbol in `nm $TEST_CODE | sed -n '/test_dept.*set/s/.*test_dept_\(.*\)_set$/\1/p'`; do
   echo ${symbol} test_dept_proxy_${symbol} >>${TMPFILE}
   echo _${symbol} _test_dept_proxy_${symbol} >>${TMPFILE}
 done
