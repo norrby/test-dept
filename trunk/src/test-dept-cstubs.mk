@@ -23,6 +23,12 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
+%_using_stubs.o: %_test.o %.o
+	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ $@
+
+%_stubs.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
+	$(TEST_DEPT_RUNTIME_PREFIX)build_stubs $^ >$@
+
 %_main.c:	%.o
 	$(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $< >$@
 

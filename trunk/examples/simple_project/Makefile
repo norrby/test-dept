@@ -21,6 +21,7 @@
 # functions.
 
 CC=gcc
+LD=$(CC)
 
 #You can remove these when an installation of Test Dept. is made on your system
 TEST_DEPT_BIN_PATH=../../src
