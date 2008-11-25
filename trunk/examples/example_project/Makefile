@@ -34,11 +34,13 @@ TEST_DEPT_POSSIBLE_STUBS=stubs.h
 TEST_DEPT_FUNCTION_SWITCH_HEADER=stub_headers.h
 
 # Dependencies for each test binary. Should be self explanatory
-sum_test:	dependency.o
+sum_test another_sum_test:	dependency.o
 
-# A test case not corresponding to <prefix>_test.c needs an own rule
-another_sum_test: sum.o dependency.o another_sum_test_main.o
-	$(CC) $@.o $^ -o $@
+# Since test cases named <prefix>_test.o expects a <prefix>.o to exist
+# our special another_sum_test needs an another_sum.o which of course
+# is identical to sum.o
+another_sum.o: sum.o
+	cp $< $@
 
 check:	test_dept_run
 
@@ -47,3 +49,4 @@ clean:
 
 # Rules for making test binaries reside here
 include $(TEST_DEPT_INCLUDE_PATH)/test-dept-cstubs.mk
+
