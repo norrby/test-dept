@@ -31,12 +31,6 @@ ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
-%_using_stubs.o: %_test.o %.o
-	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ $@
-
-%_stubs.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
-	$(TEST_DEPT_RUNTIME_PREFIX)build_stubs $^ >$@
-
 $(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
 
