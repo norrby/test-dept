@@ -22,7 +22,7 @@ LD=$(CC)
 # in your environment. They refer relatively to the dist in ../..
 TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS=-I$(TEST_DEPT_BIN_PATH) -I.
+CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
 
 TEST_SRCS=sut_test.c
 
