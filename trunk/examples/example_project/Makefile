@@ -26,8 +26,8 @@ TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
 CPPFLAGS=-I$(TEST_DEPT_BIN_PATH)
 
-# All test cases reside in TEST_SRCS.
-TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c
+# All test cases reside in TEST_SRCS
+TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c another_sum_test.c
 
 # A file which declares all possible stub functions
 TEST_DEPT_POSSIBLE_STUBS=stubs.h
@@ -35,6 +35,10 @@ TEST_DEPT_FUNCTION_SWITCH_HEADER=stub_headers.h
 
 # Dependencies for each test binary. Should be self explanatory
 sum_test:	dependency.o
+
+# A test case not corresponding to <prefix>_test.c needs an own rule
+another_sum_test: sum.o dependency.o another_sum_test_main.o
+	$(CC) $@.o $^ -o $@
 
 check:	test_dept_run
 
