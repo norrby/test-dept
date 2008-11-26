@@ -26,7 +26,7 @@ LD=$(CC)
 #You can remove these when an installation of Test Dept. is made on your system
 TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH)
+CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -DTEST_DEPT_USE_PREFIX
 
 # In this simple project all TEST_SRCS need to have a corresponding
 # C-file. For example, car_test.c _needs_ a car.c for it to work.
