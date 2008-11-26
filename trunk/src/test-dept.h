@@ -32,7 +32,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define assert_condition(condition, textual_condition) do {\
+#define _test_dept_assert_condition(condition, textual_condition) do {\
   test_dept_tests_run += 1;\
   if (!(condition)) {\
     test_dept_test_failures += 1;\
@@ -42,68 +42,97 @@
   }\
 } while(0)
 
-#define assert_equals(a, b)\
- assert_condition((a) == (b), "(" # a ") == (" # b ")" )
+#ifdef TEST_DEPT_USE_PREFIX
+# define test_dept_assert_true _test_dept_assert_true
+# define test_dept_assert_false _test_dept_assert_false
+# define test_dept_assert_equals _test_dept_assert_equals
+# define test_dept_assert_not_equals _test_dept_assert_not_equals
+# define test_dept_assert_equals_int _test_dept_assert_equals_int
+# define test_dept_assert_equals_hex _test_dept_assert_equals_hex
+# define test_dept_assert_equals_short _test_dept_assert_equals_short
+# define test_dept_assert_equals_long _test_dept_assert_equals_long
+# define test_dept_assert_equals_char _test_dept_assert_equals_char
+# define test_dept_assert_equals_float _test_dept_assert_equals_float
+# define test_dept_assert_equals_double _test_dept_assert_equals_double
+# define test_dept_assert_equals_string _test_dept_assert_equals_string
+#else
+# define assert_true _test_dept_assert_true
+# define assert_false _test_dept_assert_false
+# define assert_equals _test_dept_assert_equals
+# define assert_not_equals _test_dept_assert_not_equals
+# define assert_equals_int _test_dept_assert_equals_int
+# define assert_equals_hex _test_dept_assert_equals_hex
+# define assert_equals_short _test_dept_assert_equals_short
+# define assert_equals_long _test_dept_assert_equals_long
+# define assert_equals_char _test_dept_assert_equals_char
+# define assert_equals_float _test_dept_assert_equals_float
+# define assert_equals_double _test_dept_assert_equals_double
+# define assert_equals_string _test_dept_assert_equals_string
+#endif
 
-#define assert_not_equals(a, b)\
- assert_condition((a) != (b), "(" # a ") != (" # b ")" )
+#define _test_dept_assert_equals(a, b)\
+ _test_dept_assert_condition((a) == (b), "(" # a ") == (" # b ")" )
 
-#define assert_true(condition)\
- assert_condition((condition), "(" # condition ")" )
+#define _test_dept_assert_not_equals(a, b)\
+ _test_dept_assert_condition((a) != (b), "(" # a ") != (" # b ")" )
 
-#define assert_false(condition)\
- assert_condition(!(condition), "!(" # condition ")" )
+#define _test_dept_assert_true(condition)	\
+ _test_dept_assert_condition((condition), "(" # condition ")" )
 
-#define assert_equals_type(type, format, exp, act) \
+#define _test_dept_assert_false(condition)\
+ _test_dept_assert_condition(!(condition), "!(" # condition ")" )
+
+#define _test_dept_assert_equals_type(type, format, exp, act) \
   do {\
   type actual = ( type ) (act);\
   char msg[64];\
   sprintf(msg, # act " == " # format " (was " # format ")", exp, actual);\
-  assert_condition((actual) == (exp), msg);			      \
+  _test_dept_assert_condition((actual) == (exp), msg);			      \
   } while (0)
 
-#define assert_equals_int(exp, act)\
-  assert_equals_type(int, %d, exp, act)
+#define _test_dept_assert_equals_int(exp, act)\
+ _test_dept_assert_equals_type(int, %d, exp, act)
 
-#define assert_equals_long(exp, act)\
-  assert_equals_type(long, %d, exp, act)
+#define _test_dept_assert_equals_short(exp, act)\
+ _test_dept_assert_equals_type(short, %d, exp, act)
 
-#define assert_equals_hex(exp, act)\
-  assert_equals_type(long, 0x%x, exp, act);
+#define _test_dept_assert_equals_long(exp, act)\
+ _test_dept_assert_equals_type(long, %d, exp, act)
 
-#define assert_equals_char(exp, act)\
-  assert_equals_type(char, %c, exp, act);
+#define _test_dept_assert_equals_hex(exp, act)\
+ _test_dept_assert_equals_type(long, 0x%x, exp, act);
 
-#define assert_equals_float(exp, act)\
-  assert_equals_type(float, %f, exp, act);
+#define _test_dept_assert_equals_char(exp, act)\
+ _test_dept_assert_equals_type(char, %c, exp, act);
 
-#define assert_equals_double(exp, act)\
-  assert_equals_type(double, %f, exp, act);
+#define _test_dept_assert_equals_float(exp, act)\
+ _test_dept_assert_equals_type(float, %f, exp, act);
+
+#define _test_dept_assert_equals_double(exp, act)\
+ _test_dept_assert_equals_type(double, %f, exp, act);
 
 #define TEST_DEPT_MAX_COMPARISON 128
-#define assert_equals_string(exp, act)\
+#define _test_dept_assert_equals_string(exp, act)\
   do {\
     char* actual = (act);\
     if (strlen(exp) > TEST_DEPT_MAX_COMPARISON\
         || strlen(actual) > TEST_DEPT_MAX_COMPARISON)\
-      assert_false("strings too long to compare with this assertion");\
+     _test_dept_assert_false("strings too long to compare with this assertion");\
     char msg[1024];\
     sprintf(msg, "%s equals \"%s\" (was \"%s\")", # act, exp, actual);\
-    assert_condition(strcmp(exp, actual) == 0, msg);\
+    _test_dept_assert_condition(strcmp(exp, actual) == 0, msg);\
   } while (0)
 
 void **test_dept_proxy_ptrs[2];
 
 static void
-test_dept_set_proxy(void *original_function, void *wrapper_function)
+test_dept_set_proxy(void *original_function, void *replacement_function)
 {
   int i;
-  for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++)
-    {
-      if (*(test_dept_proxy_ptrs[i] + 1) == original_function)
-	{
-	  if (wrapper_function)
-	    *test_dept_proxy_ptrs[i] = wrapper_function;
+  for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++) {
+      if (*(test_dept_proxy_ptrs[i] + 1) == original_function) {
+	  if (replacement_function)
+	    *test_dept_proxy_ptrs[i] = replacement_function;
 	  else
 	    *test_dept_proxy_ptrs[i] = *(test_dept_proxy_ptrs[i] + 1);
 	  return;
@@ -113,8 +142,8 @@ test_dept_set_proxy(void *original_function, void *wrapper_function)
 	 original_function);
 }
 
-#define replace_function(original_function, wrapper_function) \
-  { assert (wrapper_function == NULL || __builtin_types_compatible_p (typeof(original_function), typeof(wrapper_function)));  test_dept_set_proxy (original_function, wrapper_function); }
+#define replace_function(original_function, replacement_function) \
+  { assert (replacement_function == NULL || __builtin_types_compatible_p (typeof(original_function), typeof(replacement_function)));  test_dept_set_proxy (original_function, replacement_function); }
 
 static void restore_function(void *original_function) {
   test_dept_set_proxy(original_function, NULL);
