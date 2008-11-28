@@ -35,7 +35,7 @@ SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
 %_test_main.c: %_test.o
 	 $(TEST_DEPT_BIN_PATH)/build_main_from_symbols $< >$@
 
-%_test:	%_test_main.o %_test.o %_using_proxies.o sut_proxies.s
+%_test:	%_test_main.o %_test.o %_using_proxies.o %_proxies.s
 	$(CC) -o $@ $^
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
