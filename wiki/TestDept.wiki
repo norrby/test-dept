@@ -48,7 +48,8 @@ That is: each suite is a binary of its own!  This is a different
 philosophy from many other test frameworks, where all suites and
 sub-suites often are packed into the same binary.
 
-Moreover, for an external test runner to be able to enumerate the
+==Test Dept. Suites are Holders for Standalone Cases==
+For an external test runner to be able to enumerate the
 different test cases from a suite, the binary has to be able to state
 which cases it contains.  This is done by specifying zero arguments to
 the binary.  The default printout should be a list of cases:
@@ -72,6 +73,7 @@ A potential runner execution could look like this:
 and the printout is test runner specific, even how it handles standard
 output and standard error output.
 
+==Potentially Dependent Test Cases are not Recommended but Supported==
 As a final twist, a suite binary is expected to accept more than one
 test case at the same time, in any order.  For example:
 {{{
@@ -80,12 +82,15 @@ test case at the same time, in any order.  For example:
 which will run both the test_bar and test_foo cases and return the
 accumulated number of failures as exit status.  This opens for a
 possible (but not recommended) way of implementing test runners that
-could render dependent test cases!
+*could render dependent test cases*, but might be a good thing
+once in a while if the runner would like to provoke
+a [http://en.wikipedia.org/wiki/Valgrind valgrind] run.
 
+==A Test Dept. Conformant Suite==
 In conclusion.  A suite that conforms to the rules of the Test
 Dept. framework shall:
 
-  * return the names of all its test casesif zero arguments given
+  * return the names of all its test cases if zero arguments given
   * run all test cases whose names are supplied on the command line
   * return the cumulative failure count of all run cases as exit status
   * return -1 on strange arguments
