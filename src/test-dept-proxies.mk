@@ -23,16 +23,13 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
-SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
+%_using_proxies.o:	%_replacement_symbols.txt %.o
+	objcopy --redefine-syms $^ $@
 
-%_replacement_symbols.txt:	%.o
-	$(NM) -p $< | grep " U " | awk '{print $$NF " " $$NF "_test_dept_proxy" }' >$@
-
-%_proxies.s: %.o
-	$(NM) -p $< | awk -f $(SYMBOLS_TO_ASM) >$@
+%_test:	%_test.o %_test_main.o %_using_proxies.o %_proxies.o
+	$(LD) $^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
 endif
-include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test-dept-proxies.mk
+include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test-dept-definitions.mk

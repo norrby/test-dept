@@ -23,16 +23,13 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-%_using_stubs.o: %_test.o %.o
-	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ $@
+%_replacement_symbols.txt:	%_test.o
+	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ >$@
 
-%_stubs.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
+%_proxies.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stubs $^ >$@
-
-%_test:	%_test.o %_test_main.o %_using_stubs.o %_stubs.o
-	$(LD) $^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
 endif
-include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test-dept-definitions.mk
+include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test-dept-proxies.mk
