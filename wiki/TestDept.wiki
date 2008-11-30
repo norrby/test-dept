@@ -179,14 +179,15 @@ which will run the default test runner that comes with Test Dept.  It
 will call all test suite binaries.  In this case only "foo_test".
 Please note that the test suite binary will be run once per test case
 in the suite.  Not once per suite.  There is a subtle difference being
-that the former form of running tests forec them to be completely
+that the former form of running tests forces them to be completely
 independent of each other.
 
 =Using Replacement Functions or Stubs=
 Stubbing is often desirable when isolated tests on a SUT are required.
 This is often the case when unit-testing.  The Test Dept. framework
 offers a simple stubbing mechanism relying on symbol replacements in
-object files.
+object files.  A Behind-the-scenes description is presented on the
+TestAutomation page.
 
 Remembering the test dependencies discussion above; for example:
 construct a test case for a SUT called sut, with stubs, like this:
