@@ -26,9 +26,7 @@
 # exception does not however invalidate any other reasons why the
 # executable file might be covered by the GNU General Public License.
 
-TEST="$1"
-NM="${2:-nm}"
-SYMBOL_PREFIX="${3:-}"
+SYMBOL_PREFIX_CHECK="${1:-}"
 
 cat <<EOF
 #include <test-dept.h>
@@ -41,7 +39,7 @@ typedef struct {
   char* name;
 } test_dept_test_function_data;
 EOF
-$NM -p $TEST | sed "s/ T ${SYMBOL_PREFIX}/ T /g" | awk '
+sed "s/ T ${SYMBOL_PREFIX}/ T /g" | awk '
 BEGIN { no_tests = 0; setup = "NULL"; teardown = "NULL" }
 / T test_/ { tests[$3]; no_tests = no_tests + 1 }
 / T set_*up$/ { setup = $3 }

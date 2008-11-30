@@ -34,7 +34,7 @@ TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
 %_main.c:	%.o
-	$(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $< >$@
+	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols >$@
 
 $(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
