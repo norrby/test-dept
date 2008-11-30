@@ -27,9 +27,14 @@ TEST_MAIN_SRCS=$(patsubst %.c,%_main.c,$(TEST_SRCS))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
 TEST_MAINS=$(patsubst %_main.o,%,$(TEST_MAIN_OBJS))
 
+NM?=nm
+
 ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
+
+%_main.c:	%.o
+	$(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $< >$@
 
 $(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
