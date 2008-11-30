@@ -23,9 +23,6 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-%_main.c:	%.o
-	$(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $< >$@
-
 %_test:	%_test_main.o %_test.o
 	$(LD) $^ -o $@
 

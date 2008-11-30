@@ -29,10 +29,6 @@
 %_stubs.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
 	$(TEST_DEPT_RUNTIME_PREFIX)build_stubs $^ >$@
 
-%_main.c:	%.o
-	$(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $< >$@
-
-
 %_test:	%_test.o %_test_main.o %_using_stubs.o %_stubs.o
 	$(LD) $^ -o $@
 

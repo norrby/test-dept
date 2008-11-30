@@ -26,14 +26,14 @@
 TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
 
-%_using_proxies.o:	%.o
-	$(TEST_DEPT_BIN_PATH)/repoint_sut $< $@
+%_using_proxies.o:	%_replacement_symbols.txt %.o
+	objcopy --redefine-syms $^ $@
+
+%_replacement_symbols.txt:	%.o
+	$(NM) -p $< | grep " U " | awk '{print $$NF " " $$NF "_test_dept_proxy" }' >$@
 
 %_proxies.s: %.o
-	$(TEST_DEPT_BIN_PATH)/build_asm_proxies $(SYMBOLS_TO_ASM) $< >$@
-
-%_test_main.c: %_test.o
-	 $(TEST_DEPT_BIN_PATH)/build_main_from_symbols $< >$@
+	$(NM) -p $< | awk -f $(SYMBOLS_TO_ASM) >$@
 
 %_test:	%_test_main.o %_test.o %_using_proxies.o %_proxies.s
 	$(CC) -o $@ $^
