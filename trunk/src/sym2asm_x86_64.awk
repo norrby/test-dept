@@ -45,10 +45,10 @@ END {
      print "	.quad	" fun
      print "	.quad	" fun
   }
-  print    ".globl test_dept_proxy_ptrs"
+  print    ".globl " proxy_ptrs_variable
   print    "	.data"
   print    "	.align 8"
-  print    "test_dept_proxy_ptrs:"
+  print    proxy_ptrs_variable ":"
   for (fun in functions) {
      proxy_ptr = fun "_test_dept_proxy_ptr"
      print "	.quad	" proxy_ptr
