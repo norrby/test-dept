@@ -33,7 +33,7 @@ ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
-SYMBOL_PREFIX?=$(shell uname -s | sed -n -e /[Cc][Yy][Gg][Ww][Ii][Nn]/s/^.*$$/_/p )
+SYMBOL_PREFIX?=$(shell uname -s | sed -n '/[Cc][Yy][Gg][Ww][Ii][Nn]/s/^.*$$/_/p' )
 
 %_main.c:	%.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols $(SYMBOL_PREFIX) >$@

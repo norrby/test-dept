@@ -30,7 +30,7 @@ SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
 	$(NM) -p $< | grep " U " | awk '{print $$NF " " $$NF "_test_dept_proxy" }' >$@
 
 %_proxies.s: %.o %_test_main.o
-	$(NM) -p $< | awk -f $(SYMBOLS_TO_ASM) -v proxy_ptrs_variable=$(shell $(NM) -p $^ | awk '/ C .*test_dept_proxy_ptrs/ {print $$NF}' ) >$@
+	$(NM) -p $< | awk -f $(SYMBOLS_TO_ASM) -v proxy_ptrs_variable=$(shell $(NM) -p $^ | awk '/ [CD] .*test_dept_proxy_ptrs/ {print $$NF}' ) >$@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
