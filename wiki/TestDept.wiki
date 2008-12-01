@@ -264,12 +264,13 @@ tar-file:
   |
   +- COPYING          Licensing information for Test Dept.
   +- INSTALL          Installation information
-  +- Makefile.in      Template Makefile
   +- README           This file
   +- configure        Configuration script that creates a Makefile
   +- examples         Example projects that use Test Dept.
   +- install-sh       Fallback installation program
-  `- src              Scripts and makefile snippets that comprise the framework
+  +- makefile.in      Template Makefile
+  +- src              Scripts and makefile snippets that comprise the framework
+  `- test             Self test code
 }}}
 
 =Contact Information=
