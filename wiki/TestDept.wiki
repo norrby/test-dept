@@ -278,5 +278,9 @@ tar-file:
   `- test             Self test code
 }}}
 
+=Credits=
+All work by M Norrby with much help from Alexander Larsson and valuable input from
+Mattias Rönnblom.
+
 =Contact Information=
-M Norrby mailto:norrby+test-dept@lysator.liu.se
+M Norrby norrby+test-dept@lysator.liu.se
