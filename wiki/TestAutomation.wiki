@@ -114,6 +114,11 @@ named `test_dept_<stubbed_function>_set(...)`. For example, for malloc:
 {{{
 test_dept_malloc_set(...);
 }}}
+Such prototypes are generated from a file that specifies which functions
+a user might want to stub. From that file a header file is generated and
+can be included by test cases.
+
+http://test-dept.googlecode.com/svn/trunk/doc/art/generating_c_code.png
 Using this prototype generation is more portable. Include `test-dept-cstubs.mk`.
 
 ==Full Flexibility==
