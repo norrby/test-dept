@@ -5,7 +5,7 @@ http://test-dept.googlecode.com/svn/trunk/doc/art/logo.png
 =Introduction=
 Test Dept. is a testing framework for C with stubbing capabilities.
 This is an introduction to testing, suites and usage. For deeper
-behind-the-scenes information, please refer to the TestAutomation
+behind-the-scenes information, please refer to the [TestAutomation How It Works]
 page.
 
 The goals of the Test Dept. framework for unit-testing are to:
