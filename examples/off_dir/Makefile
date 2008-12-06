@@ -31,11 +31,9 @@ CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -Isrc
 TEST_DEPT_SRC_DIR=src
 TEST_SRCS=test/file1_test.c
 
-ap:
-	echo $(TEST_MAIN_SRCS)
-
+all:	test_dept_run
 
 clean:
-	rm *.o *_test
+	rm -f *.o *_test
 
 include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
