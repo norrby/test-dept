@@ -146,10 +146,10 @@ any) run after each case.
 http://test-dept.googlecode.com/svn/trunk/doc/art/running_suites.png
 
 With the C implementation a simple way to construct a test case is to
-include test_dept.h and make test-functions:
+include test-dept.h and make test-functions:
 {{{
 /* foo_test.c */
-#include <test_dept.h>
+#include <test-dept.h>
  
 extern int value;
  
@@ -174,7 +174,7 @@ LD=$(CC)
  
 TEST_SRCS=foo_test.c
  
-include test_dept_automatic.mk
+include test-dept.mk
 }}}
 which will produce a binary called "foo_test".  Then issue:
 {{{
@@ -198,7 +198,7 @@ Remembering the test dependencies discussion above; for example:
 construct a test case for a SUT called sut, with stubs, like this:
 {{{
 /* sut_test.c */
-#include <test_dept.h>
+#include <test-dept.h>
 #include <sut.h>
 #include <foo.h>
 #include <stdio.h>
@@ -251,7 +251,7 @@ TEST_SRCS=sut_test.c
 
 sut_test: foo.o
 
-include test_dept_automatic.mk
+include test-dept.mk
 }}}
 Please note that this simple way of expressing the makefiles expect a
 file called sut.c to exist.  If not, the test will not compile.  If
