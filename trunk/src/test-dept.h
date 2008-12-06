@@ -55,6 +55,8 @@
 # define test_dept_assert_equals_float _test_dept_assert_equals_float
 # define test_dept_assert_equals_double _test_dept_assert_equals_double
 # define test_dept_assert_equals_string _test_dept_assert_equals_string
+# define test_dept_replace_function _test_dept_replace_function
+# define test_dept_restore_function _test_dept_restore_function
 #else
 # define assert_true _test_dept_assert_true
 # define assert_false _test_dept_assert_false
@@ -68,6 +70,8 @@
 # define assert_equals_float _test_dept_assert_equals_float
 # define assert_equals_double _test_dept_assert_equals_double
 # define assert_equals_string _test_dept_assert_equals_string
+# define replace_function _test_dept_replace_function
+# define restore_function _test_dept_restore_function
 #endif
 
 #define _test_dept_assert_equals(a, b)\
@@ -126,7 +130,7 @@
 void **test_dept_proxy_ptrs[2];
 
 static void
-test_dept_set_proxy(void *original_function, void *replacement_function)
+_test_dept_set_proxy(void *original_function, void *replacement_function)
 {
   int i;
   for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++) {
@@ -142,11 +146,23 @@ test_dept_set_proxy(void *original_function, void *replacement_function)
 	 original_function);
 }
 
-#define replace_function(original_function, replacement_function) \
-  { assert (replacement_function == NULL || __builtin_types_compatible_p (typeof(original_function), typeof(replacement_function)));  test_dept_set_proxy (original_function, replacement_function); }
+#ifdef __GNUC__
+#define _test_dept_replace_function(original_function, replacement_function)\
+{\
+  assert (replacement_function == NULL ||\
+          __builtin_types_compatible_p(typeof(original_function),\
+                                       typeof(replacement_function)));\
+  _test_dept_set_proxy(original_function, replacement_function);\
+}
+#else
+#define _test_dept_replace_function(original_function, replacement_function)\
+{\
+  _test_dept_set_proxy(original_function, replacement_function);\
+}
+#endif
 
-static void restore_function(void *original_function) {
-  test_dept_set_proxy(original_function, NULL);
+static void _test_dept_restore_function(void *original_function) {
+  _test_dept_set_proxy(original_function, NULL);
 }
 
 int test_dept_tests_run;
