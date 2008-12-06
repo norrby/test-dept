@@ -27,7 +27,7 @@
 / U / { functions[$NF] }
 END {
   print    "	.text"
-  for (fun in functions) {
+  if (num_functions > 0) for (fun in functions) {
      proxy = fun "_test_dept_proxy"
      proxy_ptr = proxy "_ptr"
      print ".globl " proxy
@@ -38,7 +38,7 @@ END {
   print    ""
   print    "	.data"
   print    "	.align 4"
-  for (fun in functions) {
+  if (num_functions > 0) for (fun in functions) {
      proxy_ptr = fun "_test_dept_proxy_ptr"
      print ".globl " proxy_ptr
      print proxy_ptr ":"
@@ -49,7 +49,7 @@ END {
   print    "	.data"
   print    "	.align 4"
   print    proxy_ptrs_variable ":"
-  for (fun in functions) {
+  if (num_functions > 0) for (fun in functions) {
      proxy_ptr = fun "_test_dept_proxy_ptr"
      print "	.long	" proxy_ptr
   }
