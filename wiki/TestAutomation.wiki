@@ -95,7 +95,7 @@ Grey boxes in the image below depict generated files:
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/generating_code.png
 
-===Simple But not Flexible===
+===Simple and Strict===
 The example above based on automatically generated assembly code
 is a fairly easy way of managing and creating unit test cases. But,
 as mentioned earlier, it does not leave much room for changes. It
