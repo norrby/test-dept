@@ -28,7 +28,7 @@ BEGIN { num_functions = 0 }
 / U / { functions[$NF]; num_functions = num_functions + 1 }
 END {
   print    "	.section	\".text\""
-  for (fun in functions) {
+  if (num_functions > 0) for (fun in functions) {
      proxy = fun "_test_dept_proxy"
      print ""
      print "	.global	" proxy
@@ -44,7 +44,7 @@ END {
   }
   print    ""
   print    "	.section	\".data\""
-  for (fun in functions) {
+  if (num_functions > 0) for (fun in functions) {
      proxy_ptr = fun "_test_dept_proxy_ptr"
      print "	.global " proxy_ptr
      print "	.type	" proxy_ptr ", #object"
@@ -60,7 +60,7 @@ END {
   print    "	.type	" proxy_ptrs_variable ", #object"
   print    "	.size	" proxy_ptrs_variable ", " num_functions * 4 + 4
   print    "test_dept_proxy_ptrs:"
-  for (fun in functions) {
+  if (num_functions > 0) for (fun in functions) {
      proxy_ptr = fun "_test_dept_proxy_ptr"
      print "	.long	" proxy_ptr
   }
