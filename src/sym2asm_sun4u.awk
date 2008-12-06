@@ -58,7 +58,7 @@ END {
   print    "	.align	16"
   print    "	.global	" proxy_ptrs_variable
   print    "	.type	" proxy_ptrs_variable ", #object"
-  print    "	.size	" proxy_ptrs_variable ", " num_functions * 4 + 4
+  print    "	.size	" proxy_ptrs_variable ", " num_functions * 4 + 8
   print    "test_dept_proxy_ptrs:"
   if (num_functions > 0) for (fun in functions) {
      proxy_ptr = fun "_test_dept_proxy_ptr"
