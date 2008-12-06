@@ -25,7 +25,7 @@
 
 TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
-TEST_MAINS=$(patsubst %_main.o,%,$(TEST_MAIN_OBJS))
+TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 
 NM?=nm
 OBJCOPY?=objcopy
