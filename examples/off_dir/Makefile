@@ -26,9 +26,10 @@ LD=$(CC)
 #You can remove these when an installation of Test Dept. is made on your system
 TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -Isrc
+CPPFLAGS+=-I$(TEST_DEPT_INCLUDE_PATH)
 
 TEST_DEPT_SRC_DIR=src
+CPPFLAGS+=-I$(TEST_DEPT_SRC_DIR)
 TEST_SRCS=test/file1_test.c
 
 all:	test_dept_run
