@@ -24,7 +24,7 @@
 # GNU General Public License.
 
 %_using_proxies.o:	%_replacement_symbols.txt %.o
-	objcopy --redefine-syms $^ $@
+	$(OBJCOPY) --redefine-syms=$^ $@
 
 %_test:	%_test.o %_test_main.o %_using_proxies.o %_proxies.o
 	$(LD) $^ -o $@
