@@ -27,7 +27,9 @@
 	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ >$@
 
 %_proxies.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
-	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_stubs $(TEST_DEPT_POSSIBLE_STUBS) >$@
+	$(NM) -p $< |\
+        $(TEST_DEPT_RUNTIME_PREFIX)build_stubs $(TEST_DEPT_POSSIBLE_STUBS) |\
+        $(TEST_DEPT_RUNTIME_PREFIX)build_stub >$@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
