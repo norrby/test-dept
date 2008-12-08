@@ -25,4 +25,4 @@ fi
 
 sed -n '/test_dept.*set/s/.*test_dept_\(.*\)_set$/\1/p' | while read symbol; do
   sed -n "/[^A-Za-z_*0-9]${symbol}[ ]*(/p; /^#include/p; " $POSSIBLE_STUBS
-done | `dirname $0`/build_stub
+done
