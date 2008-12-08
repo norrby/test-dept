@@ -24,7 +24,8 @@
 # exception does not however invalidate any other reasons why the
 # executable file might be covered by the GNU General Public License.
 
-/ U / { functions[$NF] }
+BEGIN { num_functions = 0 }
+/ U / { functions[$NF]; num_functions = num_functions + 1 }
 END {
   print    "	.text"
   if (num_functions > 0) for (fun in functions) {
