@@ -27,7 +27,7 @@
 # executable file might be covered by the GNU General Public License.
 
 INVOCATION="`basename ${0}`"
-SYMBOLS_FILE="${1:--}"
+SYMBOLS_FILE="${1:-}"
 
 usage() {
     RETVAL="$1"
@@ -49,7 +49,7 @@ case "$SYMBOLS_FILE" in
 	;;
 esac
 
-if [ "$SYMBOLS_FILE" != "-" ]; then
+if [ "$SYMBOLS_FILE" != "" ]; then
  [ -f "$SYMBOLS_FILE" ] || err "no readable file named \"$SYMBOLS_FILE\""
 fi
 
