@@ -27,7 +27,7 @@
 # executable file might be covered by the GNU General Public License.
 
 INVOCATION="`basename ${0}`"
-PROTOTYPE="${1:--}"
+PROTOTYPE="${1:-}"
 
 usage() {
     RETVAL="$1"
@@ -49,7 +49,7 @@ case "$PROTOTYPE" in
 	;;
 esac
 
-if [ "$PROTOTYPE" != "-" ]; then
+if [ "$PROTOTYPE" != "" ]; then
  [ -f "$PROTOTYPE" ] || err "no readable file named \"$PROTOTYPE\""
 fi
 
