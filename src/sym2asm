@@ -1,0 +1,66 @@
+#!/bin/sh -eu
+#
+# Copyright 2008 Mattias Norrby
+#
+# This file is part of Test Dept..
+#
+# Test Dept. is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Test Dept. is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
+#
+# As a special exception, you may use output from this script file
+# that stems from this file without restriction as part of test cases.
+# Specifically, if other programs use output from this script for
+# constructing test-cases the output source code that stems from
+# templates in this file does not by itself cause the resulting
+# executable to be covered by the GNU General Public License.  This
+# exception does not however invalidate any other reasons why the
+# executable file might be covered by the GNU General Public License.
+
+INV="`basename ${0}`"
+SUT="${1:-no_sut}"
+MAIN="${2:-no_main}"
+COMPILER="${3:-no_compiler}"
+NM="${4:-nm}"
+
+usage() {
+    RETVAL="$1"
+    echo "usage: $INV <sut obj file> <main obj file> <compiler> [nm(1) binary]"
+    echo "      ($INV creates assembly proxy code)"
+    exit $RETVAL
+}
+
+err() {
+    MSG="$1"
+    echo "$INV: $MSG" >&2
+    usage 2
+}
+
+file_err() {
+    FILE="$1"
+    err "no readable file named \"$FILE\""
+}
+
+case $SUT in
+    -h|--help) usage 0;;
+esac
+
+if [ "$#" -lt "3" ]; then
+    err "not enough arguments"
+fi
+
+[ -f "$SUT" ] || file_err "$SUT"
+[ -f "$MAIN" ] || file_err "$MAIN"
+[ -f "$COMPILER" ] || file_err "$COMPILER"
+
+PROXY_PTRS_VAR="`$NM -p $MAIN | awk '/ [CD] .*test_dept_proxy_ptrs/ {print $NF}'`"
+$NM -p $SUT | awk -f $COMPILER -v proxy_ptrs_variable="$PROXY_PTRS_VAR"

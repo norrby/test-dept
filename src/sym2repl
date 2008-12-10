@@ -1,0 +1,2 @@
+#!/bin/sh
+grep " U " | awk '{print $NF " " $NF "_test_dept_proxy" }'
