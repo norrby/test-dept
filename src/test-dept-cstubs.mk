@@ -24,7 +24,7 @@
 # GNU General Public License.
 
 %_replacement_symbols.txt:	%_test.o
-	$(TEST_DEPT_RUNTIME_PREFIX)refer_to_stubs $^ >$@
+	$(NM) -p $< | sed -n '/test_dept.*set/s/^.*[ ]\([^ ]*\)test_dept_\(.*\)_set$$/\1\2 \1\2_test_dept_proxy/p' >$@
 
 %_proxies.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
 	$(NM) -p $< |\

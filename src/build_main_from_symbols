@@ -26,6 +26,33 @@
 # exception does not however invalidate any other reasons why the
 # executable file might be covered by the GNU General Public License.
 
+INVOCATION="`basename ${0}`"
+SYMBOLS_FILE="${1:--}"
+
+usage() {
+    RETVAL="$1"
+    echo "usage: $INVOCATION [symbols file]"
+    echo "      ($INVOCATION reads nm(1) output and outputs C code for"
+    echo "      a test binary containing all functions starting with \"test_\")"
+    exit $RETVAL
+}
+
+err() {
+    MSG="$1"
+    echo "$INVOCATION: $MSG" >&2
+    usage 2
+}
+
+case "$SYMBOLS_FILE" in
+    -h|--help)
+	usage 0
+	;;
+esac
+
+if [ "$SYMBOLS_FILE" != "-" ]; then
+ [ -f "$SYMBOLS_FILE" ] || err "no readable file named \"$SYMBOLS_FILE\""
+fi
+
 cat <<EOF
 #include <test-dept.h>
 
@@ -37,7 +64,7 @@ typedef struct {
   char* name;
 } test_dept_test_function_data;
 EOF
-sed "s/ T _*/ T /g" | awk '
+sed "s/ T _*/ T /g" $SYMBOLS_FILE | awk '
 BEGIN { no_tests = 0; setup = "NULL"; teardown = "NULL" }
 / T test_/ { tests[$3]; no_tests = no_tests + 1 }
 / T set_*up$/ { setup = $3 }
