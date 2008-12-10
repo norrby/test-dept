@@ -1,0 +1,2 @@
+#!/bin/sh
+sed -n '/test_dept.*set/s/^.*[ ]\([^ ]*\)test_dept_\(.*\)_set$/\1\2 \1\2_test_dept_proxy/p'
