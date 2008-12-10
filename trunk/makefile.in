@@ -28,8 +28,8 @@ mandir=@mandir@/man1
 
 MAN_PAGES=test_dept.1
 SRCS=src
-SCRIPTS=build_main_from_symbols build_c_proxy build_c_proxies\
- test_dept sym2asm_i686.awk sym2asm_sun4u.awk sym2asm_x86_64.awk
+SCRIPTS=build_main_from_symbols build_c_proxy build_c_proxies sym2repl csym2repl\
+ test_dept sym2asm sym2asm_i686.awk sym2asm_sun4u.awk sym2asm_x86_64.awk
 INCLUDES=test-dept.mk test-dept-proxies.mk test-dept-cstubs.mk\
  test-dept-rudimentary.mk test-dept.h test-dept-definitions.mk
 DOCS=README COPYING
