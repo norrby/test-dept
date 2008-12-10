@@ -16,15 +16,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
-#
-# As a special exception, you may use output from this script file
-# that stems from this file without restriction as part of test cases.
-# Specifically, if other programs use output from this script for
-# constructing test-cases the output source code that stems from
-# templates in this file does not by itself cause the resulting
-# executable to be covered by the GNU General Public License.  This
-# exception does not however invalidate any other reasons why the
-# executable file might be covered by the GNU General Public License.
 
 INV="`basename ${0}`"
 SUT="${1:-no_sut}"
