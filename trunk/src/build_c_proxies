@@ -19,7 +19,6 @@
 
 POSSIBLE_STUBS="${1:-}"
 INVOCATION="`basename ${0}`"
-INVOCSPACE="`echo $INVOCATION | sed 's/./ /g'`"
 
 usage() {
     RETVAL="$1"
