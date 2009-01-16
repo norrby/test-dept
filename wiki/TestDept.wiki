@@ -82,7 +82,7 @@ output and standard error output.
 As a final twist, a suite binary is expected to accept more than one
 test case at the same time, in any order.  For example:
 {{{
-> ./my_test test_bar test_foo
+> ./my_test_suite test_bar test_foo
 }}}
 which will run both the test_bar and test_foo cases and return the
 accumulated number of failures as exit status.  This opens for a
