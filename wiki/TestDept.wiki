@@ -139,11 +139,17 @@ of a shared setup procedure, for example.
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/suite.png
 
-When a suite is run its cases are executed in rapid succession
+During a test run, independent cases are executed in rapid succession
 together with setup code (if any) run in prior and teardown code (if
-any) run after each case.
+any) run after each case.  If instead we would have dependent cases,
+a test run could look like this with all cases run from a sigle suite:
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/running_suites.png
+
+But, as mentioned earlier, this tends to make tests more fragile. It
+is still recommended to run each case standalone and let the runner
+group cases from the suites one by one after another. (Setup and
+teardown code can still be shared, of course.)
 
 With the C implementation a simple way to construct a test case is to
 include test-dept.h and make test-functions:
