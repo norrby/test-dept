@@ -47,7 +47,7 @@ In its basic form the contained cases are run one at a time.  Each
 test case execution is spawned by running a suite binary while
 specifying a case to run.  For example:
 {{{
-> ./my_test name_of_test_case_to_run
+> ./my_test_suite name_of_one_test_case_to_run
 }}}
 That is: each suite is a binary of its own!  This is a different
 philosophy from many other test frameworks, where all suites and
@@ -59,7 +59,7 @@ different test cases from a suite, the binary has to be able to state
 which cases it contains.  This is done by specifying zero arguments to
 the binary.  The default printout should be a list of cases:
 {{{
-> ./my_test
+> ./my_test_suite
 test_foo
 test_bar
 test_fie
