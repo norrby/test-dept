@@ -60,6 +60,7 @@ from the sut `o-file`. In practice this is accomplished by calling
  void test_something() {
    replace_function(&malloc, &my_own_malloc);
    call_something_that_uses_malloc();
+   assert(some_condition);
    restore_function(&malloc);
  }
 }}}
