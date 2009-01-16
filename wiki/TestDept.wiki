@@ -142,7 +142,7 @@ http://test-dept.googlecode.com/svn/trunk/doc/art/suite.png
 During a test run, independent cases are executed in rapid succession
 together with setup code (if any) run in prior and teardown code (if
 any) run after each case.  If instead we would have dependent cases,
-a test run could look like this with all cases run from a sigle suite:
+a test run could look like this with all cases run from a single suite:
 
 http://test-dept.googlecode.com/svn/trunk/doc/art/running_suites.png
 
