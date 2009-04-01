@@ -94,13 +94,12 @@ END {
 '
 cat <<EOF2
 int main(int argc, char *argv[]) {
-  int test_no = 1;
-  int saved_test_failures = 0;
   if (argc == 1) {
     int i = 0;
     while (i < number_of_test_functions)
       printf("%s\n", test_functions[i++].name);
   }
+  int test_no = 1;
   for (test_no; test_no < argc; test_no++) {
     char* test_fun_name = argv[test_no];
     int test_fun = 0;
@@ -115,10 +114,8 @@ int main(int argc, char *argv[]) {
     test_dept_test_function_data current = test_functions[test_fun];
     printf("%s:\n", current.name);
     fflush(stdout);
-    saved_test_failures = test_dept_test_failures;
     if (setup_function)
       (*setup_function)();
-    if (saved_test_failures == test_dept_test_failures)
     (*current.function)();
     if (teardown_function)
       (*teardown_function)();
