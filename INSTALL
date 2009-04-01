@@ -31,7 +31,7 @@ following command to install the framework:
 This should be enough.  It installs a bunch of scripts and makefile
 snippets into bin and include directories, respectively.
 
-If you have checked out the srouce from Subversion, you will have
+If you have checked out the source from Subversion, you will have
 to bootstrap the building process:
 
 Installing Test Dept. from a checked out directory
