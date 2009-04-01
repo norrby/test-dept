@@ -20,8 +20,6 @@
 TEST_MAINS="${*:-}"
 ERROR_LOG="/tmp/test_dept$$.log"
 
-trap '' 11
-
 run_test() {
   SUITE="$1"
   TEST="$2"
@@ -30,7 +28,7 @@ run_test() {
   if $SUITE $TEST >>$ERROR_LOG 2>&1; then
     printf "."
   else
-    [ "$?" -eq 139 ] && echo "Failure: Segmentation fault" >>$ERROR_LOG
+    [ "$?" -gt 128 ] && echo "Failure: Aborted on signal" >>$ERROR_LOG
     NUMBER_OF_ERRORS="`expr ${NUMBER_OF_ERRORS:-0} + 1`"
     printf "F"
   fi
@@ -47,7 +45,7 @@ fi
 for suite in $TEST_MAINS; do
   suite="`dirname $suite`/`basename $suite`" 
   for test in `$suite`; do
-    run_test $suite $test
+    run_test "$suite" "$test"
   done
 done
 echo
