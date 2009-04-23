@@ -40,7 +40,7 @@ SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
 INCLUDES_INSTALLED=$(addprefix $(includedir)/,$(INCLUDES))
 DOC_FILES_INSTALLED=$(addprefix $(datadir)/,$(DOCS))
 MAN_PAGES_INSTALLED=$(addprefix $(mandir)/,$(MAN_PAGES)) \
-		$(addprefix $(man3dir)/$(MAN_3_PAGES))
+		$(addprefix $(man3dir)/,$(MAN_3_PAGES))
 SELF_TEST_CMD=/usr/bin/env PATH="../src:$(PATH)"  $(MAKE) -I ../src
 
 build_example_projects:	self_test
