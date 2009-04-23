@@ -1,0 +1,25 @@
+.TH TEST_DEPT 1 "Mar 2009" "" "Test Dept."
+.SH NAME
+test_dept \- run all test cases from a Test Dept. test suite
+.SH SYNOPSIS
+.B test_dept
+.RI [ suite ]...
+.br
+.SH DESCRIPTION
+.\" Add any additional description here
+The test_dept command is a default test runner for Test Dept. test suites.
+
+.SH AUTHOR
+M Norrby <norrby+test-dept@lysator.liu.se>
+
+.SH RETURN VALUES
+Returns the cumulative number of failures in a suite, normally 0 or 1.
+
+.SH EXAMPLES
+.nf
+test_dept /path/to/my/test_dept_test_suite
+.fi
+
+.SH SEE ALSO
+.IR build_main_from_symbols (1),
+.IR sym2asm (1).
