@@ -25,18 +25,22 @@ datadir=@datadir@/test-dept
 sysconfdir=@sysconfdir@
 includedir=@includedir@
 mandir=@mandir@/man1
+man3dir=@mandir@/man3
 
-MAN_PAGES=test_dept.1
+MAN_PAGES=build_main_from_symbols.1 sym2asm.1 sym2repl.1 test_dept.1
+MAN_3_PAGES=test-dept.3
 SRCS=src
-SCRIPTS=build_main_from_symbols build_c_proxy build_c_proxies sym2repl csym2repl\
- test_dept sym2asm sym2asm_i686.awk sym2asm_sun4u.awk sym2asm_x86_64.awk
-INCLUDES=test-dept.mk test-dept-proxies.mk test-dept-cstubs.mk\
+SCRIPTS=build_main_from_symbols build_c_proxy build_c_proxies sym2repl	\
+ csym2repl test_dept sym2asm sym2asm_i686.awk sym2asm_sun4u.awk		\
+ sym2asm_x86_64.awk
+INCLUDES=test-dept.mk test-dept-proxies.mk test-dept-cstubs.mk	\
  test-dept-rudimentary.mk test-dept.h test-dept-definitions.mk
 DOCS=README COPYING
 SCRIPTS_INSTALLED=$(addprefix $(bindir)/,$(SCRIPTS))
 INCLUDES_INSTALLED=$(addprefix $(includedir)/,$(INCLUDES))
 DOC_FILES_INSTALLED=$(addprefix $(datadir)/,$(DOCS))
-MAN_PAGES_INSTALLED=$(addprefix $(mandir)/,$(MAN_PAGES))
+MAN_PAGES_INSTALLED=$(addprefix $(mandir)/,$(MAN_PAGES)) \
+		$(addprefix $(man3dir)/$(MAN_3_PAGES))
 SELF_TEST_CMD=/usr/bin/env PATH="../src:$(PATH)"  $(MAKE) -I ../src
 
 build_example_projects:	self_test
@@ -60,11 +64,14 @@ distclean: clean
 clean:	test_clean
 	rm -f */*/*.o */*.o *.o examples/*/*_test
 
-$(mandir) $(includedir) $(datadir) $(bindir):
+$(mandir) $(man3dir) $(includedir) $(datadir) $(bindir):
 	$(INSTALL) -d $@
 
 $(mandir)/%: $(SRCS)/% $(mandir)
 	$(INSTALL_DATA) $< $(mandir)
+
+$(man3dir)/%: $(SRCS)/% $(man3dir)
+	$(INSTALL_DATA) $< $(man3dir)
 
 $(includedir)/%: $(SRCS)/% $(includedir)
 	$(INSTALL_DATA) $< $(includedir) 
