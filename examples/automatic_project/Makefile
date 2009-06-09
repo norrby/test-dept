@@ -24,13 +24,14 @@ TEST_DEPT_BIN_PATH=../../src
 TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
 CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
 
-TEST_SRCS=sut_test.c
-
-sut_test: foo.o bar.o
+TEST_SRCS=sut_test.c sit_test.c
 
 check:	test_dept_run
 
 clean: 
 	rm -f *_main.c *_test *.o *~ *_stubs.c
+
+sut_test: foo.o bar.o
+sit_test: foo.o
 
 include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
