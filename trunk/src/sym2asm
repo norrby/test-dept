@@ -17,11 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
-INV="`basename ${0}`"
+FULLINV="`which ${0}`"
+INV="`basename $FULLINV`"
 SUT="${1:-no_sut}"
 MAIN="${2:-no_main}"
-COMPILER="${3:-no_compiler}"
+FIRST_PATH_COMPILER="${3:-no_compiler}"
 NM="${4:-nm}"
+OTHER_PATH_COMPILER="`dirname ${FULLINV}`/`basename ${FIRST_PATH_COMPILER}`"
+COMPILER="$FIRST_PATH_COMPILER"
 
 usage() {
     RETVAL="$1"
@@ -51,7 +54,8 @@ fi
 
 [ -f "$SUT" ] || file_err "$SUT"
 [ -f "$MAIN" ] || file_err "$MAIN"
-[ -f "$COMPILER" ] || file_err "$COMPILER"
+[ -f "$COMPILER" ] || COMPILER="$OTHER_PATH_COMPILER"
+[ -f "$COMPILER" ] || file_err "$FIRST_PATH_COMPILER or $OTHER_PATH_COMPILER"
 
 PROXY_PTRS_VAR="`$NM -p $MAIN | awk '/ [CD] .*test_dept_proxy_ptrs/ {print $NF}'`"
 $NM -p $SUT | awk -f $COMPILER -v proxy_ptrs_variable="$PROXY_PTRS_VAR"
