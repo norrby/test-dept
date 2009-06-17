@@ -14,11 +14,7 @@ To create the Makefile, issue:
 
 > ./configure
 
-To build the framework and all self-tests:
-
-> make
-
-Issue the following command to install the framework:
+Then to install the framework, simply use:
 
 > sudo make install
 
