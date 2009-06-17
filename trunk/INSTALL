@@ -18,13 +18,7 @@ To build the framework and all self-tests:
 
 > make
 
-Then to run the self-test suite issue:
-
-> make check
-
-All tests should pass.  You should see a line forming with only dots
-".", and no "F" characters.  When the tests have passed, issue the
-following command to install the framework:
+Issue the following command to install the framework:
 
 > sudo make install
 
@@ -40,7 +34,7 @@ Installing Test Dept. from a Subversion checkout requires automake.
 
 First issue:
 
-> make configure
+> aclocal && automake --add-missing && autoconf
 
 in order to create the configure script.  Then you can continue
 creating the makefile as described above.
