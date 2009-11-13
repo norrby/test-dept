@@ -14,3 +14,5 @@ feature-test: $(EXAMPLES)
 	src/test_dept $(addsuffix /*_test,$^)
 
 check:	self-test feature-test
+	echo "Both basic low level tests and feature self tests passed!"
+
