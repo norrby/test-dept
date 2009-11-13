@@ -1,1 +1,3 @@
 SUBDIRS=src examples
+.PHONY:	test $(EXAMPLES)
+include self-test.mk
