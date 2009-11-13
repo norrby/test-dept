@@ -1,18 +1,10 @@
-BINPATH_BASE=env PATH=$$PATH:..
+GCC=gcc
+
+feature-test:
+	$(MAKE) -C examples check
 
 self-test:
-	$(BINPATH_BASE)/src $(MAKE) CC=$(GCC) LD=$(GCC) -C test -I../src self_test
-
-GCC=gcc
-EXAMPLE_PROJECTS=automatic_project example_project off_dir simple_project
-EXAMPLES=$(addprefix examples/,$(EXAMPLE_PROJECTS))
-
-$(EXAMPLES):
-	$(BINPATH_BASE)/../src $(MAKE) -C $@ -I../../src CPPFLAGS=-I../../src test_dept
-
-feature-test: $(EXAMPLES)
-	src/test_dept $(addsuffix /*_test,$^)
+	env PATH=$$PATH:../src $(MAKE) CC=$(GCC) LD=$(GCC) -C test -I../src self_test
 
 check:	self-test feature-test
 	echo "Both basic low level tests and feature self tests passed!"
-

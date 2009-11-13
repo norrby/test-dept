@@ -35,7 +35,7 @@ TEST_DEPT_SRC_DIR=src
 override CPPFLAGS+=-I$(TEST_DEPT_SRC_DIR)
 TEST_SRCS=test/file1_test.c
 
-all:	test_dept_run
+check:	test_dept_run
 
 clean:
 	rm -f *.o *_test
