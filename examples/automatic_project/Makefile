@@ -1,3 +1,4 @@
+
 # Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
@@ -19,10 +20,12 @@ CC=gcc
 LD=$(CC)
 
 # The three rows below are only needed if test-dept is not installed
-# in your environment. They refer relatively to the dist in ../..
-TEST_DEPT_BIN_PATH=../../src
-TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
+# in your environment. They refer relatively to the unpacked dist in ../..
+#TEST_DEPT_BIN_PATH=../../src
+#TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
+#CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
+# If you use them, please also qualify the last include-file with
+# a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
 
 TEST_SRCS=sut_test.c sit_test.c
 
@@ -34,4 +37,4 @@ clean:
 sut_test: foo.o bar.o
 sit_test: foo.o
 
-include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
+include test-dept.mk

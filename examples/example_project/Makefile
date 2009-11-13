@@ -15,16 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
-# An example project using test_dept in its cstub form
+# An example project using test_dept in its cstub form without
+# the simple automated stuff. This is not recommended!
 
-# Basic definitions for the project to be able to build
 CC=gcc
 LD=$(CC)
 
-#You can remove these when an installation of Test Dept. is made on your system
-TEST_DEPT_BIN_PATH=../../src
-TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS=-I$(TEST_DEPT_BIN_PATH)
+# The three rows below are only needed if test-dept is not installed
+# in your environment. They refer relatively to the unpacked dist in ../..
+#TEST_DEPT_BIN_PATH=../../src
+#TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
+#CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
+# If you use them, please also qualify the last include-file with
+# a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
 
 # All test cases reside in TEST_SRCS
 TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c another_sum_test.c
@@ -48,5 +51,5 @@ clean:
 	rm -f *.o *_test main_*.c *_stubs.* *~
 
 # Rules for making test binaries reside here
-include $(TEST_DEPT_INCLUDE_PATH)/test-dept-cstubs.mk
+include test-dept-cstubs.mk
 

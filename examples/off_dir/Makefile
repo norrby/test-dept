@@ -15,21 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
-# A simple test project with one C file as SUT. This project has
-# no stubs, but it is easily added using the TEST_DEPT_POSSIBLE_STUBS
-# variable pointing to a header file stating prototypes for stub
-# functions.
+# A simple test project using test object sources in other directories
+# than with one C file as SUT. This project has no stubs, but it is
+# easily added using the TEST_DEPT_POSSIBLE_STUBS variable pointing to
+# a header file stating prototypes for stub functions.
 
 CC=gcc
 LD=$(CC)
 
-#You can remove these when an installation of Test Dept. is made on your system
-TEST_DEPT_BIN_PATH=../../src
-TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-CPPFLAGS+=-I$(TEST_DEPT_INCLUDE_PATH)
+# The three rows below are only needed if test-dept is not installed
+# in your environment. They refer relatively to the unpacked dist in ../..
+#TEST_DEPT_BIN_PATH=../../src
+#TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
+#CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
+# If you use them, please also qualify the last include-file with
+# a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
 
 TEST_DEPT_SRC_DIR=src
-CPPFLAGS+=-I$(TEST_DEPT_SRC_DIR)
+override CPPFLAGS+=-I$(TEST_DEPT_SRC_DIR)
 TEST_SRCS=test/file1_test.c
 
 all:	test_dept_run
@@ -37,4 +40,4 @@ all:	test_dept_run
 clean:
 	rm -f *.o *_test
 
-include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
+include test-dept.mk
