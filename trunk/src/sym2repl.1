@@ -27,7 +27,7 @@ M Norrby <norrby+test-dept@lysator.liu.se>
 .SH EXAMPLES
 .nf
 nm -p sut.o | sym2repl >sut_replacement_symbols.txt
-objcopy --redefine-syms=sut_replacement_symbols.txt sut_using_proxies.o
+objcopy --redefine-syms=sut_replacement_symbols.txt sut.o sut_using_proxies.o
 
 .fi
 
