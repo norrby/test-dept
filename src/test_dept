@@ -54,5 +54,6 @@ if [ "${NUMBER_OF_ERRORS:-0}" -gt "0" ]; then
   echo
   echo "Failures: ${NUMBER_OF_ERRORS:-0} (of ${NUMBER_OF_TESTS:-0} run tests)."
   sed -n 'H; /^---/ {g; /Failure/p; }; /^+++/h' $ERROR_LOG
+  exit 1
 fi
 rm -f $ERROR_LOG
