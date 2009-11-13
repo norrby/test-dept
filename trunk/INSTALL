@@ -14,6 +14,10 @@ To create the Makefile, issue:
 
 > ./configure
 
+Check that everything is hunky dory:
+
+> make check
+
 Then to install the framework, simply use:
 
 > sudo make install
