@@ -1,4 +1,3 @@
-
 # Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
@@ -27,6 +26,7 @@ LD=$(CC)
 # If you use them, please also qualify the last include-file with
 # a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
 
+override CPPFLAGS+=-I.
 TEST_SRCS=sut_test.c sit_test.c
 
 check:	test_dept_run
