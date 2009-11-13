@@ -1,1 +1,4 @@
 nobase_dist_pkgdata_DATA=$(wildcard */*)
+SUBDIRS=simple_project automatic_project example_project off_dir
+TEST_DEPT_FILES=../../src
+MAKE:=env PATH=$$PATH:$(TEST_DEPT_FILES) $(MAKE) -I$(TEST_DEPT_FILES) CPPFLAGS=-I$(TEST_DEPT_FILES)
