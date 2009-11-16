@@ -1,4 +1,4 @@
-nobase_dist_pkgdata_DATA=$(wildcard */*)
+nobase_dist_pkgdata_DATA=$(wildcard simple_project/*) $(wildcard off_dir/src/*) $(wildcard off_dir/test/*) $(wildcard off_dir/Makefile) $(wildcard automatic_project/*)  $(wildcard example_project/*)
 override DIST_SUBDIRS=
 SUBDIRS=simple_project automatic_project example_project off_dir
 TEST_DEPT_FILES=../../src
