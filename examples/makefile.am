@@ -1,5 +1,8 @@
 nobase_dist_pkgdata_DATA=$(wildcard project_without_stubs/*) $(wildcard test_code_and_production_code_separate/src/*) $(wildcard test_code_and_production_code_separate/test/*) $(wildcard test_code_and_production_code_separate/Makefile) $(wildcard example_project/*)  $(wildcard not_recommended_old_c_style/*) README.examples
-override DIST_SUBDIRS=
-SUBDIRS=project_without_stubs example_project not_recommended_old_c_style test_code_and_production_code_separate
 TEST_DEPT_FILES=../../src
 MAKE:=env PATH=$$PATH:$(TEST_DEPT_FILES) $(MAKE) -I$(TEST_DEPT_FILES) CPPFLAGS=-I$(TEST_DEPT_FILES)
+CHECK_DIRS=project_without_stubs example_project test_code_and_production_code_separate not_recommended_old_c_style
+check: $(CHECK_DIRS)
+.PHONY: $(CHECK_DIRS)
+$(CHECK_DIRS):
+	$(MAKE) -C $@ check
