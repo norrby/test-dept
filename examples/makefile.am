@@ -1,5 +1,5 @@
-nobase_dist_pkgdata_DATA=$(wildcard simple_project/*) $(wildcard off_dir/src/*) $(wildcard off_dir/test/*) $(wildcard off_dir/Makefile) $(wildcard automatic_project/*)  $(wildcard example_project/*)
+nobase_dist_pkgdata_DATA=$(wildcard project_without_stubs/*) $(wildcard test_code_and_production_code_separate/src/*) $(wildcard test_code_and_production_code_separate/test/*) $(wildcard test_code_and_production_code_separate/Makefile) $(wildcard example_project/*)  $(wildcard not_recommended_old_c_style/*) README.examples
 override DIST_SUBDIRS=
-SUBDIRS=simple_project automatic_project example_project off_dir
+SUBDIRS=project_without_stubs example_project not_recommended_old_c_style test_code_and_production_code_separate
 TEST_DEPT_FILES=../../src
 MAKE:=env PATH=$$PATH:$(TEST_DEPT_FILES) $(MAKE) -I$(TEST_DEPT_FILES) CPPFLAGS=-I$(TEST_DEPT_FILES)
