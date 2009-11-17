@@ -1,3 +1,4 @@
+nobase_dist_pkgdata_DATA=test/*.c test/Makefile
 SUBDIRS=src examples
 .PHONY:	test $(EXAMPLES)
 include self-test.mk
