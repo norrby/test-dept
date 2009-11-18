@@ -271,17 +271,20 @@ And that concludes a quick walkthrough of the Test Dept. framework.
 The software is structured like this when packaged as a source
 tar-file:
 {{{
- test-dept
+ test-dept-<version>
   |
   +- COPYING          Licensing information for Test Dept.
   +- INSTALL          Installation information
   +- README           This file
+  +- aclocal.m4       Autoconf file
   +- configure        Configuration script that creates a Makefile
+  +- configure.ac     Autoconf input file
   +- examples         Example projects that use Test Dept.
   +- install-sh       Fallback installation program
+  +- makefile.am      Automake input file
   +- makefile.in      Template Makefile
-  +- src              Scripts and makefile snippets that comprise the framework
-  `- test             Self test code
+  +- missing          Stub for missing programs
+  `- src              Scripts and makefile snippets that comprise the framework
 }}}
 
 =Credits=
