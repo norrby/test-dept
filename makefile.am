@@ -5,7 +5,7 @@ nobase_dist_pkgdata_DATA=\
  $(wildcard examples/example_project/*.c)\
  examples/prefixed_project/Makefile\
  $(wildcard examples/prefixed_project/*.h)\
- $(wildcard examples/prefiex_project/*.c)\
+ $(wildcard examples/prefixed_project/*.c)\
  examples/example_project/Makefile\
  $(wildcard examples/assertion_examples/*.h)\
  $(wildcard examples/assertion_examples/*.c)\
