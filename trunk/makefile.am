@@ -1,3 +1,1 @@
-SUBDIRS=src test examples
-TEST_DIRS=$(addprefix _check_,test)
-include $(top_srcdir)/self-test.mk
+SUBDIRS=src examples
