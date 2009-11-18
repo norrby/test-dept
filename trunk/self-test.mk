@@ -1,10 +1,14 @@
-GCC=gcc
+_check_%:	%
+	cp -rp $< $@
 
-feature-test:
-	$(MAKE) -C examples check
+TEST_STAMPS=$(addsuffix /.tested,$(TEST_DIRS))
+REL_SRC=../$(top_srcdir)/src
+MAKE:=env PATH=$(REL_SRC):$$PATH $(MAKE) -I $(REL_SRC) CPPFLAGS=-I$(REL_SRC)
+all:	$(TEST_DIRS)
 
-self-test:
-	env PATH=$$PATH:../src $(MAKE) CC=$(GCC) LD=$(GCC) -C test -I../src self_test
+%/.tested:	%
+	$(MAKE) -C $< check
 
-check:	self-test feature-test
-	echo "Both basic low level tests and feature self tests passed!"
+check:	$(TEST_STAMPS)
+clean::
+	rm -rf $(TEST_DIRS)
