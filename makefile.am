@@ -1,4 +1,3 @@
-nobase_dist_pkgdata_DATA=test/*.c test/Makefile
-SUBDIRS=src examples
-.PHONY:	test $(EXAMPLES)
-include self-test.mk
+SUBDIRS=src test examples
+TEST_DIRS=$(addprefix _check_,test)
+include $(top_srcdir)/self-test.mk
