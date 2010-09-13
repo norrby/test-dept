@@ -2,7 +2,7 @@ EXAMPLE_DIRS=assertion_examples example_project not_recommended_old_c_style pref
 TEST_DIRS=$(addprefix _check_,$(EXAMPLE_DIRS))
 
 _check_%:	%
-	cp -rp $< $@ && chmod u+w $@ && chmod u+w $@/*
+	cp -r $< $@ && chmod u+w $@ && chmod u+w $@/*
 
 TEST_STAMPS=$(addsuffix /.tested,$(TEST_DIRS))
 REL_SRC=../$(top_srcdir)/src
