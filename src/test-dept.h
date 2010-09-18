@@ -79,14 +79,6 @@
 #define _test_dept_assert_false(condition)\
  _test_dept_assert_condition(!(condition), "!(" # condition ")" )
 
-#define _test_dept_assert_equals_type(type, format, exp, act) \
-  do {\
-  type actual = ( type ) (act);\
-  char msg[64];\
-  sprintf(msg, # act " == " # format " (was " # format ")", exp, actual);\
-  _test_dept_assert_condition((actual) == (exp), msg);			      \
-  } while (0)
-
 #define _test_dept_assert_pointer_equals(exp, act) do {\
     void *actual = (void *) act; \
     char msg[1024];\
@@ -136,8 +128,9 @@
   else if (__builtin_types_compatible_p(typeof("string"), typeof(exp))) \
     fail("Ambiguous assert. Use assert_strings_equal(...) or assert_pointers_equal(...) instead");	\
   if (fmt) {\
-     sprintf(msg, fmt, # act, exp, act);		\
-    _test_dept_assert_condition( ( act ) == ( exp ), msg);\
+     typeof(exp) actual = act;\
+     sprintf(msg, fmt, # act, exp, actual);		\
+    _test_dept_assert_condition( actual == ( exp ), msg);\
   } else \
     _test_dept_assert_equals_simple(exp, act);\
 } while (0)
