@@ -46,36 +46,29 @@
 # define test_dept_assert_true _test_dept_assert_true
 # define test_dept_assert_false _test_dept_assert_false
 # define test_dept_assert_equals _test_dept_assert_equals
+# define test_dept_assert_string_equals _test_dept_assert_string_equals
+# define test_dept_assert_pointer_equals _test_dept_assert_pointer_equals
 # define test_dept_assert_not_equals _test_dept_assert_not_equals
-# define test_dept_assert_equals_int _test_dept_assert_equals_int
-# define test_dept_assert_equals_hex _test_dept_assert_equals_hex
-# define test_dept_assert_equals_short _test_dept_assert_equals_short
-# define test_dept_assert_equals_long _test_dept_assert_equals_long
-# define test_dept_assert_equals_char _test_dept_assert_equals_char
-# define test_dept_assert_equals_float _test_dept_assert_equals_float
-# define test_dept_assert_equals_double _test_dept_assert_equals_double
-# define test_dept_assert_equals_string _test_dept_assert_equals_string
 # define test_dept_replace_function _test_dept_replace_function
 # define test_dept_restore_function _test_dept_restore_function
+# define test_dept_fail _test_dept_fail
 #else
 # define assert_true _test_dept_assert_true
 # define assert_false _test_dept_assert_false
 # define assert_equals _test_dept_assert_equals
 # define assert_not_equals _test_dept_assert_not_equals
-# define assert_equals_int _test_dept_assert_equals_int
-# define assert_equals_hex _test_dept_assert_equals_hex
-# define assert_equals_short _test_dept_assert_equals_short
-# define assert_equals_long _test_dept_assert_equals_long
-# define assert_equals_char _test_dept_assert_equals_char
-# define assert_equals_float _test_dept_assert_equals_float
-# define assert_equals_double _test_dept_assert_equals_double
-# define assert_equals_string _test_dept_assert_equals_string
+# define assert_pointer_equals _test_dept_assert_pointer_equals
+# define assert_string_equals _test_dept_assert_string_equals
 # define replace_function _test_dept_replace_function
 # define restore_function _test_dept_restore_function
+# define fail _test_dept_fail
 #endif
 
-#define _test_dept_assert_equals(a, b)\
- _test_dept_assert_condition((a) == (b), "(" # a ") == (" # b ")" )
+#define _test_dept_fail(msg) do {\
+    test_dept_test_failures += 1;\
+    fprintf(stderr, "%s:%d: Failure: %s\n", __FILE__, __LINE__, msg);	\
+    return;\
+   } while (0)
 
 #define _test_dept_assert_not_equals(a, b)\
  _test_dept_assert_condition((a) != (b), "(" # a ") != (" # b ")" )
@@ -94,38 +87,64 @@
   _test_dept_assert_condition((actual) == (exp), msg);			      \
   } while (0)
 
-#define _test_dept_assert_equals_int(exp, act)\
- _test_dept_assert_equals_type(int, %d, exp, act)
-
-#define _test_dept_assert_equals_short(exp, act)\
- _test_dept_assert_equals_type(short, %d, exp, act)
-
-#define _test_dept_assert_equals_long(exp, act)\
- _test_dept_assert_equals_type(long, %d, exp, act)
-
-#define _test_dept_assert_equals_hex(exp, act)\
- _test_dept_assert_equals_type(long, 0x%x, exp, act);
-
-#define _test_dept_assert_equals_char(exp, act)\
- _test_dept_assert_equals_type(char, %c, exp, act);
-
-#define _test_dept_assert_equals_float(exp, act)\
- _test_dept_assert_equals_type(float, %f, exp, act);
-
-#define _test_dept_assert_equals_double(exp, act)\
- _test_dept_assert_equals_type(double, %f, exp, act);
+#define _test_dept_assert_pointer_equals(exp, act) do {\
+    void *actual = (void *) act; \
+    char msg[1024];\
+    sprintf(msg, "%s == %p (was %p)", # act, exp, actual);	\
+    _test_dept_assert_condition( (actual) == (void *) (exp), msg );	\
+  } while (0)
 
 #define TEST_DEPT_MAX_COMPARISON 128
-#define _test_dept_assert_equals_string(exp, act)\
+#define _test_dept_assert_string_equals(exp, act)	\
   do {\
-    char* actual = (act);\
+    char* actual = (act);		\
     if (strlen(exp) > TEST_DEPT_MAX_COMPARISON\
         || strlen(actual) > TEST_DEPT_MAX_COMPARISON)\
      _test_dept_assert_false("strings too long to compare with this assertion");\
     char msg[1024];\
-    sprintf(msg, "%s equals \"%s\" (was \"%s\")", # act, exp, actual);\
+    sprintf(msg, "%s equals \"%s\" (was \"%s\")", # act, exp, actual);	\
     _test_dept_assert_condition(strcmp(exp, actual) == 0, msg);\
   } while (0)
+
+#define _test_dept_assert_equals_simple(a, b) \
+ _test_dept_assert_condition((a) == (b), "(" # a ") == (" # b ")" )
+
+#ifdef __GNUC__
+#define _test_dept_is_type(a, b)\
+  __builtin_types_compatible_p(a, typeof(b))	\
+
+#define _test_dept_assert_equals(exp, act)					\
+  do {\
+  char msg[1024];			 \
+  char *fmt = NULL;\
+  if (_test_dept_is_type(char, exp))					\
+    fmt = "%s == '%c' (was '%c')";  \
+  else if (_test_dept_is_type(int, exp))	\
+    fmt = "%s == %d (was %d)";  \
+  else if (_test_dept_is_type(unsigned int, exp))	\
+    fmt = "%s == %u (was %u)";  \
+  else if (_test_dept_is_type(long, exp))	\
+    fmt = "%s == %ld (was %ld)";  \
+  else if (_test_dept_is_type(unsigned long, exp))	\
+    fmt = "%s == %lu (was %lu)";  \
+  else if (_test_dept_is_type(long long, exp)) \
+    fmt = "%s == %lld (was %lld)";  \
+  else if (_test_dept_is_type(unsigned long long, exp))	\
+    fmt = "%s == %llu (was %llu)";  \
+  else if (_test_dept_is_type(float, exp) || _test_dept_is_type(double, exp)) \
+    fmt = "%s == %f (was %f)";  \
+  else if (__builtin_types_compatible_p(typeof("string"), typeof(exp))) \
+    fail("Ambiguous assert. Use assert_strings_equal(...) or assert_pointers_equal(...) instead");	\
+  if (fmt) {\
+     sprintf(msg, fmt, # act, exp, act);		\
+    _test_dept_assert_condition( ( act ) == ( exp ), msg);\
+  } else \
+    _test_dept_assert_equals_simple(exp, act);\
+} while (0)
+#else
+#define _test_dept_assert_equals(a, b)\
+  _test_dept_assert_equals_simple(a, b);
+#endif
 
 void **test_dept_proxy_ptrs[2];
 
@@ -142,7 +161,7 @@ _test_dept_set_proxy(void *original_function, void *replacement_function)
 	  return;
 	}
     }
-  printf("Warning, unable to set proxy for function %p, not found\n",
+  printf("Warning, unable to set proxy for function %p; generated proxy missing.\n",
 	 original_function);
 }
 
