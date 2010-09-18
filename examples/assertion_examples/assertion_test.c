@@ -55,33 +55,39 @@ void test_assert_false() {
   assert_false(0);
 }
 
-void test_assert_equals_int() {
+void test_assert_equals() {
   int three = 3;
-  assert_equals_int(3, three);
-  char* pointer = (char *) &three;
-  char* foo = pointer;
-  assert_equals_long(pointer, foo);
-  assert_equals_hex(pointer, foo);
+  assert_equals(3, three);
+  char *pointer = (char *) &three;
+  char *foo = pointer;
+  assert_equals(pointer, foo);
+}
+
+void test_assert_pointer_equals() {
+  int three = 3;
+  void *pointer = (void *) &three;
+  char *foo = pointer;
+  assert_pointer_equals(pointer, foo);
 }
 
 void test_assert_equals_char() {
-  char three = '3';
-  assert_equals_char('3', three);
+  char a = 'A';
+  assert_equals('A', a);
 }
 
 void test_assert_equals_float() {
   float pi = 3.1f;
-  assert_equals_float(3.1f, pi);
+  assert_equals(3.1f, pi);
 }
 
 void test_assert_equals_double() {
   double pi = 3.1;
-  assert_equals_double(3.1, pi);
+  assert_equals(3.1, pi);
 }
 
-void test_assert_equals_string() {
+void test_assert_string_equals() {
   char* front = "242";
-  assert_equals_string("242", front);
+  assert_string_equals("242", front);
   unsigned char* Front = "242";
-  assert_equals_string("242", Front);
+  assert_string_equals("242", Front);
 }

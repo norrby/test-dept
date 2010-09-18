@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
     if (setup_function)
       (*setup_function)();
     if (saved_test_failures == test_dept_test_failures)
-    (*current.function)();
+      (*current.function)();
     if (teardown_function)
       (*teardown_function)();
   }
