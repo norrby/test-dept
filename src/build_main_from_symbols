@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     while (i < number_of_test_functions)
       printf("%s\n", test_functions[i++].name);
   }
-  for (test_no; test_no < argc; test_no++) {
+  for (; test_no < argc; test_no++) {
     char* test_fun_name = argv[test_no];
     int test_fun = 0;
     for (; test_fun < number_of_test_functions; test_fun++)
@@ -113,7 +113,6 @@ int main(int argc, char *argv[]) {
       continue;
     }
     test_dept_test_function_data current = test_functions[test_fun];
-    printf("%s:\n", current.name);
     fflush(stdout);
     saved_test_failures = test_dept_test_failures;
     if (setup_function)
