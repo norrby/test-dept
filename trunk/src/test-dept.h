@@ -51,7 +51,11 @@
 # define test_dept_assert_not_equals _test_dept_assert_not_equals
 # define test_dept_replace_function _test_dept_replace_function
 # define test_dept_restore_function _test_dept_restore_function
-# define test_dept_fail _test_dept_fail
+# define test_dept_fail_test _test_dept_fail_test
+# define test_dept_assert_equals_int _test_dept_use_assert_equals
+# define test_dept_assert_equals_float _test_dept_use_assert_equals
+# define test_dept_assert_equals_double _test_dept_use_assert_equals
+# define test_dept_assert_equals_string _test_dept_use_assert_string_equals
 #else
 # define assert_true _test_dept_assert_true
 # define assert_false _test_dept_assert_false
@@ -61,14 +65,24 @@
 # define assert_string_equals _test_dept_assert_string_equals
 # define replace_function _test_dept_replace_function
 # define restore_function _test_dept_restore_function
-# define fail _test_dept_fail
+# define fail_test _test_dept_fail_test
+# define assert_equals_int _test_dept_use_assert_equals
+# define assert_equals_float _test_dept_use_assert_equals
+# define assert_equals_double _test_dept_use_assert_equals
+# define assert_equals_string _test_dept_use_assert_string_equals
 #endif
 
-#define _test_dept_fail(msg) do {\
+#define _test_dept_fail_test(msg) do {\
     test_dept_test_failures += 1;\
     fprintf(stderr, "%s:%d: Failure: %s\n", __FILE__, __LINE__, msg);	\
     return;\
    } while (0)
+
+#define _test_dept_use_assert_equals(a, b)				\
+  _test_dept_fail_test("obsolete assertion. Use assert_equals(...) instead.")
+
+#define _test_dept_use_assert_string_equals(a, b)			\
+  _test_dept_fail_test("obsolete assertion. Use assert_string_equals(...) instead.")
 
 #define _test_dept_assert_not_equals(a, b)\
  _test_dept_assert_condition((a) != (b), "(" # a ") != (" # b ")" )
@@ -105,35 +119,44 @@
 #define _test_dept_is_type(a, b)\
   __builtin_types_compatible_p(a, typeof(b))	\
 
-#define _test_dept_assert_equals(exp, act)					\
-  do {\
-  char msg[1024];			 \
-  char *fmt = NULL;\
-  if (_test_dept_is_type(char, exp))					\
-    fmt = "%s == '%c' (was '%c')";  \
-  else if (_test_dept_is_type(int, exp))	\
-    fmt = "%s == %d (was %d)";  \
-  else if (_test_dept_is_type(unsigned int, exp))	\
-    fmt = "%s == %u (was %u)";  \
-  else if (_test_dept_is_type(long, exp))	\
-    fmt = "%s == %ld (was %ld)";  \
-  else if (_test_dept_is_type(unsigned long, exp))	\
-    fmt = "%s == %lu (was %lu)";  \
-  else if (_test_dept_is_type(long long, exp)) \
-    fmt = "%s == %lld (was %lld)";  \
-  else if (_test_dept_is_type(unsigned long long, exp))	\
-    fmt = "%s == %llu (was %llu)";  \
-  else if (_test_dept_is_type(float, exp) || _test_dept_is_type(double, exp)) \
-    fmt = "%s == %f (was %f)";  \
-  else if (__builtin_types_compatible_p(typeof("string"), typeof(exp))) \
-    fail("Ambiguous assert. Use assert_strings_equal(...) or assert_pointers_equal(...) instead");	\
-  if (fmt) {\
-     typeof(exp) actual = act;\
-     sprintf(msg, fmt, # act, exp, actual);		\
-    _test_dept_assert_condition( actual == ( exp ), msg);\
-  } else \
-    _test_dept_assert_equals_simple(exp, act);\
-} while (0)
+#define _test_dept_assert_equals(exp, act)				\
+  do {									\
+    char msg[1024];							\
+    char *fmt = NULL;							\
+    if (_test_dept_is_type(char, exp))					\
+      fmt = "%s == '%c' (was '%c')";					\
+    if (_test_dept_is_type(unsigned char, exp))				\
+      fmt = "%s == '%c' (was '%c')";					\
+    else if (_test_dept_is_type(short, exp))				\
+      fmt = "%s == %hd (was %hd)";					\
+    else if (_test_dept_is_type(unsigned short, exp))			\
+      fmt = "%s == %hu (was %hu)";					\
+    else if (_test_dept_is_type(int, exp))				\
+      fmt = "%s == %d (was %d)";					\
+    else if (_test_dept_is_type(unsigned int, exp))			\
+      fmt = "%s == %u (was %u)";					\
+    else if (_test_dept_is_type(long, exp))				\
+      fmt = "%s == %ld (was %ld)";					\
+    else if (_test_dept_is_type(unsigned long, exp))			\
+      fmt = "%s == %lu (was %lu)";					\
+    else if (_test_dept_is_type(long long, exp))			\
+      fmt = "%s == %lld (was %lld)";					\
+    else if (_test_dept_is_type(unsigned long long, exp))		\
+      fmt = "%s == %llu (was %llu)";					\
+    else if (_test_dept_is_type(float, exp) || _test_dept_is_type(double, exp)) \
+      fmt = "%s == %f (was %f)";					\
+    else if (_test_dept_is_type(long double, exp))			\
+      fmt = "%s == %Lf (was %Lf)";					\
+    else if (__builtin_types_compatible_p(typeof("string"), typeof(exp))) \
+      fail_test("Ambiguous assert. Use assert_strings_equal(...)"	\
+		" or assert_pointers_equal(...) instead");		\
+    if (fmt) {								\
+      typeof(exp) actual = act;						\
+      sprintf(msg, fmt, # act, exp, actual);				\
+      _test_dept_assert_condition( actual == ( exp ), msg);		\
+    } else								\
+      _test_dept_assert_equals_simple(exp, act);			\
+  } while (0)
 #else
 #define _test_dept_assert_equals(a, b)\
   _test_dept_assert_equals_simple(a, b);
