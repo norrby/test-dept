@@ -24,7 +24,7 @@
 #include <test-dept.h>
 
 void test_number_of_wheels() {
-  test_dept_assert_equals_int(4, number_of_wheels());
+  test_dept_assert_equals(4, number_of_wheels());
 }
 
 void test_drive_short() {
