@@ -23,5 +23,5 @@
 void test_normal_fooify() {
   int unused = 8;
   int skipped = foo(unused);
-  assert_equals_int(3, three());
+  assert_equals(3, three());
 }
