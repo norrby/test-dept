@@ -23,5 +23,5 @@
 #include "sum.h"
 
 void test_addition() {
-  assert_equals_int(3, calculate_sum(1, 2));
+  assert_equals(3, calculate_sum(1, 2));
 }
