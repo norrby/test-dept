@@ -21,17 +21,17 @@
 #include "instruments.h"
 
 void test_foo() {
-  assert_equals_string("instrument: basoon", bar());
+  assert_string_equals("instrument: basoon", bar());
 }
 
 void test_fie() {
-  assert_equals_string("instrument: trumpet", fie());
+  assert_string_equals("instrument: trumpet", fie());
 }
 
 void test_change_prefix() {
-  assert_equals_string("instrument: basoon", bar());
+  assert_string_equals("instrument: basoon", bar());
   set_printing_prefix("paint");
-  assert_equals_string("paint: basoon", bar());
+  assert_string_equals("paint: basoon", bar());
 }
 
 void setup() {

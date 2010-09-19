@@ -45,7 +45,7 @@ void test_ok_dependency_function() {
 
 void test_failing_dependency_function() {
   test_dept_create_file_set(failing_create_file);
-  assert_equals_hex(NULL, go_fish(2));
+  assert_pointer_equals(NULL, go_fish(2));
 }
 
 void test_successful_skiing() {
@@ -54,5 +54,5 @@ void test_successful_skiing() {
 
 void test_failing_three_function() {
   test_dept_return_three_set(returning_two_instead_of_three);
-  assert_equals_int(0, go_skiing());
+  assert_equals(0, go_skiing());
 }
