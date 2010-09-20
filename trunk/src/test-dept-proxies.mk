@@ -27,7 +27,7 @@
 	$(OBJCOPY) --redefine-syms=$^ $@
 
 %_test:	%_test.o %_test_main.o %_using_proxies.o %_proxies.o
-	$(LD) $^ -o $@
+	$(CC) $(LDFLAGS) $(TARGET_ARCH)	$^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
