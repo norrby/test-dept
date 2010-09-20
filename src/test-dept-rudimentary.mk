@@ -24,7 +24,7 @@
 # GNU General Public License.
 
 %_test:	%_test_main.o %_test.o
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(CC) $(LDFLAGS) $(TARGET_ARCH) $^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/

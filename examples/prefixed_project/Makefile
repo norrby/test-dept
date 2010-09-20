@@ -21,7 +21,6 @@
 # functions.
 
 CC=gcc
-LD=$(CC)
 
 # The three rows below are only needed if test-dept is not installed
 # in your environment. They refer relatively to the unpacked dist in ../..

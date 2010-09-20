@@ -1,4 +1,4 @@
-EXAMPLE_DIRS=assertion_examples example_project not_recommended_old_c_style prefixed_project 
+EXAMPLE_DIRS= assertion_examples example_project not_recommended_old_c_style prefixed_project 
 TEST_DIRS=$(addprefix _check/,$(EXAMPLE_DIRS))
 
 $(TEST_DIRS):
@@ -10,7 +10,7 @@ MAKE:=env PATH=$(REL_SRC):$$PATH $(MAKE) -I $(REL_SRC)
 all:	$(TEST_DIRS)
 
 .checked_%: % $(TEST_DIRS)
-	cd _check/`basename $<` && $(MAKE) CPPFLAGS="-I$(REL_SRC) -I ../../$<"\
+	cd _check/$(<F) && $(MAKE) CPPFLAGS="-I$(REL_SRC) -I ../../$<"\
 	 VPATH=../../$< -f ../../$</Makefile check
 
 check:	$(TEST_STAMPS)
