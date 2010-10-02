@@ -25,9 +25,22 @@
 
 TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
+LDFLAGS_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
 
-%_replacement_symbols.txt:	%.o
-	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@
+%_replacement_symbols.txt:	%_proxy_symbols.txt
+	$(TEST_DEPT_RUNTIME_PREFIX)sym2repl $< >$@
+
+%_proxy_symbols.txt:	%_undefined_symbols.txt %_tmpmain_symbols.txt
+	grep -f $^ >$@ || true
+
+%_tmpmain_symbols.txt:	%_tmpmain
+	$(NM) -P $< | grep " U " | sed 's/[^A-Za-z_0-9][^ ]* U/ U/g' >$@ || true
+
+%_undefined_symbols.txt:	%.o
+	$(NM) -P $< | grep " U " >$@ || true
+
+%_tmpmain: %.o
+	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
 
 %_proxies.s: %.o %_test_main.o
 	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
