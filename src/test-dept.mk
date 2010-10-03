@@ -27,7 +27,7 @@ TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
 GNU_LD_IGNORE_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
 CCS_LD_IGNORE_UNRESOLVED=-Wl,-znodefs
-LDFLAGS_UNRESOLVED?=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) && echo "GNU")
+LDFLAGS_UNRESOLVED?=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "GNU")
 ifeq (GNU,$(LDFLAGS_UNRESOLVED))
   LDFLAGS_UNRESOLVED=$(GNU_LD_IGNORE_UNRESOLVED)
 else
@@ -47,11 +47,11 @@ TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 %_proxy_symbols.txt:	%_undefined_symbols.txt %_tmpmain_symbols.txt
 	grep -f $^ >$@ || true
 
-%_tmpmain_symbols.txt:	%_tmpmain
-	$(NM) -P $< | grep " U " | sed 's/[^A-Za-z_0-9][^ ]* U/ U/g' >$@ || true
+%_tmpmain_symbols.txt:  %_tmpmain
+	$(NM) -P $< | grep " U " | sed 's/[^A-Za-z_0-9][^ ]* U[^U]*$$/ U/g' >$@ || true
 
-%_undefined_symbols.txt:	%.o
-	$(NM) -P $< | grep " U " >$@ || true
+%_undefined_symbols.txt:        %.o
+	$(NM) -P $< | grep " U " | sed  's/U[^U]*$$/U/' >$@ || true
 
 %_tmpmain:	%.o
 	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
