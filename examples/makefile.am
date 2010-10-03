@@ -1,4 +1,4 @@
-EXAMPLE_DIRS= assertion_examples example_project not_recommended_old_c_style prefixed_project 
+EXAMPLE_DIRS=assertion_examples example_project not_recommended_old_c_style prefixed_project
 TEST_DIRS=$(addprefix _check/,$(EXAMPLE_DIRS))
 
 $(TEST_DIRS):
