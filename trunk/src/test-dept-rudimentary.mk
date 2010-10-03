@@ -23,8 +23,9 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-%_test:	%_test_main.o %_test.o
-	$(CC) $(LDFLAGS) $(TARGET_ARCH) $^ -o $@
+TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
+TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
+TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/

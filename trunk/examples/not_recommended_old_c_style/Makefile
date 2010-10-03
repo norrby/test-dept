@@ -28,8 +28,6 @@ CC=gcc
 # If you use them, please also qualify the include-file with
 # a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
 
-include test-dept-cstubs.mk
-
 # All test cases reside in TEST_SRCS
 TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c another_sum_test.c
 
@@ -51,3 +49,4 @@ check:	test_dept_run
 clean:
 	rm -f *.o *_test main_*.c *_stubs.* *~
 
+include test-dept-cstubs.mk
