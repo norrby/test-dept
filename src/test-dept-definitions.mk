@@ -32,7 +32,7 @@ endif
 %_test_main.c:	%_test.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols >$@
 
-$(TEST_MAINS):	%_test:	%_test_main.o
+$(TEST_MAINS):	%_test:	%_test.o %_test_main.o
 
 test_dept:	$(TEST_MAINS)
 

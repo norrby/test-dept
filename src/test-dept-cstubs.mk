@@ -31,9 +31,9 @@ TEST_OBJS=$(notdir $(patsubst %.c,%.o,$(TEST_SRCS)))
 %_replacement_symbols.txt:	%_test.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)csym2repl >$@
 
-%_proxies.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
-	$(NM) -p $< |\
-        $(TEST_DEPT_RUNTIME_PREFIX)build_c_proxies $(TEST_DEPT_POSSIBLE_STUBS) |\
+%_proxies.c: $(TEST_DEPT_POSSIBLE_STUBS) %_test.o 
+	$(NM) -p $*_test.o |\
+        $(TEST_DEPT_RUNTIME_PREFIX)build_c_proxies $< |\
         $(TEST_DEPT_RUNTIME_PREFIX)build_c_proxy >$@
 
 $(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
