@@ -48,10 +48,10 @@ TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 	grep -f $^ >$@ || true
 
 %_tmpmain_symbols.txt:  %_tmpmain
-	$(NM) -p $< | sed '/ U /s/[^A-Za-z_0-9 ].*$$//' >$@ || true
+	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' | sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
 
 %_undefined_symbols.txt:        %.o
-	$(NM) -p $< | grep " U " >$@ || true
+	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' >$@ || true
 
 %_tmpmain:	%.o
 	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
