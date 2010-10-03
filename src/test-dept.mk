@@ -25,7 +25,21 @@
 
 TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
-LDFLAGS_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
+GNU_LD_IGNORE_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
+CCS_LD_IGNORE_UNRESOLVED=-Wl,-znodefs
+LDFLAGS_UNRESOLVED?=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) && echo "GNU")
+ifeq (GNU,$(LDFLAGS_UNRESOLVED))
+  LDFLAGS_UNRESOLVED=$(GNU_LD_IGNORE_UNRESOLVED)
+else
+  LDFLAGS_UNRESOLVED=$(CCS_LD_IGNORE_UNRESOLVED)
+endif
+
+VPATH+=$(dir $(TEST_SRCS))
+VPATH+=$(TEST_DEPT_SRC_DIR)
+
+TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
+TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
+TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 
 %_replacement_symbols.txt:	%_proxy_symbols.txt
 	$(TEST_DEPT_RUNTIME_PREFIX)sym2repl $< >$@
@@ -39,11 +53,13 @@ LDFLAGS_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
 %_undefined_symbols.txt:	%.o
 	$(NM) -P $< | grep " U " >$@ || true
 
-%_tmpmain: %.o
+%_tmpmain:	%.o
 	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
 
-%_proxies.s: %.o %_test_main.o
+%_proxies.s:	%.o %_test_main.o
 	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
+
+$(TEST_MAINS):	%_test:	%_test.o %_test_main.o
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/

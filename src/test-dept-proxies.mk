@@ -23,11 +23,10 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
+$(TEST_MAINS):	%_test:	%_using_proxies.o %_proxies.o
+
 %_using_proxies.o:	%_replacement_symbols.txt %.o
 	$(OBJCOPY) --redefine-syms=$^ $@
-
-%_test:	%_test.o %_test_main.o %_using_proxies.o %_proxies.o
-	$(CC) $(LDFLAGS) $(TARGET_ARCH)	$^ -o $@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
