@@ -30,7 +30,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
 #include <assert.h>
 
 #define _test_dept_assert_condition(condition, textual_condition) do {\
@@ -108,8 +107,7 @@
     char msg[TEST_DEPT_MAX_STRING_BUFFER];				\
     const char *actual = (char*) (act);				\
     if (strncmp(exp, actual, TEST_DEPT_MAX_COMPARISON) != 0) {		\
-      if (strnlen(exp, TEST_DEPT_MAX_COMPARISON)			\
-	  == TEST_DEPT_MAX_COMPARISON) {				\
+      if (strlen(exp) > TEST_DEPT_MAX_COMPARISON) {				\
         snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER,			\
 	 "assertion must have an expected string of max %d characters",	\
 	 TEST_DEPT_MAX_COMPARISON);				        \
