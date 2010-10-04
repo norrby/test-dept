@@ -30,6 +30,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <assert.h>
 
 #define _test_dept_assert_condition(condition, textual_condition) do {\
@@ -94,7 +95,7 @@
  _test_dept_assert_condition(!(condition), "!(" # condition ")" )
 
 #define _test_dept_assert_pointer_equals(exp, act) do {\
-    void *actual = (void *) act; \
+    const void *actual = (void *) act; \
     char msg[1024];\
     sprintf(msg, "%s == %p (was %p)", # act, exp, actual);	\
     _test_dept_assert_condition( (actual) == (void *) (exp), msg );	\
@@ -105,9 +106,9 @@
 #define _test_dept_assert_string_equals(exp, act)                       \
   do {                                                                  \
     char msg[TEST_DEPT_MAX_STRING_BUFFER];				\
-    const char* actual = (act);					\
-    if (strncmp(exp, actual, TEST_DEPT_MAX_COMPARISON) != 0) {	\
-      if (strnlen(exp, TEST_DEPT_MAX_COMPARISON)		\
+    const char *actual = (char*) (act);				\
+    if (strncmp(exp, actual, TEST_DEPT_MAX_COMPARISON) != 0) {		\
+      if (strnlen(exp, TEST_DEPT_MAX_COMPARISON)			\
 	  == TEST_DEPT_MAX_COMPARISON) {				\
         snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER,			\
 	 "assertion must have an expected string of max %d characters",	\
@@ -156,7 +157,7 @@
     else if (_test_dept_is_type(long double, exp))			\
       fmt = "%s == %Lf (was %Lf)";					\
     else if (__builtin_types_compatible_p(typeof("string"), typeof(exp))) \
-      fail_test("Ambiguous assert. Use assert_strings_equal(...)"	\
+      fail_test("Ambiguous assert. Use assert_string_equals(...)"	\
 		" or assert_pointers_equal(...) instead");		\
     if (fmt) {								\
       const typeof(exp) actual = act;						\
@@ -174,8 +175,8 @@ void **test_dept_proxy_ptrs[2];
 
 #define _test_dept_set_proxy(orig, repl)\
 do {\
-  void* original_function = (void *) orig;\
-  void* replacement_function = (void *) repl;\
+  const void* original_function = orig;\
+  const void* replacement_function = repl;\
   int i;\
   for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++) {\
       if (*(test_dept_proxy_ptrs[i] + 1) == original_function) {\
