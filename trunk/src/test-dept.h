@@ -155,7 +155,7 @@
     else if (_test_dept_is_type(long double, exp))			\
       fmt = "%s == %Lf (was %Lf)";					\
     else if (__builtin_types_compatible_p(typeof("string"), typeof(exp))) \
-      fail_test("Ambiguous assert. Use assert_string_equals(...)"	\
+      _test_dept_fail_test("Ambiguous assert. Use assert_string_equals(...)"	\
 		" or assert_pointers_equal(...) instead");		\
     if (fmt) {								\
       const typeof(exp) actual = act;						\
@@ -173,8 +173,8 @@ void **test_dept_proxy_ptrs[2];
 
 #define _test_dept_set_proxy(orig, repl)\
 do {\
-  const void* original_function = orig;\
-  const void* replacement_function = repl;\
+  void* original_function = (void *) orig;	\
+  void* replacement_function = (void *) repl;	\
   int i;\
   for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++) {\
       if (*(test_dept_proxy_ptrs[i] + 1) == original_function) {\
