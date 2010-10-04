@@ -24,5 +24,6 @@
 int calculate_sum(int, int);
 int calculate_3sum(int, int, int);
 void* go_fish(size_t size);
+int *go_skiing();
 
 #endif

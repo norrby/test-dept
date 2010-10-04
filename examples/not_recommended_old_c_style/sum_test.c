@@ -49,10 +49,10 @@ void test_failing_dependency_function() {
 }
 
 void test_successful_skiing() {
-  assert_not_equals(0, go_skiing());
+  assert_not_equals(NULL, go_skiing());
 }
 
 void test_failing_three_function() {
   test_dept_return_three_set(returning_two_instead_of_three);
-  assert_equals(0, go_skiing());
+  assert_pointer_equals(NULL, go_skiing());
 }

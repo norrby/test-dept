@@ -112,6 +112,6 @@ void test_assert_equals_double() {
 void test_assert_string_equals() {
   char* front = "242";
   assert_string_equals("242", front);
-  unsigned char* Front = "242";
+  unsigned char* Front = (unsigned char*) "242";
   assert_string_equals("242", Front);
 }
