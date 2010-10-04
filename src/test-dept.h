@@ -101,15 +101,23 @@
   } while (0)
 
 #define TEST_DEPT_MAX_COMPARISON 128
-#define _test_dept_assert_string_equals(exp, act)	\
-  do {\
-    char* actual = (act);		\
-    if (strlen(exp) > TEST_DEPT_MAX_COMPARISON\
-        || strlen(actual) > TEST_DEPT_MAX_COMPARISON)\
-     _test_dept_assert_false("strings too long to compare with this assertion");\
-    char msg[1024];\
-    sprintf(msg, "%s equals \"%s\" (was \"%s\")", # act, exp, actual);	\
-    _test_dept_assert_condition(strcmp(exp, actual) == 0, msg);\
+#define TEST_DEPT_MAX_STRING_BUFFER 1024
+#define _test_dept_assert_string_equals(exp, act)                       \
+  do {                                                                  \
+    char msg[TEST_DEPT_MAX_STRING_BUFFER];				\
+    const char* actual = (act);					\
+    if (strncmp(exp, actual, TEST_DEPT_MAX_COMPARISON) != 0) {	\
+      if (strnlen(exp, TEST_DEPT_MAX_COMPARISON)		\
+	  == TEST_DEPT_MAX_COMPARISON) {				\
+        snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER,			\
+	 "assertion must have an expected string of max %d characters",	\
+	 TEST_DEPT_MAX_COMPARISON);				        \
+	_test_dept_fail_test(msg);					\
+     } else {								\
+       snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER, "%s equals \"%s\" (was \"%s\")", # act, exp, actual); \
+     }								  \
+      _test_dept_assert_condition(strcmp(exp, actual) == 0, msg); \
+    }                                                                   \
   } while (0)
 
 #define _test_dept_assert_equals_simple(a, b) \
@@ -151,7 +159,7 @@
       fail_test("Ambiguous assert. Use assert_strings_equal(...)"	\
 		" or assert_pointers_equal(...) instead");		\
     if (fmt) {								\
-      typeof(exp) actual = act;						\
+      const typeof(exp) actual = act;						\
       sprintf(msg, fmt, # act, exp, actual);				\
       _test_dept_assert_condition( actual == ( exp ), msg);		\
     } else								\
@@ -164,22 +172,23 @@
 
 void **test_dept_proxy_ptrs[2];
 
-static void
-_test_dept_set_proxy(void *original_function, void *replacement_function)
-{
-  int i;
-  for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++) {
-      if (*(test_dept_proxy_ptrs[i] + 1) == original_function) {
-	  if (replacement_function)
-	    *test_dept_proxy_ptrs[i] = replacement_function;
-	  else
-	    *test_dept_proxy_ptrs[i] = *(test_dept_proxy_ptrs[i] + 1);
-	  return;
-	}
-    }
-  printf("Warning, unable to set proxy for function %p; generated proxy missing.\n",
-	 original_function);
-}
+#define _test_dept_set_proxy(orig, repl)\
+do {\
+  void* original_function = (void *) orig;\
+  void* replacement_function = (void *) repl;\
+  int i;\
+  for (i = 0; test_dept_proxy_ptrs[i] != NULL; i++) {\
+      if (*(test_dept_proxy_ptrs[i] + 1) == original_function) {\
+	  if (replacement_function)\
+	    *test_dept_proxy_ptrs[i] = replacement_function;\
+	  else\
+	    *test_dept_proxy_ptrs[i] = *(test_dept_proxy_ptrs[i] + 1);\
+	  break;\
+	}\
+    }\
+  if (test_dept_proxy_ptrs[i] == NULL)\
+    printf("%s, %d: warning, trying to replace unused function %s; generated proxy missing.\n", __FILE__, __LINE__, # orig);\
+} while (0)
 
 #ifdef __GNUC__
 #define _test_dept_replace_function(original_function, replacement_function)\
@@ -196,9 +205,9 @@ _test_dept_set_proxy(void *original_function, void *replacement_function)
 }
 #endif
 
-static void _test_dept_restore_function(void *original_function) {
-  _test_dept_set_proxy(original_function, NULL);
-}
+#define _test_dept_restore_function(original_function)\
+ _test_dept_set_proxy(original_function, NULL)
+
 
 int test_dept_tests_run;
 int test_dept_test_failures;
