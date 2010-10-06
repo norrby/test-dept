@@ -104,18 +104,19 @@
 #define TEST_DEPT_MAX_STRING_BUFFER 1024
 #define _test_dept_assert_string_equals(exp, act)                       \
   do {                                                                  \
-    char msg[TEST_DEPT_MAX_STRING_BUFFER];				\
-    const char *actual = (char*) (act);				\
+    typeof(""[0]) msg[TEST_DEPT_MAX_STRING_BUFFER];			\
+    const typeof(&""[0]) actual = (typeof(&""[0])) (act);		\
     if (strncmp(exp, actual, TEST_DEPT_MAX_COMPARISON) != 0) {		\
-      if (strlen(exp) > TEST_DEPT_MAX_COMPARISON) {				\
+      if (strlen(exp) > TEST_DEPT_MAX_COMPARISON) {			\
         snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER,			\
-	 "assertion must have an expected string of max %d characters",	\
-	 TEST_DEPT_MAX_COMPARISON);				        \
+		 "assertion must have an expected string of max %d"	\
+		 " characters", TEST_DEPT_MAX_COMPARISON);		\
 	_test_dept_fail_test(msg);					\
-     } else {								\
-       snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER, "%s equals \"%s\" (was \"%s\")", # act, exp, actual); \
-     }								  \
-      _test_dept_assert_condition(strcmp(exp, actual) == 0, msg); \
+      } else {								\
+	snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER,			\
+		 "%s equals \"%s\" (was \"%s\")", # act, exp, actual);	\
+      }									\
+      _test_dept_assert_condition(strcmp(exp, actual) == 0, msg);	\
     }                                                                   \
   } while (0)
 
