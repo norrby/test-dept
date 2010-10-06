@@ -100,12 +100,22 @@
     _test_dept_assert_condition( (actual) == (void *) (exp), msg );	\
   } while (0)
 
+
+#ifdef __GNU__
+# define _test_dept_assert_string_equals_decl(act)	\
+    typeof(""[0]) msg[TEST_DEPT_MAX_STRING_BUFFER];			\
+    const typeof(&""[0]) actual = (typeof(&""[0])) (act);
+#else
+# define _test_dept_assert_string_equals_decl(act)	\
+    char msg[TEST_DEPT_MAX_STRING_BUFFER];		\
+    const char *actual = (char *) (act);
+#endif
+
 #define TEST_DEPT_MAX_COMPARISON 128
 #define TEST_DEPT_MAX_STRING_BUFFER 1024
 #define _test_dept_assert_string_equals(exp, act)                       \
   do {                                                                  \
-    typeof(""[0]) msg[TEST_DEPT_MAX_STRING_BUFFER];			\
-    const typeof(&""[0]) actual = (typeof(&""[0])) (act);		\
+    _test_dept_assert_string_equals_decl(act)				\
     if (strncmp(exp, actual, TEST_DEPT_MAX_COMPARISON) != 0) {		\
       if (strlen(exp) > TEST_DEPT_MAX_COMPARISON) {			\
         snprintf(msg, TEST_DEPT_MAX_STRING_BUFFER,			\
