@@ -24,16 +24,6 @@
 # GNU General Public License.
 
 TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
-SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
-GNU_LD_IGNORE_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
-CCS_LD_IGNORE_UNRESOLVED=-Wl,-znodefs
-LDFLAGS_UNRESOLVED?=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "GNU")
-ifeq (GNU,$(LDFLAGS_UNRESOLVED))
-  LDFLAGS_UNRESOLVED=$(GNU_LD_IGNORE_UNRESOLVED)
-else
-  LDFLAGS_UNRESOLVED=$(CCS_LD_IGNORE_UNRESOLVED)
-endif
-
 VPATH+=$(dir $(TEST_SRCS))
 VPATH+=$(TEST_DEPT_SRC_DIR)
 
@@ -58,6 +48,26 @@ TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 
 %_proxies.s:	%.o %_test_main.o
 	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
+
+# Add LDFLAGS here for ignoring unresolved references
+# LDFLAGS_UNRESOLVED?=
+SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
+GNU_LD_IGNORE_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
+CCS_LD_IGNORE_UNRESOLVED=-Wl,-znodefs
+ifeq (,$(LDFLAGS_UNRESOLVED))
+  ifeq (,$(LDFLAGS_TYPE))
+    LDFLAGS_TYPE:=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "GNU" || echo $(LDFLAGS_TYPE))
+    LDFLAGS_TYPE:=$(shell $(CC) $(CCS_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "CCS" || echo $(LDFLAGS_TYPE))
+  endif
+  ifeq (GNU,$(LDFLAGS_TYPE))
+    LDFLAGS_UNRESOLVED=$(GNU_LD_IGNORE_UNRESOLVED)
+  else ifeq (CCS,$(LDFLAGS_TYPE))
+    LDFLAGS_UNRESOLVED=$(CCS_LD_IGNORE_UNRESOLVED)
+  endif
+endif
+ifeq (,$(LDFLAGS_UNRESOLVED))
+  $(error you must set LDFLAGS_UNRESOLVED to flags that ignore missing symbols)
+endif
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
