@@ -34,16 +34,13 @@ TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 %_replacement_symbols.txt:	%_proxy_symbols.txt
 	$(TEST_DEPT_RUNTIME_PREFIX)sym2repl $< >$@
 
-%_proxy_symbols.txt:	%_undefined_symbols.txt %_tmpmain_symbols.txt
+%_proxy_symbols.txt:	%_undefined_symbols.txt %_tmpmain_undefined_symbols.txt
 	grep -f $^ >$@ || true
 
-%_tmpmain_symbols.txt:  %_tmpmain
+%_undefined_symbols.txt:        %.o
 	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' | sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
 
-%_undefined_symbols.txt:        %.o
-	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' >$@ || true
-
-%_tmpmain:	%.o
+%_tmpmain.o:	%.o
 	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
 
 %_proxies.s:	%.o %_test_main.o
@@ -68,7 +65,7 @@ ifeq (,$(LDFLAGS_UNRESOLVED))
   endif
 endif
 ifeq (,$(LDFLAGS_UNRESOLVED))
-  $(error you must set LDFLAGS_UNRESOLVED to flags that ignore missing symbols)
+  $(error LDFLAGS_UNRESOLVED must have "-Wl,"-flags that ignore missing symbols)
 endif
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))

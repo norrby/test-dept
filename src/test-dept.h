@@ -135,8 +135,7 @@
 
 #ifndef __STRICT_ANSI__
 #define _test_dept_is_type(a, b)\
-  __builtin_types_compatible_p(a, typeof(b))	\
-
+  __builtin_types_compatible_p(a, typeof(b))
 #define _test_dept_assert_equals(exp, act)				\
   do {									\
     char msg[1024];							\
