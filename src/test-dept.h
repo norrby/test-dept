@@ -101,7 +101,7 @@
   } while (0)
 
 
-#ifdef __GNU__
+#ifndef __STRICT_ANSI__
 # define _test_dept_assert_string_equals_decl(act)	\
     typeof(""[0]) msg[TEST_DEPT_MAX_STRING_BUFFER];			\
     const typeof(&""[0]) actual = (typeof(&""[0])) (act);
@@ -133,7 +133,7 @@
 #define _test_dept_assert_equals_simple(a, b) \
  _test_dept_assert_condition((a) == (b), "(" # a ") == (" # b ")" )
 
-#ifdef __GNUC__
+#ifndef __STRICT_ANSI__
 #define _test_dept_is_type(a, b)\
   __builtin_types_compatible_p(a, typeof(b))	\
 
@@ -200,7 +200,7 @@ do {\
     printf("%s, %d: warning, trying to replace unused function %s; generated proxy missing.\n", __FILE__, __LINE__, # orig);\
 } while (0)
 
-#ifdef __GNUC__
+#ifndef __STRICT_ANSI__
 #define _test_dept_replace_function(original_function, replacement_function)\
 {\
   assert (replacement_function == NULL ||\
