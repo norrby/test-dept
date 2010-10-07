@@ -31,15 +31,12 @@ TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
 TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 
-%_replacement_symbols.txt:	%_proxy_symbols.txt
-	$(TEST_DEPT_RUNTIME_PREFIX)sym2repl $< >$@
+%_replacement_symbols.txt:	%_undef_syms.txt %_tmpmain_undef_syms.txt
+	grep -f $^ | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@ || true
 
-%_proxy_symbols.txt:	%_undefined_symbols.txt %_tmpmain_undefined_symbols.txt
-	grep -f $^ >$@ || true
-
-%_undefined_symbols.txt:        %.o
-	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' | sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
-
+%_undef_syms.txt:        %.o
+	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' |\
+                      sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
 %_tmpmain.o:	%.o
 	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
 
