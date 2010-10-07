@@ -37,8 +37,11 @@ TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 %_undef_syms.txt:        %.o
 	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' |\
                       sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
+
+# Constructed in order to see which symbols are resolved by the loader.
+# Such symbols that we do not want to stub could be stdout, stderr, etc
 %_tmpmain.o:	%.o
-	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
+	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@ && nm $@
 
 %_proxies.s:	%.o %_test_main.o
 	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
