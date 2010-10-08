@@ -56,13 +56,23 @@ A path to the nm(1) binary tu use when extracting symbols from the
 supplied object files.  If no such binary is provided the default
 nm(1) from PATH will be used.
 
-.SH AUTHOR
-M Norrby <norrby+test-dept@lysator.liu.se>
-
 .SH EXAMPLES
 .nf
 sym2asm foo.o foo_test_main.o sym2asm_i686.awk >foo_proxies.s
 .fi
+
+.SH AUTHOR
+M Norrby <norrby+test-dept@lysator.liu.se>
+
+.SH "REPORTING BUGS"
+Please enter bugs as issues in <http://code.google.com/p/test-dept/issues/list>
+
+.SH COPYRIGHT
+Copyright \(co 2008--2010 Mattias Norrby
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+.br
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
 
 .SH SEE ALSO
 .IR build_main_from_symbols (1),

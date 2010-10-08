@@ -21,15 +21,24 @@ The resulting table is compatible with objcopy(1).
 Please refer to sym2asm(1) man page for more information on
 function switching.
 
-.SH AUTHOR
-M Norrby <norrby+test-dept@lysator.liu.se>
-
 .SH EXAMPLES
 .nf
 nm -p sut.o | sym2repl >sut_replacement_symbols.txt
 objcopy --redefine-syms=sut_replacement_symbols.txt sut.o sut_using_proxies.o
-
 .fi
+
+.SH AUTHOR
+M Norrby <norrby+test-dept@lysator.liu.se>
+
+.SH "REPORTING BUGS"
+Please enter bugs as issues in <http://code.google.com/p/test-dept/issues/list>
+
+.SH COPYRIGHT
+Copyright \(co 2008--2010 Mattias Norrby
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+.br
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
 
 .SH SEE ALSO
 .IR build_main_from_symbols (1),

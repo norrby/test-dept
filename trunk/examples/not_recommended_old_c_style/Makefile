@@ -1,4 +1,4 @@
-# Copyright 2008 Mattias Norrby
+# Copyright 2008--2010 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
