@@ -6,5 +6,6 @@
 	Support C99
 	Error message when substituting unused function
 	New string equality assertion macro
+	Test case stdout output can be seen when run
 
 
