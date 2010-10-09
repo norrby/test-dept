@@ -102,7 +102,7 @@ Dept. framework shall:
 
 =Test Dependencies=
 Testing something, hereby called System Under Test (SUT), almost
-always implies haveing dependencies to other parts of a system.  For
+always implies having dependencies to other parts of a system.  For
 example, when testing a C-object-file, it almost always refers to
 symbols from other object files.  Consider for example testing of
 SUT.o which has dependencies to foo.o and bar.o:
@@ -157,14 +157,14 @@ include test-dept.h and make test-functions:
 /* foo_test.c */
 #include <test-dept.h>
  
-extern int value;
+static int value;
  
-static void test_add_one() {
+void test_add_one() {
   int foo = value + 1;
   assert_equals(4, foo);
 }
 
-static void test_init_value() {
+void test_init_value() {
   assert_equals(3, value);
 }
  
@@ -175,9 +175,6 @@ static void setup() {
 In order to run the tests, simply use something like this in your
 makefile (after installing Test Dept. in your environment, of course):
 {{{
-CC=gcc
-LD=$(CC)
- 
 TEST_SRCS=foo_test.c
  
 include test-dept.mk
@@ -216,7 +213,7 @@ void test_normal_fooify() {
 
 void test_stringify() {
   char *h = stringify('h');
-  assert_equals_string("h", h);
+  assert_string_equals("h", h);
   free(h);
 }
 
@@ -227,7 +224,7 @@ void *always_failing_malloc() {
 void test_stringify_cannot_malloc_returns_sane_result() {
   replace_function(&malloc, &always_failing_malloc);
   char *h = stringify('h');
-  assert_equals_string("cannot_stringify", h);
+  assert_string_equals("cannot_stringify", h);
 }
 
 int negative_foo(int value) {
@@ -236,7 +233,7 @@ int negative_foo(int value) {
 
 void test_broken_foo_makes_fooify_return_subzero() {
   replace_function(&foo, &negative_foo);
-  assert_equals_int(-1, fooify(3));
+  assert_equals(-1, fooify(3));
 }
 
 void teardown() {
@@ -250,9 +247,6 @@ makefile as described earlier in the simple example.
 This is a complete makefile example which will work if you have
 installed Test Dept. in your environment:
 {{{
-CC=gcc
-LD=$(CC)
-
 TEST_SRCS=sut_test.c
 
 sut_test: foo.o
