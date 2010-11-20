@@ -1,7 +1,7 @@
 2010-11-20  M Norrby <norrby+test-dept@lysator.liu.se>
 
-	Make sure src/test-dept.mk is part of distribution for
-	non-installed versions of test-dept to work out of the box.
+	Make sure src/test-dept.mk is part of distribution.
+	Use mostlyclean-local targets.
 
 2010-10-08  M Norrby <norrby+test-dept@lysator.liu.se>
 
