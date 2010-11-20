@@ -14,7 +14,8 @@ all:	$(TEST_DIRS)
 	 VPATH=../../$< -f ../../$</Makefile check
 
 check:	$(TEST_STAMPS)
-clean::
+mostlyclean-local:
 	rm -rf $(TEST_DIRS) _check .checked*
+
 distclean::
 	rm -rf makefile $(TEST_DIRS)
