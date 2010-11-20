@@ -16,8 +16,13 @@
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sit.h"
+#ifndef _CALCULATE_SUM_H
+#define _CALCULATE_SUM_H
 
-int three() {
-  return 3;
-}
+#include <stdlib.h>
+
+int calculate_sum(int, int);
+int calculate_3sum(int, int, int);
+void* go_fish(size_t size);
+
+#endif

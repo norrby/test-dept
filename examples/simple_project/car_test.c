@@ -16,12 +16,24 @@
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <test-dept.h>
-#include <foo.h>
-#include <sit.h>
+/* A simple test case that uses prefixed assertions selected
+ * by a CPPFLAGS flag in the Makefile */
 
-void test_normal_fooify() {
-  int unused = 8;
-  foo(unused);
-  assert_equals(3, three());
+#include "car.h"
+
+#include <test-dept.h>
+
+void test_number_of_wheels() {
+  test_dept_assert_equals_int(4, number_of_wheels());
+}
+
+void test_drive_short() {
+  const int can_drive_this_many_miles = miles_per_tank();
+  test_dept_assert_true(can_drive(can_drive_this_many_miles));
+}
+
+void test_drive_long() {
+  const int can_drive_this_many_miles = miles_per_tank();
+  const int too_long_drive = can_drive_this_many_miles + 1;
+  test_dept_assert_false(can_drive(too_long_drive));
 }

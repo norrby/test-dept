@@ -1,4 +1,4 @@
-.TH BUILD_MAIN_FROM_SYMBOLS 1 "October 2010" "" "Test Dept."
+.TH BUILD_MAIN_FROM_SYMBOLS 1 "April 2009" "" "Test Dept."
 .SH NAME
 build_main_from_symbols \- read symbol data and output a Test Dept. test suite binary
 .SH SYNOPSIS
@@ -17,23 +17,13 @@ The data is expected to be in
 .B nm(1) -p
 output form.
 
+.SH AUTHOR
+M Norrby <norrby+test-dept@lysator.liu.se>
+
 .SH EXAMPLES
 .nf
 nm -p test_case.o | build_main_from_symbols >test_case_main.c
 .fi
-
-.SH AUTHOR
-M Norrby <norrby+test-dept@lysator.liu.se>
-
-.SH "REPORTING BUGS"
-Please enter bugs as issues in <http://code.google.com/p/test-dept/issues/list>
-
-.SH COPYRIGHT
-Copyright \(co 2008--2010 Mattias Norrby
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-.br
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
 
 .SH SEE ALSO
 .IR sym2asm (1),

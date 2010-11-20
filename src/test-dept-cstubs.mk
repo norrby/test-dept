@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -23,23 +23,13 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
-TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
-TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
-TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
-TEST_OBJS=$(notdir $(patsubst %.c,%.o,$(TEST_SRCS)))
-
 %_replacement_symbols.txt:	%_test.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)csym2repl >$@
 
-%_proxies.c: $(TEST_DEPT_POSSIBLE_STUBS) %_test.o 
-	$(NM) -p $*_test.o |\
-        $(TEST_DEPT_RUNTIME_PREFIX)build_c_proxies $< |\
+%_proxies.c: %_test.o $(TEST_DEPT_POSSIBLE_STUBS)
+	$(NM) -p $< |\
+        $(TEST_DEPT_RUNTIME_PREFIX)build_c_proxies $(TEST_DEPT_POSSIBLE_STUBS) |\
         $(TEST_DEPT_RUNTIME_PREFIX)build_c_proxy >$@
-
-$(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
-	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
-
-$(TEST_OBJS): %_test.o: %_test.c $(TEST_DEPT_FUNCTION_SWITCH_HEADER)
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/

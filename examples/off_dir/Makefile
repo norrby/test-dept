@@ -14,19 +14,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
-#
-# As a special exception, you may use this file as part of a free
-# testing framework without restriction.  Specifically, if other files
-# include this makefile for contructing test-cases this file does not
-# by itself cause the resulting executable to be covered by the GNU
-# General Public License.  This exception does not however invalidate
-# any other reasons why the executable file might be covered by the
-# GNU General Public License.
 
-%_test:	%_test_main.o %_test.o
-	$(LD) $^ -o $@
+# A simple test project with one C file as SUT. This project has
+# no stubs, but it is easily added using the TEST_DEPT_POSSIBLE_STUBS
+# variable pointing to a header file stating prototypes for stub
+# functions.
 
-ifneq (,$(TEST_DEPT_INCLUDE_PATH))
-TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/
-endif
-include $(TEST_DEPT_MAKEFILE_INCLUDE_PATH)test-dept-definitions.mk
+CC=gcc
+LD=$(CC)
+
+#You can remove these when an installation of Test Dept. is made on your system
+TEST_DEPT_BIN_PATH=../../src
+TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
+CPPFLAGS+=-I$(TEST_DEPT_INCLUDE_PATH)
+
+TEST_DEPT_SRC_DIR=src
+CPPFLAGS+=-I$(TEST_DEPT_SRC_DIR)
+TEST_SRCS=test/file1_test.c
+
+all:	test_dept_run
+
+clean:
+	rm -f *.o *_test
+
+include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk

@@ -51,67 +51,37 @@ void test_assert_not_equals_with_integers() {
   assert_not_equals(65536, -65536);
 }
 
-void test_assert_equals_with_short() {
-  short shorty = 7;
-  short shorty2 = shorty;
-  assert_equals(7, shorty);
-  assert_equals(shorty2, shorty);
-}
-
 void test_assert_false() {
   assert_false(0);
 }
 
-void test_assert_equals() {
+void test_assert_equals_int() {
   int three = 3;
-  char *pointer = (char *) &three;
-  char *foo = pointer;
-  assert_equals(3, three);
-  assert_equals(pointer, foo);
-}
-
-void test_longer() {
-  long l = 1L;
-  long ll = 1LL;
-  unsigned long ul = 1UL;
-  unsigned long long ull = 1ULL;
-  long double ld = 1;
-  assert_equals(1L, l);
-  assert_equals(1LL, ll);
-  assert_equals(1UL, ul);
-  assert_equals(1ULL, ull);
-  assert_equals(ld, ld);
-}
-
-void test_fisk() {
-  assert_equals(1, 1);
-}
-
-void test_assert_pointer_equals() {
-  int three = 3;
-  void *pointer = (void *) &three;
-  char *foo = pointer;
-  assert_pointer_equals(pointer, foo);
+  assert_equals_int(3, three);
+  char* pointer = (char *) &three;
+  char* foo = pointer;
+  assert_equals_long(pointer, foo);
+  assert_equals_hex(pointer, foo);
 }
 
 void test_assert_equals_char() {
-  char a = 'A';
-  assert_equals((char) 'A', a);
+  char three = '3';
+  assert_equals_char('3', three);
 }
 
 void test_assert_equals_float() {
   float pi = 3.1f;
-  assert_equals(3.1f, pi);
+  assert_equals_float(3.1f, pi);
 }
 
 void test_assert_equals_double() {
   double pi = 3.1;
-  assert_equals(3.1, pi);
+  assert_equals_double(3.1, pi);
 }
 
-void test_assert_string_equals() {
+void test_assert_equals_string() {
   char* front = "242";
-  assert_string_equals("242", front);
-  unsigned char* Front = (unsigned char*) "242";
-  assert_string_equals("242", Front);
+  assert_equals_string("242", front);
+  unsigned char* Front = "242";
+  assert_equals_string("242", Front);
 }

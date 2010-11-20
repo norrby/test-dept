@@ -1,6 +1,6 @@
 #! /bin/sh -eu
 #
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -20,28 +20,19 @@
 TEST_MAINS="${*:-}"
 ERROR_LOG="/tmp/test_dept$$.log"
 
-trap cleanup 2 4 6
-
-cleanup() {
-    EXITCODE="${1:-2}"
-    rm -f $ERROR_LOG
-    exit $EXITCODE
-}
-
 run_test() {
   SUITE="$1"
   TEST="$2"
-  echo "+++ ${SUITE}, ${TEST}: " >&2
+  printf "+++ ${SUITE}, " >>$ERROR_LOG
   NUMBER_OF_TESTS="`expr ${NUMBER_OF_TESTS:-0} + 1`"
-  if $SUITE $TEST; then
+  if $SUITE $TEST >>$ERROR_LOG 2>&1; then
     printf "."
-    echo "---" >&2
   else
-    [ "$?" -gt 128 ] && echo "Failure: Aborted on signal" >&2
+    [ "$?" -gt 128 ] && echo "Failure: Aborted on signal" >>$ERROR_LOG
     NUMBER_OF_ERRORS="`expr ${NUMBER_OF_ERRORS:-0} + 1`"
     printf "F"
-    echo "-- " >&2
   fi
+  echo "---" >>$ERROR_LOG
 }
 
 if rm -f $ERROR_LOG; then
@@ -54,15 +45,14 @@ fi
 for suite in $TEST_MAINS; do
   suite="`dirname $suite`/`basename $suite`" 
   for test in `$suite`; do
-    run_test "$suite" "$test" 2>>$ERROR_LOG
+    run_test "$suite" "$test"
   done
 done
 echo
 
 if [ "${NUMBER_OF_ERRORS:-0}" -gt "0" ]; then
-  echo "Failures: ${NUMBER_OF_ERRORS:-0} (of ${NUMBER_OF_TESTS:-0} run tests):"
-  sed -n '/^-- $/{H; g; p; }; H; /^+++/h' $ERROR_LOG
-  cleanup 1
+  echo
+  echo "Failures: ${NUMBER_OF_ERRORS:-0} (of ${NUMBER_OF_TESTS:-0} run tests)."
+  sed -n 'H; /^---/ {g; /Failure/p; }; /^+++/h' $ERROR_LOG
 fi
-
-cleanup 0
+rm -f $ERROR_LOG

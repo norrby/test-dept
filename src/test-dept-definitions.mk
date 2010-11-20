@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -23,18 +23,29 @@
 # any other reasons why the executable file might be covered by the
 # GNU General Public License.
 
+TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
+TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
+TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
+
 NM?=nm
 OBJCOPY?=objcopy
+
 ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
-%_test_main.c:	%_test.o
+VPATH+=$(dir $(TEST_SRCS))
+VPATH+=$(TEST_DEPT_SRC_DIR)
+
+%_main.c:	%.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols >$@
 
-$(TEST_MAINS):	%_test:	%_test.o %_test_main.o
+$(TEST_DEPT_FUNCTION_SWITCH_HEADER): $(TEST_DEPT_POSSIBLE_STUBS)
+	$(TEST_DEPT_RUNTIME_PREFIX)build_stub_headers $^ >$@
+
+$(TEST_MAIN_OBJS): $(TEST_DEPT_FUNCTION_SWITCH_HEADER)
 
 test_dept:	$(TEST_MAINS)
 
 test_dept_run:	$(TEST_MAINS)
-	echo $(TEST_MAINS) && $(TEST_DEPT_RUNTIME_PREFIX)test_dept $^
+	$(TEST_DEPT_RUNTIME_PREFIX)test_dept $^

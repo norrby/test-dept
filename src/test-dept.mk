@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -24,49 +24,13 @@
 # GNU General Public License.
 
 TEST_DEPT_EXEC_ARCH?=$(shell uname -m)
-VPATH+=$(dir $(TEST_SRCS))
-VPATH+=$(TEST_DEPT_SRC_DIR)
-
-TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
-TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
-TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
-
-%_replacement_symbols.txt:	%_undef_syms.txt %_tmpmain_undef_syms.txt
-	grep -f $^ | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@ || true
-
-%_undef_syms.txt:        %.o
-	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' |\
-                      sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
-
-# Constructed in order to see which symbols are resolved by the loader.
-# Such symbols that we do not want to stub could be stdout, stderr, etc
-%_tmpmain.o:	%.o
-	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
-
-%_proxies.s:	%.o %_test_main.o
-	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
-
-# Add LDFLAGS here for ignoring unresolved references
-# LDFLAGS_UNRESOLVED?=
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
-GNU_LD_IGNORE_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
-CCS_LD_IGNORE_UNRESOLVED=-Wl,-znodefs
-ifeq (,$(LDFLAGS_UNRESOLVED))
-  ifeq (,$(LDFLAGS_TYPE))
-    LDFLAGS_TYPE:=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "GNU" || echo $(LDFLAGS_TYPE))
-    LDFLAGS_TYPE:=$(shell $(CC) $(CCS_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "CCS" || echo $(LDFLAGS_TYPE))
-  endif
-  ifeq (GNU,$(LDFLAGS_TYPE))
-    LDFLAGS_UNRESOLVED=$(GNU_LD_IGNORE_UNRESOLVED)
-  else
-    ifeq (CCS,$(LDFLAGS_TYPE))
-      LDFLAGS_UNRESOLVED=$(CCS_LD_IGNORE_UNRESOLVED)
-    endif
-  endif
-endif
-ifeq (,$(LDFLAGS_UNRESOLVED))
-  $(error LDFLAGS_UNRESOLVED must have "-Wl,"-flags that ignore missing symbols)
-endif
+
+%_replacement_symbols.txt:	%.o
+	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@
+
+%_proxies.s: %.o %_test_main.o
+	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
 
 ifneq (,$(TEST_DEPT_INCLUDE_PATH))
 TEST_DEPT_MAKEFILE_INCLUDE_PATH=$(TEST_DEPT_INCLUDE_PATH)/

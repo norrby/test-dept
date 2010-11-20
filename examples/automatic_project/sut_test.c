@@ -28,7 +28,7 @@ void test_normal_fooify() {
 
 void test_stringify() {
   char *h = stringify('h');
-  assert_string_equals("h", h);
+  assert_equals_string("h", h);
   free(h);
 }
 
@@ -39,7 +39,7 @@ void *always_failing_malloc() {
 void test_stringify_cannot_malloc_returns_sane_result() {
   replace_function(&malloc, &always_failing_malloc);
   char *h = stringify('h');
-  assert_string_equals("cannot_stringify", h);
+  assert_equals_string("cannot_stringify", h);
 }
 
 int negative_foo(int value) {
@@ -48,7 +48,7 @@ int negative_foo(int value) {
 
 void test_broken_foo_makes_fooify_return_subzero() {
   replace_function(&foo, &negative_foo);
-  assert_equals(-1, fooify(3));
+  assert_equals_int(-1, fooify(3));
 }
 
 void teardown() {

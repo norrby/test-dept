@@ -16,21 +16,12 @@
  * along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* test without any stubbing */
+
 #include <test-dept.h>
 
-#include "file_ops.h"
+#include "sum.h"
 
-#include <stdlib.h>
-
-FILE* unsuccessful_fopen(const char *path, const char *mode) {
-  return NULL;
-}
-
-void test_more_than_zero_users() {
-  assert_not_equals(0, count_users());
-}
-
-void test_cannot_open_file_results_in_zero_users() {
-  test_dept_fopen_set(&unsuccessful_fopen);
-  assert_equals(0, count_users());
+void test_addition() {
+  assert_equals_int(3, calculate_sum(1, 2));
 }

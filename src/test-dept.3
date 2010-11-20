@@ -1,16 +1,16 @@
-.TH TEST-DEPT 3 "October 2010" "" "Test Dept."
+.TH TEST-DEPT 3 "April 2009" "" "Test Dept."
 .SH NAME
 replace_function \- replace calls to function in object file under test
 .br
 restore_function \- restore calls to function in object file under test
 .br
-assert_true, assert_false, assert_equals, assert_not_equals, assert_string_equals, assert_pointer_equals \- assert condition or print error
+assert_true, assert_false, assert_equals, assert_not_equals, assert_equals_int, assert_equals_hex, assert_equals_short, assert_equals_long, assert_equals_char, assert_equals_float, assert_equals_double, assert_equals_string \- assert condition or print error
 .SH SYNOPSIS
 .B #include <test-dept.h>
 .sp
-.BI "replace_function(void *orig_fun, void *replacement_fun);"
+.BI "void replace_function(void *orig_fun, void *replacement_fun);"
 .br
-.BI "restore_function(void *orig_fun);"
+.BI "void restore_function(void *orig_fun);"
 .br
 .BI "assert_true(" truth\ value ");"
 .br
@@ -20,9 +20,21 @@ assert_true, assert_false, assert_equals, assert_not_equals, assert_string_equal
 .br
 .BI "assert_not_equals(" value ", " actual\ value ");"
 .br
-.BI "assert_pointer_equals(void *expected, void *actual);"
+.BI "assert_equals_int(int expected, int actual);"
 .br
-.BI "assert_string_equals(string expected, string actual);"
+.BI "assert_equals_hex(long expected, long actual);"
+.br
+.BI "assert_equals_short(short expected, short actual);"
+.br
+.BI "assert_equals_long(long expected, long actual);"
+.br
+.BI "assert_equals_char(char expected, char actual);"
+.br
+.BI "assert_equals_float(float expected, float actual);"
+.br
+.BI "assert_equals_double(double expected, double actual);"
+.br
+.BI "assert_equals_string(string expected, string actual);"
 
 .SH DESCRIPTION
 .\" Add any additional description here
@@ -108,32 +120,19 @@ M Norrby <norrby+test-dept@lysator.liu.se>
  
 extern int value;
  
-void test_add_one() {
+static void test_add_one() {
   int foo = value + 1;
-  assert_equals(4, foo);
+  assert_equals_int(4, foo);
 }
 
-void test_init_value() {
-  assert_equals(3, value);
+static void test_init_value() {
+  assert_equals_int(3, value);
 }
  
 static void setup() {
   value = 3;
 }
 .fi
-
-.SH AUTHOR
-M Norrby <norrby+test-dept@lysator.liu.se>
-
-.SH "REPORTING BUGS"
-Please enter bugs as issues in <http://code.google.com/p/test-dept/issues/list>
-
-.SH COPYRIGHT
-Copyright \(co 2008--2010 Mattias Norrby
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-.br
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
 
 .SH SEE ALSO
 .IR build_main_from_symbols (1),

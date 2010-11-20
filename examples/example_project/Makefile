@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -15,25 +15,38 @@
 # You should have received a copy of the GNU General Public License
 # along with Test Dept..  If not, see <http://www.gnu.org/licenses/>.
 
+# An example project using test_dept in its cstub form
+
+# Basic definitions for the project to be able to build
 CC=gcc
+LD=$(CC)
 
-# The three rows below are only needed if test-dept is not installed
-# in your environment. They refer relatively to the unpacked dist in ../..
-#TEST_DEPT_BIN_PATH=../../src
-#TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
-#CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
-# If you use them, please also qualify the last include-file with
-# a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
+#You can remove these when an installation of Test Dept. is made on your system
+TEST_DEPT_BIN_PATH=../../src
+TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
+CPPFLAGS=-I$(TEST_DEPT_BIN_PATH)
 
-override CPPFLAGS+=-I.
-TEST_SRCS=sut_test.c sit_test.c
+# All test cases reside in TEST_SRCS
+TEST_SRCS=sum_test.c file_ops_test.c instruments_test.c another_sum_test.c
+
+# A file which declares all possible stub functions
+TEST_DEPT_POSSIBLE_STUBS=stubs.h
+TEST_DEPT_FUNCTION_SWITCH_HEADER=stub_headers.h
+
+# Dependencies for each test binary. Should be self explanatory
+sum_test another_sum_test:	dependency.o
+
+# Since test cases named <prefix>_test.o expects a <prefix>.o to exist
+# our special another_sum_test needs an another_sum.o which of course
+# is identical to sum.o
+another_sum.o: sum.o
+	cp $< $@
 
 check:	test_dept_run
 
-clean: 
-	rm -f *_main.c *_test *.o *~ *_stubs.c
+clean:
+	rm -f *.o *_test main_*.c *_stubs.* *~
 
-sut_test: foo.o bar.o
-sit_test: foo.o
+# Rules for making test binaries reside here
+include $(TEST_DEPT_INCLUDE_PATH)/test-dept-cstubs.mk
 
-include test-dept.mk
