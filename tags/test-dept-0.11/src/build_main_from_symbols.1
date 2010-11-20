@@ -1,0 +1,32 @@
+.TH BUILD_MAIN_FROM_SYMBOLS 1 "April 2009" "" "Test Dept."
+.SH NAME
+build_main_from_symbols \- read symbol data and output a Test Dept. test suite binary
+.SH SYNOPSIS
+.B build_main_from_symbols
+.RI [ symbols
+.IR file ]
+.br
+.SH DESCRIPTION
+.\" Add any additional description here
+Creates a C-code file for a test binary containing all functions
+starting with test_.  (Something like the JUnit way of detecting
+tests.)  If no symbols file is provided it reads data from standard
+input.  The result is written to standard output.
+
+The data is expected to be in
+.B nm(1) -p
+output form.
+
+.SH AUTHOR
+M Norrby <norrby+test-dept@lysator.liu.se>
+
+.SH EXAMPLES
+.nf
+nm -p test_case.o | build_main_from_symbols >test_case_main.c
+.fi
+
+.SH SEE ALSO
+.IR sym2asm (1),
+.IR sym2repl (1),
+.IR test_dept (1),
+.IR test-dept (3).
