@@ -14,4 +14,4 @@ $(include_BUILDDIR)/%.mk: %.mk
 clean:
 	rm -rf $(include_BUILDDIR)
 
-EXTRA_DIST=$(man_MANS)
+EXTRA_DIST=$(man_MANS) test-dept.mk
