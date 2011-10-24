@@ -40,8 +40,8 @@ case "$SUT_SYMBOLS_FILE" in
 	;;
 esac
 
-if [ "$SUT_SYMBOLS_FILE" != "" ]; then
+if [ "${SUT_SYMBOLS_FILE:--}" != "-" ]; then
  [ -f "$SUT_SYMBOLS_FILE" ] || err "no readable file named \"$SUT_SYMBOLS_FILE\""
 fi
 
-awk '{print $NF " " $NF "_test_dept_proxy" }' "${SUT_SYMBOLS_FILE}"
+awk '{print $NF " " $NF "_test_dept_proxy" }' "${SUT_SYMBOLS_FILE:--}"
