@@ -168,7 +168,7 @@ void test_init_value() {
   assert_equals(3, value);
 }
  
-static void setup() {
+void setup() {
   value = 3;
 }
 }}}
