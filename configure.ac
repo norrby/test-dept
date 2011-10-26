@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT([Test Dept], [0.14.2], [norrby+test-dept@lysator.liu.se])
+AC_INIT([Test Dept], [0.15.1], [norrby+test-dept@lysator.liu.se])
 
 AM_INIT_AUTOMAKE([1.9 foreign])
 AC_LANG(C)
@@ -12,4 +12,5 @@ AS_IF([$CC -Wl,--unresolved-symbols=ignore-in-object-files 2>/dev/null && rm a.o
 	    [AC_SUBST([LDFLAGS_UNRESOLVED],
 	    [-Wl,--unresolved-symbols=ignore-in-object-files])])
 AS_IF([$CC -Wl,-znodefs 2>/dev/null && rm a.out],[AC_SUBST([LDFLAGS_UNRESOLVED],[-Wl,-znodefs])])
+AS_IF([echo ""|$CC -flat_namespace -undefined suppress -xc - 2>/dev/null && rm a.out],[AC_SUBST([LDFLAGS_UNRESOLVED],["-flat_namespace -undefined suppress"])])
 AC_OUTPUT
