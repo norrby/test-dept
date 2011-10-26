@@ -51,16 +51,22 @@ TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
 GNU_LD_IGNORE_UNRESOLVED=-Wl,--unresolved-symbols=ignore-in-object-files
 CCS_LD_IGNORE_UNRESOLVED=-Wl,-znodefs
+BSD_LD_IGNORE_UNRESOLVED=-flat_namespace -undefined suppress
 ifeq (,$(LDFLAGS_UNRESOLVED))
   ifeq (,$(LDFLAGS_TYPE))
     LDFLAGS_TYPE:=$(shell $(CC) $(GNU_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "GNU" || echo $(LDFLAGS_TYPE))
     LDFLAGS_TYPE:=$(shell $(CC) $(CCS_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "CCS" || echo $(LDFLAGS_TYPE))
+    LDFLAGS_TYPE:=$(shell echo "" | $(CC) $(BSD_LD_IGNORE_UNRESOLVED) >/dev/null 2>&1 && echo "BSD" || echo $(LDFLAGS_TYPE))
   endif
   ifeq (GNU,$(LDFLAGS_TYPE))
     LDFLAGS_UNRESOLVED=$(GNU_LD_IGNORE_UNRESOLVED)
   else
     ifeq (CCS,$(LDFLAGS_TYPE))
       LDFLAGS_UNRESOLVED=$(CCS_LD_IGNORE_UNRESOLVED)
+    else
+      ifeq (BSD,$(LDFLAGS_TYPE))
+        LDFLAGS_UNRESOLVED=$(BSD_LD_IGNORE_UNRESOLVED)
+      endif
     endif
   endif
 endif
