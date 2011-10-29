@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008--2011 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -25,6 +25,7 @@
 
 NM?=nm
 OBJCOPY?=objcopy
+OBJDUMP?=objdump
 ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
@@ -32,7 +33,8 @@ endif
 %_test_main.c:	%_test.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols >$@
 
-$(TEST_MAINS):	%_test:	%_test.o %_test_main.o
+.SECONDEXPANSION:
+$(TEST_MAINS):	%_test:	%_test.o %_test_main.o $$(%_DEPS)
 
 test_dept:	$(TEST_MAINS)
 

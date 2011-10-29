@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008--2011 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -23,17 +23,16 @@ CC=gcc
 #TEST_DEPT_INCLUDE_PATH=$(TEST_DEPT_BIN_PATH)
 #CPPFLAGS=-I$(TEST_DEPT_INCLUDE_PATH) -I.
 # If you use them, please also qualify the last include-file with
-# a prefix, like this: $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
+# a prefix, like this: include $(TEST_DEPT_INCLUDE_PATH)/test-dept.mk
 
-override CPPFLAGS+=-I.
 TEST_SRCS=sut_test.c sit_test.c
+
+sut_DEPS=foo.o bar.o
+sit_DEPS=foo.o
 
 check:	test_dept_run
 
 clean: 
-	rm -f *_main.c *_test *.o *~ *_stubs.c
-
-sut_test: foo.o bar.o
-sit_test: foo.o
+	rm -f *_main.c *_test *.o *~ *_stubs.c *txt
 
 include test-dept.mk

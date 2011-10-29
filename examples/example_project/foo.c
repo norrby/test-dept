@@ -1,4 +1,4 @@
-/* Copyright 2008 Mattias Norrby
+/* Copyright 2008--2011 Mattias Norrby
  * 
  * This file is part of Test Dept..
  * 
@@ -19,6 +19,7 @@
 #include <foo.h>
 
 static const int FOO = 4711;
+int ext = 7;
 
 int foo(int value) {
   return FOO * value;
