@@ -1,4 +1,4 @@
-/* Copyright 2008 Mattias Norrby
+/* Copyright 2008--2011 Mattias Norrby
  * 
  * This file is part of Test Dept..
  * 
@@ -17,7 +17,12 @@
  */
 
 #include "sit.h"
+#include "foo.h"
 
 int three() {
   return 3;
+}
+
+void add_to_ext(int amount) {
+  ext += amount;
 }

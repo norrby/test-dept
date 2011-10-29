@@ -1,4 +1,4 @@
-# Copyright 2008--2010 Mattias Norrby
+# Copyright 2008--2011 Mattias Norrby
 #
 # This file is part of Test Dept..
 #
@@ -31,16 +31,21 @@ TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
 TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
 
-%_replacement_symbols.txt:	%_undef_syms.txt %_tmpmain_undef_syms.txt
+%_replacement_symbols.txt:	%_undef_syms.txt %_accessible_functions.txt
 	grep -f $^ | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@ || true
 
 %_undef_syms.txt:        %.o
-	$(NM) -p $< | awk '/ U / {print $$(NF-1),$$(NF)}' |\
+	$(NM) -p $< | awk '/ U / {print $$(NF-1) " " $$(NF) " "}' |\
                       sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
+
+%_accessible_functions.txt:	%_tmpmain.o
+	$(OBJDUMP) -t $< | awk '$$3 == "F"||$$2 == "F" {print "U " $$NF " "}' |\
+                           sed 's/@@.*$$/ /' >$@
 
 # Constructed in order to see which symbols are resolved by the loader.
 # Such symbols that we do not want to stub could be stdout, stderr, etc
-%_tmpmain.o:	%.o
+.SECONDEXPANSION:
+%_tmpmain.o:	%.o $$(%_DEPS)
 	$(CC) $(LDFLAGS) $(LDFLAGS_UNRESOLVED) $(TARGET_ARCH)	$^ -o $@
 
 %_proxies.s:	%.o %_test_main.o

@@ -20,5 +20,6 @@
 #define _FOO_H_
 
 int foo(int value);
+extern int ext;
 
 #endif

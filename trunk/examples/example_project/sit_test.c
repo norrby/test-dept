@@ -1,4 +1,4 @@
-/* Copyright 2008 Mattias Norrby
+/* Copyright 2008--2011 Mattias Norrby
  * 
  * This file is part of Test Dept..
  * 
@@ -17,11 +17,17 @@
  */
 
 #include <test-dept.h>
-#include <foo.h>
-#include <sit.h>
+#include "foo.h"
+#include "sit.h"
 
 void test_normal_fooify() {
   int unused = 8;
   foo(unused);
   assert_equals(3, three());
+}
+
+void test_external_variable() {
+  assert_equals(7, ext);
+  add_to_ext(2);
+  assert_equals(9, ext);
 }

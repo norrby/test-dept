@@ -1,4 +1,4 @@
-/* Copyright 2008 Mattias Norrby
+/* Copyright 2008--2011 Mattias Norrby
  * 
  * This file is part of Test Dept..
  * 
@@ -17,3 +17,4 @@
  */
 
 int three();
+void add_to_ext(int amount);
