@@ -26,8 +26,8 @@ In practice, these goals are (somewhat) reached by:
 These concepts are all described later in this README. For everything
 to work properly there are some prerequisites:
 
-  * It needs GNU make(1) for building suites.
-  * It uses objcopy(1) and nm(1) for stubbing.
+  * It needs GNU make(1) version 3.81 or later for building suites.
+  * It uses objcopy(1), objdump(2) and nm(1) for stubbing.
   * It depends on the __LINE__ and __FILE__ macros of gcc(1) for assertions.
   * It uses awk(1) and sed(1) for some textfile processing.
 
