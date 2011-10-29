@@ -253,8 +253,8 @@ sut_DEPS: foo.o
 
 include test-dept.mk
 }}}
-Please note that this simple way of expressing the makefiles expect a
-file called sut.c to exist.  If not, the test will not compile.  If
+*Please note* that this simple way of expressing the makefiles expects a
+file called sut.c to *exist*.  If not, the test will not compile.  If
 you need to deviate from that simple rule you will have to specify
 some dependencies by yourself.  Please refer to the included makefile
 snippet for information on which dependencies are needed.
