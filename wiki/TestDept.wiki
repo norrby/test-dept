@@ -249,7 +249,7 @@ installed Test Dept. in your environment:
 {{{
 TEST_SRCS=sut_test.c
 
-sut_test: foo.o
+sut_DEPS: foo.o
 
 include test-dept.mk
 }}}
