@@ -30,11 +30,16 @@ ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
+%_tmpmain.c:	%_test_main.c
+	cp $< $@
+
 %_test_main.c:	%_test.o
 	$(NM) -p $< | $(TEST_DEPT_RUNTIME_PREFIX)build_main_from_symbols >$@
 
 .SECONDEXPANSION:
 $(TEST_MAINS):	%_test:	%_test.o %_test_main.o $$(%_DEPS)
+.SECONDEXPANSION:
+$(TEST_TMPMAINS):	%_tmpmain: %_test.o %.o $$(%_DEPS)
 
 test_dept:	$(TEST_MAINS)
 
