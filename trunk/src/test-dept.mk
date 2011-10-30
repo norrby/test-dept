@@ -30,21 +30,7 @@ VPATH+=$(TEST_DEPT_SRC_DIR)
 TEST_MAIN_SRCS=$(notdir $(patsubst %.c,%_main.c,$(TEST_SRCS)))
 TEST_MAIN_OBJS=$(patsubst %.c,%.o,$(TEST_MAIN_SRCS))
 TEST_MAINS=$(patsubst %_main.c,%,$(TEST_MAIN_SRCS))
-TEST_TMPMAINS=$(patsubst %_test,%_tmpmain,$(TEST_MAINS))
-
-%_replacement_symbols.txt:	%_undef_syms.txt %_accessible_functions.txt
-	grep -f $^ | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@ || true
-
-%_undef_syms.txt:        %.o
-	$(NM) -p $< | awk '/ U / {print $$(NF-1) " " $$(NF) " "}' |\
-                      sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
-
-%_accessible_functions.txt:	%_tmpmain
-	$(OBJDUMP) -t $< | awk '$$3 == "F"||$$2 == "F" {print "U " $$NF " "}' |\
-                           sed 's/@@.*$$/ /' >$@
-
-%_proxies.s:	%.o %_test_main.o
-	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
+TEST_MAINS_WITHOUT_PROXIES=$(patsubst %,%_without_proxies,$(TEST_MAINS))
 
 SYMBOLS_TO_ASM=$(TEST_DEPT_RUNTIME_PREFIX)sym2asm_$(TEST_DEPT_EXEC_ARCH).awk
 

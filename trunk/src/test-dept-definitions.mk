@@ -30,7 +30,7 @@ ifneq (,$(TEST_DEPT_BIN_PATH))
 TEST_DEPT_RUNTIME_PREFIX=$(TEST_DEPT_BIN_PATH)/
 endif
 
-%_tmpmain.c:	%_test_main.c
+%_test_without_proxies.c:	%_test_main.c
 	cp $< $@
 
 %_test_main.c:	%_test.o
@@ -39,7 +39,7 @@ endif
 .SECONDEXPANSION:
 $(TEST_MAINS):	%_test:	%_test.o %_test_main.o $$(%_DEPS)
 .SECONDEXPANSION:
-$(TEST_TMPMAINS):	%_tmpmain: %_test.o %.o $$(%_DEPS)
+$(TEST_MAINS_WITHOUT_PROXIES):	%_test_without_proxies: %_test.o %.o $$(%_DEPS)
 
 test_dept:	$(TEST_MAINS)
 

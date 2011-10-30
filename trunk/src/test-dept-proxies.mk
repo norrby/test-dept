@@ -24,7 +24,22 @@
 # GNU General Public License.
 
 $(TEST_MAINS):	%_test:	%_using_proxies.o %_proxies.o
-$(TEST_TMPMAINS):	%_tmpmain:	%.o
+$(TEST_MAINS_WITHOUT_PROXIES):	%_test_without_proxies:	%.o
+
+%_replacement_symbols.txt:	%_undef_syms.txt %_accessible_functions.txt
+	grep -f $^ | $(TEST_DEPT_RUNTIME_PREFIX)sym2repl >$@ || true
+
+%_undef_syms.txt:        %.o
+	$(NM) -p $< | awk '/ U / {print $$(NF-1) " " $$(NF) " "}' |\
+                      sed 's/[^A-Za-z_0-9 ].*$$//' >$@ || true
+
+%_accessible_functions.txt:	%_test_without_proxies
+	$(OBJDUMP) -t $< | awk '$$3 == "F"||$$2 == "F" {print "U " $$NF " "}' |\
+                           sed 's/@@.*$$/ /' >$@
+
+%_proxies.s:	%.o %_test_main.o
+	$(TEST_DEPT_RUNTIME_PREFIX)sym2asm $^ $(SYMBOLS_TO_ASM) $(NM) >$@
+
 
 %_using_proxies.o:	%_replacement_symbols.txt %.o
 	$(OBJCOPY) --redefine-syms=$^ $@
