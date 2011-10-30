@@ -24,6 +24,7 @@
 # GNU General Public License.
 
 $(TEST_MAINS):	%_test:	%_using_proxies.o %_proxies.o
+$(TEST_TMPMAINS):	%_tmpmain:	%.o
 
 %_using_proxies.o:	%_replacement_symbols.txt %.o
 	$(OBJCOPY) --redefine-syms=$^ $@
